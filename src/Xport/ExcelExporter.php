@@ -10,7 +10,7 @@ use Xport\SpreadsheetModel\SpreadsheetModel;
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
-class ExcelExporter
+class ExcelExporter extends SpreadsheetExporter
 {
     /**
      * Exports an Spreadsheet model to an Excel file.
