@@ -9,11 +9,23 @@ namespace Xport\ExcelModel;
  */
 class Sheet
 {
+    /**
+     * @var string|null
+     */
+    private $label;
 
     /**
      * @var Table[]
      */
     private $tables = [];
+
+    /**
+     * @param string|null $label Sheet label
+     */
+    public function __construct($label = null)
+    {
+        $this->label = $label;
+    }
 
     /**
      * @param Table $table
@@ -31,4 +43,11 @@ class Sheet
         return $this->tables;
     }
 
+    /**
+     * @return null|string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
 }

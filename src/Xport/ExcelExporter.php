@@ -6,12 +6,18 @@ use PHPExcel_Writer_Excel2007;
 use Xport\ExcelModel\File;
 
 /**
- * ExcelExport
+ * Exports an Excel model to an Excel file.
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
-class ExcelExport
+class ExcelExporter
 {
+    /**
+     * Exports an Excel model to an Excel file.
+     *
+     * @param File   $model
+     * @param string $targetFile
+     */
     public function export(File $model, $targetFile)
     {
         $excel = new \PHPExcel();
@@ -22,6 +28,9 @@ class ExcelExport
             }
 
             $excelSheet = $excel->getSheet($sheetIndex);
+            if ($sheet->getLabel()) {
+                $excelSheet->setTitle($sheet->getLabel());
+            }
 
             $lineOffset = 1;
 
@@ -37,7 +46,11 @@ class ExcelExport
                     foreach ($table->getLines() as $lineIndex => $line) {
                         // Cell
                         $cell = $table->getCell($line, $column);
-                        $excelSheet->setCellValueByColumnAndRow($columnIndex, $lineOffset + 1 + $lineIndex, $cell->getContent());
+                        $excelSheet->setCellValueByColumnAndRow(
+                            $columnIndex,
+                            $lineOffset + 1 + $lineIndex,
+                            $cell->getContent()
+                        );
                     }
                 }
 

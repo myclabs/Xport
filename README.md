@@ -30,7 +30,7 @@ Mapping file:
 
 Data feeding:
 
-    $export = new ExcelExport($granularity);
+    $export = new ExcelExporter($granularity);
 
     $export->addHelper('inputPath', function($input) {
         return $input->getAF()->getRef();

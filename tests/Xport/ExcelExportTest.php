@@ -13,11 +13,12 @@ class ExcelExportTest extends \PHPUnit_Framework_TestCase
 {
     public function testExcelExport2()
     {
-        $exporter = new ExcelExport();
+        $exporter = new ExcelExporter();
 
         $excelFile = new File();
-        $sheet = new Sheet();
+        $sheet = new Sheet('First sheet');
         $excelFile->addSheet($sheet);
+        $excelFile->addSheet(new Sheet('Empty sheet'));
 
         $table = new Table();
         $sheet->addTable($table);
