@@ -10,11 +10,11 @@ It is targeted to support the following formats:
 
 It provides an object model for different formats (spreadsheet, document, XML…) and a language based on YAML to map your data (arrays, objects, …) onto the model.
 
-## Excel
+## Spreadsheet
 
 ### Simple example
 
-Simple mapping file:
+Simple mapping file (YAML file):
 
     # One sheet named "Contacts"
     sheet:
