@@ -4,7 +4,7 @@ Xport is an import/export library for PHP.
 
 It is targeted to support the following formats:
 
-- Excel
+- Excel/OpenOffice
 - PDF (to be implemented)
 - XML (to be implemented)
 
