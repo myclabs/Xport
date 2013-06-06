@@ -1,0 +1,13 @@
+{
+	"autoload": {
+		"psr-0": {
+			"Xport": "src/"
+		}
+	},
+	"require": {
+		"php": ">=5.4.0",
+		"symfony/yaml": "2.*",
+        "symfony/property-access": "2.*",
+		"phpoffice/phpexcel": "1.7.*"
+	}
+}
