@@ -17,6 +17,10 @@ class ExcelExportTest extends \PHPUnit_Framework_TestCase
 
         $cell1 = new \stdClass();
         $inputSet11 = new \stdClass();
+        $input111 = new \stdClass();
+        $input111->value = 10;
+        $input111->uncertainty = 0.15;
+        $inputSet11->inputs = [$input111];
         $cell1->inputSets = [$inputSet11];
         $data->cells[] = $cell1;
 
@@ -38,9 +42,9 @@ class ExcelExportTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $sheet->getTables());
 
         $table = $sheet->getTables()[0];
-        $this->assertCount(0, $table->getLines());
+        $this->assertCount(1, $table->getLines());
         $this->assertCount(2, $table->getColumns());
-        $this->assertCount(0, $table->getCells());
+        $this->assertCount(2, $table->getCells());
 
         var_dump($result);
     }

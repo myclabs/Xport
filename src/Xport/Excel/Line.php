@@ -15,9 +15,17 @@ class Line
      */
     private $id;
 
+    public function __construct($id)
+    {
+        $this->id = $id;
+    }
+
     /**
-     * @var string
+     * @return string
      */
-    private $label;
+    public function getId()
+    {
+        return $this->id;
+    }
 
 }

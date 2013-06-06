@@ -35,6 +35,14 @@ class Table
     }
 
     /**
+     * @param Line $line
+     */
+    public function addLine(Line $line)
+    {
+        $this->lines[] = $line;
+    }
+
+    /**
      * @return Column[]
      */
     public function getColumns()
@@ -56,6 +64,18 @@ class Table
     public function getCells()
     {
         return $this->cells;
+    }
+
+    /**
+     * @param Line   $line
+     * @param Column $column
+     * @param Cell   $cell
+     */
+    public function setCell(Line $line, Column $column, Cell $cell)
+    {
+        $coordinates = $line->getId() . '&' . $column->getId();
+
+        $this->cells[$coordinates] = $cell;
     }
 
 }

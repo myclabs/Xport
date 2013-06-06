@@ -3,9 +3,12 @@
 namespace Xport;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Yaml\Parser;
+use Xport\Excel\Cell;
 use Xport\Excel\Column;
 use Xport\Excel\File;
+use Xport\Excel\Line;
 use Xport\Excel\Sheet;
 use Xport\Excel\Table;
 
@@ -16,6 +19,16 @@ use Xport\Excel\Table;
  */
 class ExcelExport
 {
+
+    /**
+     * @var PropertyAccessor
+     */
+    private $propertyAccessor;
+
+    public function __construct()
+    {
+        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
+    }
 
     public function export($mappingFile, $dataSource)
     {
@@ -71,9 +84,7 @@ class ExcelExport
 
     private function processForEach($excelItem, $yamlItem, $dataSource, $propertyPath)
     {
-        $accessor = PropertyAccess::createPropertyAccessor();
-
-        $iterator = $accessor->getValue($dataSource, $propertyPath);
+        $iterator = $this->propertyAccessor->getValue($dataSource, $propertyPath);
 
         foreach ($iterator as $key => $newDataSource) {
             $this->parseItem($excelItem, $yamlItem, $newDataSource);
@@ -90,6 +101,25 @@ class ExcelExport
         foreach ($yamlItem['columns'] as $id => $yamlColumnItem) {
             $column = new Column($id, $yamlColumnItem['label'], $yamlColumnItem['path']);
             $table->addColumn($column);
+        }
+
+        // Lines
+        $propertyPath = $yamlItem['lines']['path'];
+        $lines = $this->propertyAccessor->getValue($dataSource, $propertyPath);
+
+        foreach ($lines as $i => $lineData) {
+            $line = new Line($i);
+            $table->addLine($line);
+
+            foreach ($table->getColumns() as $column) {
+                $cell = new Cell();
+
+                $cellContent = $this->propertyAccessor->getValue($lineData, $column->getPath());
+
+                $cell->setContent($cellContent);
+
+                $table->setCell($line, $column, $cell);
+            }
         }
     }
 
