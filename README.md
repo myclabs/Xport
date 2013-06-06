@@ -14,8 +14,11 @@ It is targeted to support the following formats:
 
 Simple mapping file:
 
+    # One sheet named "Contacts"
     sheet:
       label: Contacts
+
+      # Containing one table with 2 columns
       table:
         columns:
           name:
