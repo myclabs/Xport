@@ -1,6 +1,6 @@
 <?php
 
-namespace Xport\Excel;
+namespace Xport\ExcelModel;
 
 /**
  * Column
@@ -25,11 +25,10 @@ class Column
      */
     private $path;
 
-    public function __construct($id, $label, $path)
+    public function __construct($id, $label)
     {
         $this->id = $id;
         $this->label = $label;
-        $this->path = $path;
     }
 
     /**
@@ -46,6 +45,14 @@ class Column
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * @param string $path
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
     }
 
     /**

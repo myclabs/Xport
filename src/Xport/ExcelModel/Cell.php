@@ -1,6 +1,6 @@
 <?php
 
-namespace Xport\Excel;
+namespace Xport\ExcelModel;
 
 /**
  * Cell
@@ -14,6 +14,14 @@ class Cell
      * @var mixed
      */
     private $content;
+
+    /**
+     * @param mixed|null $content
+     */
+    public function __construct($content = null)
+    {
+        $this->content = $content;
+    }
 
     /**
      * @return mixed

@@ -1,6 +1,6 @@
 <?php
 
-namespace Xport\Excel;
+namespace Xport\ExcelModel;
 
 /**
  * Line

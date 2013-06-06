@@ -3,6 +3,7 @@
 namespace Xport;
 
 use PHPExcel_Writer_Excel2007;
+use Xport\ExcelModel\File;
 
 /**
  * ExcelExport
@@ -11,12 +12,8 @@ use PHPExcel_Writer_Excel2007;
  */
 class ExcelExport
 {
-    public function export($mappingFile, $dataSource, $targetFile)
+    public function export(File $model, $targetFile)
     {
-        $modelBuilder = new ExcelModelBuilder();
-
-        $model = $modelBuilder->export($mappingFile, $dataSource);
-
         $excel = new \PHPExcel();
 
         foreach ($model->getSheets() as $sheetIndex => $sheet) {

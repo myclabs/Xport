@@ -5,12 +5,12 @@ namespace Xport;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Yaml\Parser;
-use Xport\Excel\Cell;
-use Xport\Excel\Column;
-use Xport\Excel\File;
-use Xport\Excel\Line;
-use Xport\Excel\Sheet;
-use Xport\Excel\Table;
+use Xport\ExcelModel\Cell;
+use Xport\ExcelModel\Column;
+use Xport\ExcelModel\File;
+use Xport\ExcelModel\Line;
+use Xport\ExcelModel\Sheet;
+use Xport\ExcelModel\Table;
 
 /**
  * Excel export
@@ -29,7 +29,7 @@ class ExcelModelBuilder
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
-    public function export($mappingFile, $dataSource)
+    public function build($mappingFile, $dataSource)
     {
         $yaml = file_get_contents($mappingFile);
 
@@ -98,7 +98,8 @@ class ExcelModelBuilder
 
         // Columns
         foreach ($yamlItem['columns'] as $id => $yamlColumnItem) {
-            $column = new Column($id, $yamlColumnItem['label'], $yamlColumnItem['path']);
+            $column = new Column($id, $yamlColumnItem['label']);
+            $column->setPath($yamlColumnItem['path']);
             $table->addColumn($column);
         }
 

@@ -2,85 +2,41 @@
 
 namespace Xport;
 
-use Xport\Excel\File;
-use Xport\Excel\Sheet;
+use Xport\ExcelModel\Cell;
+use Xport\ExcelModel\Column;
+use Xport\ExcelModel\File;
+use Xport\ExcelModel\Line;
+use Xport\ExcelModel\Sheet;
+use Xport\ExcelModel\Table;
 
 class ExcelExportTest extends \PHPUnit_Framework_TestCase
 {
-
-    public function testExcelModel()
-    {
-        $exporter = new ExcelModelBuilder();
-
-        $data = new \stdClass();
-        $data->cells = [];
-
-        $cell1 = new \stdClass();
-        $inputSet11 = new \stdClass();
-        $input111 = new \stdClass();
-        $input111->value = 10;
-        $input111->uncertainty = 0.15;
-        $inputSet11->inputs = [$input111];
-        $cell1->inputSets = [$inputSet11];
-        $data->cells[] = $cell1;
-
-        $cell2 = new \stdClass();
-        $cell2->inputSets = [];
-        $data->cells[] = $cell2;
-
-        /** @var File $result */
-        $result = $exporter->export(__DIR__ . '/Fixtures/excel.yml', $data);
-
-        $this->assertTrue($result instanceof File);
-        $this->assertCount(2, $result->getSheets());
-
-        foreach ($result->getSheets() as $sheet) {
-            $this->assertTrue($sheet instanceof Sheet);
-        }
-
-        $sheet = $result->getSheets()[0];
-        $this->assertCount(1, $sheet->getTables());
-
-        $table = $sheet->getTables()[0];
-        $this->assertCount(1, $table->getLines());
-        $this->assertCount(2, $table->getColumns());
-        $this->assertCount(2, $table->getCells());
-    }
-
-    public function testExcelExport()
+    public function testExcelExport2()
     {
         $exporter = new ExcelExport();
 
-        $data = new \stdClass();
-        $data->cells = [];
+        $excelFile = new File();
+        $sheet = new Sheet();
+        $excelFile->addSheet($sheet);
 
-        $cell1 = new \stdClass();
+        $table = new Table();
+        $sheet->addTable($table);
 
-        $inputSet11 = new \stdClass();
-        $input111 = new \stdClass();
-        $input111->value = 10;
-        $input111->uncertainty = 0.15;
-        $input112 = new \stdClass();
-        $input112->value = 5;
-        $input112->uncertainty = 0.43;
-        $inputSet11->inputs = [$input111, $input112];
+        $col1 = new Column('col1', 'Column 1');
+        $table->addColumn($col1);
+        $col2 = new Column('col2', 'Column 2');
+        $table->addColumn($col2);
 
-        $inputSet12 = new \stdClass();
-        $input121 = new \stdClass();
-        $input121->value = 20;
-        $input121->uncertainty = 0.05;
-        $inputSet12->inputs = [$input121];
+        $line1 = new Line('line1');
+        $table->addLine($line1);
+        $line2 = new Line('line2');
+        $table->addLine($line2);
 
-        $cell1->inputSets = [$inputSet11, $inputSet12];
-        $data->cells[] = $cell1;
+        $table->setCell($line1, $col1, new Cell(10));
+        $table->setCell($line1, $col2, new Cell(0.5));
+        $table->setCell($line2, $col1, new Cell(20));
+        $table->setCell($line2, $col2, new Cell(0.35));
 
-        $cell2 = new \stdClass();
-        $inputSet21 = new \stdClass();
-        $inputSet21->inputs = [];
-        $cell2->inputSets = [$inputSet21];
-        $data->cells[] = $cell2;
-
-        $exporter->export(__DIR__ . '/Fixtures/excel.yml', $data, __DIR__ . '/test.xslx');
+        $exporter->export($excelFile, __DIR__ . '/test.xslx');
     }
-
 }
