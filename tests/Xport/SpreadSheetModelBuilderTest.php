@@ -2,14 +2,14 @@
 
 namespace Xport;
 
-use Xport\ExcelModel\File;
-use Xport\ExcelModel\Sheet;
+use Xport\SpreadsheetModel\SpreadsheetModel;
+use Xport\SpreadsheetModel\Sheet;
 
-class ExcelModelBuilderTest extends \PHPUnit_Framework_TestCase
+class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    public function testExcelModelBuilder()
+    public function testSpreadsheetModelBuilder()
     {
-        $modelBuilder = new ExcelModelBuilder();
+        $modelBuilder = new SpreadsheetModelBuilder();
 
         $data = new \stdClass();
         $data->cells = [];
@@ -27,10 +27,10 @@ class ExcelModelBuilderTest extends \PHPUnit_Framework_TestCase
         $cell2->inputSets = [];
         $data->cells[] = $cell2;
 
-        /** @var File $result */
+        /** @var SpreadsheetModel $result */
         $result = $modelBuilder->build(__DIR__ . '/Fixtures/excel.yml', $data);
 
-        $this->assertTrue($result instanceof File);
+        $this->assertTrue($result instanceof SpreadsheetModel);
         $this->assertCount(2, $result->getSheets());
 
         foreach ($result->getSheets() as $sheet) {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Xport\ExcelModel;
+namespace Xport\SpreadsheetModel;
 
 /**
- * Excel file
+ * Spreadsheet model
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
-class File
+class SpreadsheetModel
 {
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Xport\ExcelModel;
+namespace Xport\SpreadsheetModel;
 
 /**
  * Column

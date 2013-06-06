@@ -2,12 +2,12 @@
 
 namespace Xport;
 
-use Xport\ExcelModel\Cell;
-use Xport\ExcelModel\Column;
-use Xport\ExcelModel\File;
-use Xport\ExcelModel\Line;
-use Xport\ExcelModel\Sheet;
-use Xport\ExcelModel\Table;
+use Xport\SpreadsheetModel\Cell;
+use Xport\SpreadsheetModel\Column;
+use Xport\SpreadsheetModel\SpreadsheetModel;
+use Xport\SpreadsheetModel\Line;
+use Xport\SpreadsheetModel\Sheet;
+use Xport\SpreadsheetModel\Table;
 
 class ExcelExportTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,7 +15,7 @@ class ExcelExportTest extends \PHPUnit_Framework_TestCase
     {
         $exporter = new ExcelExporter();
 
-        $excelFile = new File();
+        $excelFile = new SpreadsheetModel();
         $sheet = new Sheet('First sheet');
         $excelFile->addSheet($sheet);
         $excelFile->addSheet(new Sheet('Empty sheet'));

@@ -5,19 +5,19 @@ namespace Xport;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Yaml\Parser;
-use Xport\ExcelModel\Cell;
-use Xport\ExcelModel\Column;
-use Xport\ExcelModel\File;
-use Xport\ExcelModel\Line;
-use Xport\ExcelModel\Sheet;
-use Xport\ExcelModel\Table;
+use Xport\SpreadsheetModel\Cell;
+use Xport\SpreadsheetModel\Column;
+use Xport\SpreadsheetModel\SpreadsheetModel;
+use Xport\SpreadsheetModel\Line;
+use Xport\SpreadsheetModel\Sheet;
+use Xport\SpreadsheetModel\Table;
 
 /**
  * Excel export
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
-class ExcelModelBuilder
+class SpreadsheetModelBuilder
 {
     /**
      * @var PropertyAccessor
@@ -36,7 +36,7 @@ class ExcelModelBuilder
         $yamlReader = new Parser();
         $yamlStructure = $yamlReader->parse($yaml);
 
-        $file = new File();
+        $file = new SpreadsheetModel();
         $this->parseItem($file, $yamlStructure, $dataSource);
 
         return $file;
@@ -58,7 +58,7 @@ class ExcelModelBuilder
             }
             // Sheet
             if ($key === 'sheet') {
-                if ($excelItem instanceof File) {
+                if ($excelItem instanceof SpreadsheetModel) {
                     $sheet = new Sheet();
                     $excelItem->addSheet($sheet);
 
