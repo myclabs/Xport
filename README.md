@@ -1,39 +1,77 @@
-# Exports
+# Xport
+
+Xport is an import/export library for PHP.
+
+It is targeted to support the following formats:
+
+- Excel
+- PDF (to be implemented)
+- XML (to be implemented)
 
 ## Excel
 
-Mapping file:
+### Simple example
 
-    # From a granularity
-    forEach(cells):
+Simple mapping file:
+
+    sheet:
+      label: Contacts
+      table:
+        columns:
+          name:
+            label: Name
+            path: name
+          phoneNumber:
+            label: Phone number
+            path: phoneNumber
+        lines:
+          path: contacts
+
+Usage:
+
+    $export = new ExcelExporter($contactBook);
+    $export->render('myFile.xslx');
+
+The table will be filled with each item in the array `$contacts = $contactBook->getContacts()`.
+
+The `path` configuration is a [PropertyAccess](http://symfony.com/doc/master/components/property_access/index.html) path, e.g. the `phoneNumber` path can resolve to `$contact->getPhoneNumber()`, `$contact->phoneNumber` or `$contact['phoneNumber']`.
+
+### Dynamic example
+
+You can use the `forEach` item to generate dynamic content:
+
+    # Create one sheet per company
+    forEach(companies):
 
       sheet:
 
-        forEach(inputSets):
+        # One table per product
+        forEach(products):
 
+          # The table will contain one sale entry per line
           table:
             columns:
               path:
-                label: Formulaire
-                helper: inputPath
-              field:
-                label: Champ
-                path: component.ref
-              value:
-                label: Valeur
-                path: value.value.digitalValue
-              uncertainty:
-                label: Incertitude
-                path: value.value.relativeUncertainty
+                label: Product
+                helper: fullProductName
+              date:
+                label: Date
+                path: date
+              salesman:
+                label: Salesman
+                path: salesman.name
+              price:
+                label: Price
+                path: price
             lines:
-              path: inputs
+              path: sales
 
-Data feeding:
+Usage:
 
-    $export = new ExcelExporter($granularity);
+    $export = new ExcelExporter($companies);
 
-    $export->addHelper('inputPath', function($input) {
-        return $input->getAF()->getRef();
+    $export->addHelper('fullProductName', function(SaleEntry $saleEntry) {
+        return strtoupper($saleEntry->getProduct()->getName());
     });
 
-    $export->render();
+    $export->render('myFile.xslx');
