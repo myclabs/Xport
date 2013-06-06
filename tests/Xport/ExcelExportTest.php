@@ -16,7 +16,8 @@ class ExcelExportTest extends \PHPUnit_Framework_TestCase
         $data->cells = [];
 
         $cell1 = new \stdClass();
-        $cell1->inputSets = [];
+        $inputSet11 = new \stdClass();
+        $cell1->inputSets = [$inputSet11];
         $data->cells[] = $cell1;
 
         $cell2 = new \stdClass();
@@ -32,6 +33,14 @@ class ExcelExportTest extends \PHPUnit_Framework_TestCase
         foreach ($result->getSheets() as $sheet) {
             $this->assertTrue($sheet instanceof Sheet);
         }
+
+        $sheet = $result->getSheets()[0];
+        $this->assertCount(1, $sheet->getTables());
+
+        $table = $sheet->getTables()[0];
+        $this->assertCount(0, $table->getLines());
+        $this->assertCount(2, $table->getColumns());
+        $this->assertCount(0, $table->getCells());
 
         var_dump($result);
     }

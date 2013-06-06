@@ -7,17 +7,11 @@ forEach(cells):
 
       table:
         columns:
-          path:
-            label: Formulaire
-            helper: inputPath
-          field:
-            label: Champ
-            path: component.ref
           value:
             label: Valeur
-            path: value.value.digitalValue
+            path: value
           uncertainty:
             label: Incertitude
-            path: value.value.relativeUncertainty
+            path: uncertainty
         lines:
           path: inputs

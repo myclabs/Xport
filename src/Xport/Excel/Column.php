@@ -20,4 +20,16 @@ class Column
      */
     private $label;
 
+    /**
+     * @var string
+     */
+    private $path;
+
+    public function __construct($id, $label, $path)
+    {
+        $this->id = $id;
+        $this->label = $label;
+        $this->path = $path;
+    }
+
 }

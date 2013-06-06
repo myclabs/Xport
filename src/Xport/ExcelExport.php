@@ -4,8 +4,10 @@ namespace Xport;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Yaml\Parser;
+use Xport\Excel\Column;
 use Xport\Excel\File;
 use Xport\Excel\Sheet;
+use Xport\Excel\Table;
 
 /**
  * Excel export
@@ -53,6 +55,17 @@ class ExcelExport
                     throw new \Exception("'sheet' must be at the root of the Excel file");
                 }
             }
+            // Table
+            if ($key === 'table') {
+                if ($excelItem instanceof Sheet) {
+                    $table = new Table();
+                    $excelItem->addTable($table);
+
+                    $this->parseTable($table, $yamlSubItem, $dataSource);
+                } else {
+                    throw new \Exception("'table' must be in a 'sheet'");
+                }
+            }
         }
     }
 
@@ -64,6 +77,19 @@ class ExcelExport
 
         foreach ($iterator as $key => $newDataSource) {
             $this->parseItem($excelItem, $yamlItem, $newDataSource);
+        }
+    }
+
+    private function parseTable(Table $table, $yamlItem, $dataSource)
+    {
+        if (!array_key_exists('columns', $yamlItem)) {
+            throw new \Exception("'table' must contain 'columns'");
+        }
+
+        // Columns
+        foreach ($yamlItem['columns'] as $id => $yamlColumnItem) {
+            $column = new Column($id, $yamlColumnItem['label'], $yamlColumnItem['path']);
+            $table->addColumn($column);
         }
     }
 
