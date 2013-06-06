@@ -78,4 +78,16 @@ class Table
         $this->cells[$coordinates] = $cell;
     }
 
+    /**
+     * @param Line   $line
+     * @param Column $column
+     * @return Cell
+     */
+    public function getCell(Line $line, Column $column)
+    {
+        $coordinates = $line->getId() . '&' . $column->getId();
+
+        return $this->cells[$coordinates];
+    }
+
 }
