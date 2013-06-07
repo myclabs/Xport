@@ -31,10 +31,10 @@ sheets:
         columns:
           name:
             label: Name
-            path: contact.name
+            cellContent: "{{ contact.name }}"
           phoneNumber:
             label: Phone number
-            path: contact.phoneNumber
+            cellContent: "{{ contact.phoneNumber }}"
 ```
 
 Usage:
@@ -82,7 +82,7 @@ Here is a more complete example:
 sheets:
     # Create one sheet per company
   - foreach: companies as company
-    label: "{{company.name}}"
+    label: "{{ company.name }}"
     tables:
 
         # One table per product
@@ -91,11 +91,11 @@ sheets:
           foreach: product.sales as sale
         columns:
           - label: Product
-            path: product.name
+            cellContent: "{{ product.name }}"
           - label: Price
-            path: sale.price
+            cellContent: "{{ sale.price }}"
           - label: Salesman
-            path: sale.salesman.name
+            cellContent: "{{ sale.salesman.name }}"
 ```
 
 ### File format
@@ -104,7 +104,6 @@ You can choose which file format to use through PHPExcel writers:
 
 ```php
 // ...
-
 $export->export($spreadsheet, 'myFile.xslx', new PHPExcel_Writer_Excel2007());
 ```
 

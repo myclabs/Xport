@@ -9,7 +9,6 @@ namespace Xport\SpreadsheetModel;
  */
 class Column
 {
-
     /**
      * @var string
      */
@@ -23,7 +22,7 @@ class Column
     /**
      * @var string
      */
-    private $path;
+    private $cellContent;
 
     public function __construct($id, $label)
     {
@@ -48,19 +47,18 @@ class Column
     }
 
     /**
-     * @param string $path
+     * @param string $cellContent
      */
-    public function setPath($path)
+    public function setCellContent($cellContent)
     {
-        $this->path = $path;
+        $this->cellContent = $cellContent;
     }
 
     /**
      * @return string
      */
-    public function getPath()
+    public function getCellContent()
     {
-        return $this->path;
+        return $this->cellContent;
     }
-
 }

@@ -145,7 +145,7 @@ class SpreadsheetModelBuilder extends Scope
             $columnLabel = $this->twigParser->parse($yamlColumnItem['label'], $tableScope);
 
             $column = new Column($columnIndex, $columnLabel);
-            $column->setPath($yamlColumnItem['path']);
+            $column->setCellContent($yamlColumnItem['cellContent']);
             $table->addColumn($column);
         }
 
@@ -171,8 +171,7 @@ class SpreadsheetModelBuilder extends Scope
             foreach ($table->getColumns() as $column) {
                 $cell = new Cell();
 
-                $cellContent = $this->propertyAccessor->getValue($lineScope, $column->getPath());
-
+                $cellContent = $this->twigParser->parse($column->getCellContent(), $lineScope);
                 $cell->setContent($cellContent);
 
                 $table->setCell($line, $column, $cell);
