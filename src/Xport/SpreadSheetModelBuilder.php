@@ -8,6 +8,7 @@ use Symfony\Component\Yaml\Parser;
 use Xport\SpreadsheetModel\Cell;
 use Xport\SpreadsheetModel\Column;
 use Xport\SpreadsheetModel\Parser\ForEachParser;
+use Xport\SpreadsheetModel\Parser\Scope;
 use Xport\SpreadsheetModel\SpreadsheetModel;
 use Xport\SpreadsheetModel\Line;
 use Xport\SpreadsheetModel\Sheet;

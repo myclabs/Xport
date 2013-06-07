@@ -2,7 +2,7 @@
 
 namespace Xport\SpreadsheetModel\Parser;
 
-use Xport\ParsingException;
+use Xport\SpreadsheetModel\Parser\ParsingException;
 
 /**
  * "foreach" parser

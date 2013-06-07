@@ -20,7 +20,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Xport\ParsingException
+     * @expectedException \Xport\SpreadsheetModel\Parser\ParsingException
      */
     public function testInvalidString1()
     {
@@ -29,7 +29,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Xport\ParsingException
+     * @expectedException \Xport\SpreadsheetModel\Parser\ParsingException
      */
     public function testInvalidString2()
     {
@@ -38,7 +38,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Xport\ParsingException
+     * @expectedException \Xport\SpreadsheetModel\Parser\ParsingException
      */
     public function testInvalidString3()
     {

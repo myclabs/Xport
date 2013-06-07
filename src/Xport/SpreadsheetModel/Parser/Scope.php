@@ -1,6 +1,6 @@
 <?php
 
-namespace Xport;
+namespace Xport\SpreadsheetModel\Parser;
 
 /**
  * Scope.
@@ -17,7 +17,7 @@ class Scope
     /**
      * Creates a new scope.
      *
-     * @param Scope|null $scope If not null, extends the given scope
+     * @param \Xport\SpreadsheetModel\Parser\Scope|null $scope If not null, extends the given scope
      */
     public function __construct(Scope $scope = null)
     {

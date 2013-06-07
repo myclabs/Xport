@@ -2,7 +2,7 @@
 
 namespace XportTest;
 
-use Xport\ExcelExporter;
+use Xport\SpreadsheetExporter;
 use Xport\SpreadsheetModel\Cell;
 use Xport\SpreadsheetModel\Column;
 use Xport\SpreadsheetModel\SpreadsheetModel;
@@ -14,7 +14,7 @@ class ExcelExportTest extends \PHPUnit_Framework_TestCase
 {
     public function testExcelExport2()
     {
-        $exporter = new ExcelExporter();
+        $exporter = new SpreadsheetExporter();
 
         $spreadsheet = new SpreadsheetModel();
         $sheet = new Sheet('First sheet');

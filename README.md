@@ -41,7 +41,7 @@ Usage:
 
 ```php
 $modelBuilder = new SpreadsheetModelBuilder();
-$export = new ExcelExporter();
+$export = new SpreadsheetExporter();
 
 $modelBuilder->bind('contacts', $contacts);
 
@@ -67,7 +67,7 @@ sheets:
 
 ```php
 $modelBuilder = new SpreadsheetModelBuilder();
-$export = new ExcelExporter();
+$export = new SpreadsheetExporter();
 
 $modelBuilder->bind('companies', $companies);
 

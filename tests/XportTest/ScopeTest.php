@@ -3,7 +3,7 @@
 namespace XportTest;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Xport\Scope;
+use Xport\SpreadsheetModel\Parser\Scope;
 
 class ScopeTest extends \PHPUnit_Framework_TestCase
 {
