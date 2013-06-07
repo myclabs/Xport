@@ -56,7 +56,7 @@ The `path` configuration is a [PropertyAccess](http://symfony.com/doc/master/com
 
 You can use the `foreach` expression to generate dynamic content.
 
-You can also use Twig templating language.
+You can also use [Twig](http://twig.sensiolabs.org/) templating language.
 
 Here is an example:
 
@@ -64,7 +64,7 @@ Here is an example:
 # Create one sheet per company
 sheets:
   - foreach: companies as i => company
-    label: "{{ i + 1 }} - {{ company.name }}" # Twig expression, will result in (for example): "1 - Company Name"
+    label: "{{ i + 1 }} - {{ company.name }}" # Twig expression, will result in (for example): "1 - My Company"
 ```
 
 ```php

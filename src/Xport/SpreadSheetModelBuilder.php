@@ -69,12 +69,15 @@ class SpreadsheetModelBuilder extends Scope
 
                 $array = $this->propertyAccessor->getValue($scope, $result['array']);
 
-                foreach ($array as $value) {
+                foreach ($array as $key => $value) {
                     // New sub-scope
-                    $subScope = new Scope($scope);
-                    $subScope->bind($result['value'], $value);
+                    $sheetScope = new Scope($scope);
+                    $sheetScope->bind($result['value'], $value);
+                    if (isset($result['key'])) {
+                        $sheetScope->bind($result['key'], $key);
+                    }
 
-                    $this->parseSheet($model, $yamlSheet, $subScope);
+                    $this->parseSheet($model, $yamlSheet, $sheetScope);
                 }
             } else {
                 $this->parseSheet($model, $yamlSheet, $scope);
@@ -109,10 +112,13 @@ class SpreadsheetModelBuilder extends Scope
 
                 $array = $this->propertyAccessor->getValue($sheetScope, $result['array']);
 
-                foreach ($array as $value) {
+                foreach ($array as $key => $value) {
                     // New sub-scope
                     $tableScope = new Scope($sheetScope);
                     $tableScope->bind($result['value'], $value);
+                    if (isset($result['key'])) {
+                        $tableScope->bind($result['key'], $key);
+                    }
 
                     $this->parseTable($sheet, $yamlTable, $tableScope);
                 }
@@ -153,6 +159,9 @@ class SpreadsheetModelBuilder extends Scope
             // New sub-scope
             $lineScope = new Scope($tableScope);
             $lineScope->bind($result['value'], $lineValue);
+            if (isset($result['key'])) {
+                $lineScope->bind($result['key'], $lineIndex);
+            }
 
             // Add the line
             $line = new Line($lineIndex);
