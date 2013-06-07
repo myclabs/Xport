@@ -56,13 +56,15 @@ The `path` configuration is a [PropertyAccess](http://symfony.com/doc/master/com
 
 You can use the `foreach` expression to generate dynamic content.
 
+You can also use Twig templating language.
+
 Here is an example:
 
 ```yaml
 # Create one sheet per company
 sheets:
-  - foreach: companies as company
-    label: company.name
+  - foreach: companies as i => company
+    label: "{{ i + 1 }} - {{ company.name }}" # Twig expression, will result in (for example): "1 - Company Name"
 ```
 
 ```php
