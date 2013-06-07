@@ -1,6 +1,6 @@
 sheets:
   - foreach: cells as cell
-    label: cell.ref
+    label: "{{cell.name}}"
     tables:
 
       - foreach: cell.inputSets as inputSet

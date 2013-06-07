@@ -80,7 +80,7 @@ Here is a more complete example:
 sheets:
     # Create one sheet per company
   - foreach: companies as company
-    label: company.name
+    label: "{{company.name}}"
     tables:
 
         # One table per product

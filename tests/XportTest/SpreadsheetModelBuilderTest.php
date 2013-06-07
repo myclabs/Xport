@@ -15,6 +15,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         $cells = [];
 
         $cell1 = new \stdClass();
+        $cell1->name = 'Foo';
         $inputSet11 = new \stdClass();
         $input111 = new \stdClass();
         $input111->value = 10;
@@ -24,6 +25,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         $cells[] = $cell1;
 
         $cell2 = new \stdClass();
+        $cell2->name = 'Bar';
         $cell2->inputSets = [];
         $cells[] = $cell2;
 
@@ -40,6 +42,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         }
 
         $sheet = $result->getSheets()[0];
+        $this->assertEquals('Foo', $sheet->getLabel());
         $this->assertCount(1, $sheet->getTables());
 
         $table = $sheet->getTables()[0];

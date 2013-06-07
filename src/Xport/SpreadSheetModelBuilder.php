@@ -9,6 +9,7 @@ use Xport\SpreadsheetModel\Cell;
 use Xport\SpreadsheetModel\Column;
 use Xport\SpreadsheetModel\Parser\ForEachParser;
 use Xport\SpreadsheetModel\Parser\Scope;
+use Xport\SpreadsheetModel\Parser\TwigParser;
 use Xport\SpreadsheetModel\SpreadsheetModel;
 use Xport\SpreadsheetModel\Line;
 use Xport\SpreadsheetModel\Sheet;
@@ -29,11 +30,16 @@ class SpreadsheetModelBuilder extends Scope
      * @var ForEachParser
      */
     private $forEachParser;
+    /**
+     * @var TwigParser
+     */
+    private $twigParser;
 
     public function __construct()
     {
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
         $this->forEachParser = new ForEachParser();
+        $this->twigParser = new TwigParser();
     }
 
     public function build($mappingFile)
@@ -82,7 +88,8 @@ class SpreadsheetModelBuilder extends Scope
         $model->addSheet($sheet);
 
         if (array_key_exists('label', $yamlSheet)) {
-            $sheet->setLabel($yamlSheet['label']);
+            $label = $this->twigParser->parse($yamlSheet['label'], $scope);
+            $sheet->setLabel($label);
         }
 
         $this->parseTables($sheet, $yamlSheet, $scope);
