@@ -2,6 +2,7 @@
 
 namespace XportTest;
 
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Xport\Scope;
 
 class ScopeTest extends \PHPUnit_Framework_TestCase
@@ -27,20 +28,24 @@ class ScopeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $scope->get('foo'));
     }
 
-    public function testArrayAccess()
+    public function testMagicGet()
     {
         $scope = new Scope();
 
-        $scope['foo'] = 'bar';
+        $scope->bind('foo', 'bar');
 
-        $this->assertFalse(isset($scope['unknown']));
-        $this->assertTrue(isset($scope['foo']));
+        $this->assertEquals('bar', $scope->foo);
+    }
 
-        $this->assertEquals('bar', $scope['foo']);
+    public function testWithPropertyAccess()
+    {
+        $scope = new Scope();
 
-        unset($scope['foo']);
-        $this->assertFalse(isset($scope['foo']));
+        $scope->bind('foo', 'bar');
 
-        return $scope;
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+
+        $value = $propertyAccessor->getValue($scope, 'foo');
+        $this->assertEquals('bar', $value);
     }
 }

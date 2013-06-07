@@ -1,9 +1,10 @@
 <?php
 
-namespace Xport;
+namespace XportTest;
 
 use Xport\SpreadsheetModel\SpreadsheetModel;
 use Xport\SpreadsheetModel\Sheet;
+use Xport\SpreadsheetModelBuilder;
 
 class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
 {
@@ -11,8 +12,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $modelBuilder = new SpreadsheetModelBuilder();
 
-        $data = new \stdClass();
-        $data->cells = [];
+        $cells = [];
 
         $cell1 = new \stdClass();
         $inputSet11 = new \stdClass();
@@ -21,14 +21,16 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         $input111->uncertainty = 0.15;
         $inputSet11->inputs = [$input111];
         $cell1->inputSets = [$inputSet11];
-        $data->cells[] = $cell1;
+        $cells[] = $cell1;
 
         $cell2 = new \stdClass();
         $cell2->inputSets = [];
-        $data->cells[] = $cell2;
+        $cells[] = $cell2;
+
+        $modelBuilder->bind('cells', $cells);
 
         /** @var SpreadsheetModel $result */
-        $result = $modelBuilder->build(__DIR__ . '/Fixtures/excel.yml', $data);
+        $result = $modelBuilder->build(__DIR__ . '/Fixtures/excel.yml');
 
         $this->assertTrue($result instanceof SpreadsheetModel);
         $this->assertCount(2, $result->getSheets());

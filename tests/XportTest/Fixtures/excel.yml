@@ -1,0 +1,13 @@
+sheets:
+  - foreach: cells as cell
+    label: cell.ref
+    tables:
+
+      - foreach: cell.inputSets as inputSet
+        lines:
+          foreach: inputSet.inputs as input
+        columns:
+          - label: Valeur
+            path: input.value
+          - label: Incertitude
+            path: input.uncertainty

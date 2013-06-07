@@ -7,114 +7,152 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Yaml\Parser;
 use Xport\SpreadsheetModel\Cell;
 use Xport\SpreadsheetModel\Column;
+use Xport\SpreadsheetModel\Parser\ForEachParser;
 use Xport\SpreadsheetModel\SpreadsheetModel;
 use Xport\SpreadsheetModel\Line;
 use Xport\SpreadsheetModel\Sheet;
 use Xport\SpreadsheetModel\Table;
 
 /**
- * Excel export
+ * Builds a Spreadsheet model
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
-class SpreadsheetModelBuilder
+class SpreadsheetModelBuilder extends Scope
 {
     /**
      * @var PropertyAccessor
      */
     private $propertyAccessor;
+    /**
+     * @var ForEachParser
+     */
+    private $forEachParser;
 
     public function __construct()
     {
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $this->forEachParser = new ForEachParser();
     }
 
-    public function build($mappingFile, $dataSource)
+    public function build($mappingFile)
     {
         $yaml = file_get_contents($mappingFile);
 
         $yamlReader = new Parser();
         $yamlStructure = $yamlReader->parse($yaml);
 
-        $file = new SpreadsheetModel();
-        $this->parseItem($file, $yamlStructure, $dataSource);
+        $model = new SpreadsheetModel();
+        $this->parseRoot($model, $yamlStructure, $this);
 
-        return $file;
+        return $model;
     }
 
-    private function parseItem($excelItem, $yamlItem, $dataSource)
+    private function parseRoot(SpreadsheetModel $model, $yamlRoot, Scope $scope)
     {
-        foreach ($yamlItem as $key => $yamlSubItem) {
-            // forEach
-            if (strpos($key, 'forEach(') !== false) {
-                $result = preg_match('/^forEach\(([^\)]+)\)$/', $key, $matches);
-                if ($result !== 1 || !isset($matches[1])) {
-                    throw new \Exception("Parse error on $key");
+        if (!array_key_exists('sheets', $yamlRoot)) {
+            return;
+        }
+
+        foreach ($yamlRoot['sheets'] as $yamlSheet) {
+            // foreach
+            if (array_key_exists('foreach', $yamlSheet)) {
+                // Parse the foreach expression
+                $result = $this->forEachParser->parse($yamlSheet['foreach']);
+
+                $array = $this->propertyAccessor->getValue($scope, $result['array']);
+
+                foreach ($array as $value) {
+                    // New sub-scope
+                    $subScope = new Scope($scope);
+                    $subScope->bind($result['value'], $value);
+
+                    $this->parseSheet($model, $yamlSheet, $subScope);
                 }
-
-                $forEachPropertyPath = $matches[1];
-
-                $this->processForEach($excelItem, $yamlSubItem, $dataSource, $forEachPropertyPath);
-            }
-            // Sheet
-            if ($key === 'sheet') {
-                if ($excelItem instanceof SpreadsheetModel) {
-                    $sheet = new Sheet();
-                    $excelItem->addSheet($sheet);
-
-                    $this->parseItem($sheet, $yamlSubItem, $dataSource);
-                } else {
-                    throw new \Exception("'sheet' must be at the root of the Excel file");
-                }
-            }
-            // Table
-            if ($key === 'table') {
-                if ($excelItem instanceof Sheet) {
-                    $table = new Table();
-                    $excelItem->addTable($table);
-
-                    $this->parseTable($table, $yamlSubItem, $dataSource);
-                } else {
-                    throw new \Exception("'table' must be in a 'sheet'");
-                }
+            } else {
+                $this->parseSheet($model, $yamlSheet, $scope);
             }
         }
     }
 
-    private function processForEach($excelItem, $yamlItem, $dataSource, $propertyPath)
+    private function parseSheet(SpreadsheetModel $model, $yamlSheet, Scope $scope)
     {
-        $iterator = $this->propertyAccessor->getValue($dataSource, $propertyPath);
+        $sheet = new Sheet();
+        $model->addSheet($sheet);
 
-        foreach ($iterator as $key => $newDataSource) {
-            $this->parseItem($excelItem, $yamlItem, $newDataSource);
+        if (array_key_exists('label', $yamlSheet)) {
+            $sheet->setLabel($yamlSheet['label']);
+        }
+
+        $this->parseTables($sheet, $yamlSheet, $scope);
+    }
+
+    private function parseTables(Sheet $sheet, $yamlSheet, Scope $sheetScope)
+    {
+        if (!array_key_exists('tables', $yamlSheet)) {
+            return;
+        }
+
+        foreach ($yamlSheet['tables'] as $yamlTable) {
+            // foreach
+            if (array_key_exists('foreach', $yamlTable)) {
+                // Parse the foreach expression
+                $result = $this->forEachParser->parse($yamlTable['foreach']);
+
+                $array = $this->propertyAccessor->getValue($sheetScope, $result['array']);
+
+                foreach ($array as $value) {
+                    // New sub-scope
+                    $tableScope = new Scope($sheetScope);
+                    $tableScope->bind($result['value'], $value);
+
+                    $this->parseTable($sheet, $yamlTable, $tableScope);
+                }
+            } else {
+                $this->parseTable($sheet, $yamlTable, $sheetScope);
+            }
         }
     }
 
-    private function parseTable(Table $table, $yamlItem, $dataSource)
+    private function parseTable(Sheet $sheet, $yamlTable, Scope $tableScope)
     {
-        if (!array_key_exists('columns', $yamlItem)) {
+        if (!isset($yamlTable) || !array_key_exists('columns', $yamlTable)) {
             throw new \Exception("'table' must contain 'columns'");
         }
+        if (!isset($yamlTable) || !array_key_exists('lines', $yamlTable)) {
+            throw new \Exception("'table' must contain 'lines'");
+        }
+
+        $table = new Table();
+        $sheet->addTable($table);
 
         // Columns
-        foreach ($yamlItem['columns'] as $id => $yamlColumnItem) {
-            $column = new Column($id, $yamlColumnItem['label']);
+        foreach ($yamlTable['columns'] as $columnIndex => $yamlColumnItem) {
+            $column = new Column($columnIndex, $yamlColumnItem['label']);
             $column->setPath($yamlColumnItem['path']);
             $table->addColumn($column);
         }
 
         // Lines
-        $propertyPath = $yamlItem['lines']['path'];
-        $lines = $this->propertyAccessor->getValue($dataSource, $propertyPath);
+        $forEachExpression = $yamlTable['lines']['foreach'];
 
-        foreach ($lines as $i => $lineData) {
-            $line = new Line($i);
+        $result = $this->forEachParser->parse($forEachExpression);
+        $lines = $this->propertyAccessor->getValue($tableScope, $result['array']);
+
+        foreach ($lines as $lineIndex => $lineValue) {
+            // New sub-scope
+            $lineScope = new Scope($tableScope);
+            $lineScope->bind($result['value'], $lineValue);
+
+            // Add the line
+            $line = new Line($lineIndex);
             $table->addLine($line);
 
+            // Create cells
             foreach ($table->getColumns() as $column) {
                 $cell = new Cell();
 
-                $cellContent = $this->propertyAccessor->getValue($lineData, $column->getPath());
+                $cellContent = $this->propertyAccessor->getValue($lineScope, $column->getPath());
 
                 $cell->setContent($cellContent);
 

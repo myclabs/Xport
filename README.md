@@ -17,95 +17,81 @@ It provides an object model for different formats (spreadsheet, document, XML…
 Simple mapping file (YAML file):
 
 ```yaml
-# One sheet named "Contacts"
-sheet:
-  label: Contacts
+sheets:
+    # An empty sheet named "Home"
+  - label: Home
 
-  # Containing one table with 2 columns
-  table:
-    columns:
-      name:
-        label: Name
-        path: name
-      phoneNumber:
-        label: Phone number
-        path: phoneNumber
-    lines:
-      path: contacts
+    # Another sheet named "Contacts"
+  - label: Contacts
+
+    tables:
+        # Containing one table with 2 columns
+      - lines:
+          foreach: contacts as contact
+        columns:
+          name:
+            label: Name
+            path: contact.name
+          phoneNumber:
+            label: Phone number
+            path: contact.phoneNumber
 ```
 
 Usage:
 
 ```php
-$export = new ExcelExporter($contactBook);
-$export->render('myFile.xslx');
+$modelBuilder = new SpreadsheetModelBuilder();
+$export = new ExcelExporter();
+
+$modelBuilder->bind('contacts', $contacts);
+
+$export->export($modelBuilder->build('mapping.yml'), 'myFile.xslx');
 ```
 
-The table will be filled with each item in the array `$contacts = $contactBook->getContacts()`.
+The table will be filled with each item in the array `$contacts`.
 
-The `path` configuration is a [PropertyAccess](http://symfony.com/doc/master/components/property_access/index.html) path, e.g. the `phoneNumber` path can resolve to `$contact->getPhoneNumber()`, `$contact->phoneNumber` or `$contact['phoneNumber']`.
+The `path` configuration is a [PropertyAccess](http://symfony.com/doc/master/components/property_access/index.html) path, e.g. the `contact.phoneNumber` path can resolve to `$contact->getPhoneNumber()` or `$contact->phoneNumber`.
 
 ### Dynamic example
 
-You can use the `forEach` item to generate dynamic content.
+You can use the `foreach` expression to generate dynamic content.
 
 Here is an example:
 
 ```yaml
 # Create one sheet per company
-forEach(companies):
-  sheet:
+sheets:
+  - foreach: companies as company
+    label: company.name
 ```
 
 ```php
-$data = [
-    'companies' => ['Foo', 'Bar']
-];
+$modelBuilder = new SpreadsheetModelBuilder();
+$export = new ExcelExporter();
 
-$export = new ExcelExporter($data);
-$export->render('myFile.xslx');
+$modelBuilder->bind('companies', $companies);
+
+$export->export($modelBuilder->build('mapping.yml'), 'myFile.xslx');
 ```
-
-This will generate an Excel file containing 2 empty sheets.
 
 Here is a more complete example:
 
 ```yaml
-# Create one sheet per company
-forEach(companies):
+sheets:
+    # Create one sheet per company
+  - foreach: companies as company
+    label: company.name
+    tables:
 
-  sheet:
-
-    # One table per product
-    forEach(products):
-
-      # The table will contain one sale entry per line
-      table:
-        columns:
-          path:
-            label: Product
-            helper: fullProductName
-          date:
-            label: Date
-            path: date
-          salesman:
-            label: Salesman
-            path: salesman.name
-          price:
-            label: Price
-            path: price
+        # One table per product
+      - foreach: company.products as product
         lines:
-          path: sales
-```
-
-Usage:
-
-```php
-$export = new ExcelExporter($data);
-
-$export->addHelper('fullProductName', function(SaleEntry $saleEntry) {
-    return strtoupper($saleEntry->getProduct()->getName());
-});
-
-$export->render('myFile.xslx');
+          foreach: product.sales as sale
+        columns:
+          - label: Product
+            path: product.name
+          - label: Price
+            path: sale.price
+          - label: Salesman
+            path: sale.salesman.name
 ```

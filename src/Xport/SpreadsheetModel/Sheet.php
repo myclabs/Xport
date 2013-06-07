@@ -44,6 +44,14 @@ class Sheet
     }
 
     /**
+     * @param string $label
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+    }
+
+    /**
      * @return null|string
      */
     public function getLabel()

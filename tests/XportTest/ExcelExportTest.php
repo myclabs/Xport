@@ -1,7 +1,8 @@
 <?php
 
-namespace Xport;
+namespace XportTest;
 
+use Xport\ExcelExporter;
 use Xport\SpreadsheetModel\Cell;
 use Xport\SpreadsheetModel\Column;
 use Xport\SpreadsheetModel\SpreadsheetModel;
@@ -15,10 +16,10 @@ class ExcelExportTest extends \PHPUnit_Framework_TestCase
     {
         $exporter = new ExcelExporter();
 
-        $excelFile = new SpreadsheetModel();
+        $spreadsheet = new SpreadsheetModel();
         $sheet = new Sheet('First sheet');
-        $excelFile->addSheet($sheet);
-        $excelFile->addSheet(new Sheet('Empty sheet'));
+        $spreadsheet->addSheet($sheet);
+        $spreadsheet->addSheet(new Sheet('Empty sheet'));
 
         $table = new Table();
         $sheet->addTable($table);
@@ -38,6 +39,6 @@ class ExcelExportTest extends \PHPUnit_Framework_TestCase
         $table->setCell($line2, $col1, new Cell(20));
         $table->setCell($line2, $col2, new Cell(0.35));
 
-        $exporter->export($excelFile, __DIR__ . '/test.xslx');
+        $exporter->export($spreadsheet, __DIR__ . '/test.xslx');
     }
 }

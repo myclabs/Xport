@@ -7,7 +7,7 @@ namespace Xport;
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
-class Scope implements \ArrayAccess
+class Scope
 {
     /**
      * @var array
@@ -47,6 +47,7 @@ class Scope implements \ArrayAccess
     public function get($name)
     {
         if (!array_key_exists($name, $this->values)) {
+            var_dump($this->values);
             throw new \InvalidArgumentException("Unknown entry for name '$name'");
         }
 
@@ -54,38 +55,13 @@ class Scope implements \ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * Magic get method.
+     *
+     * @param string $name
+     * @return mixed
      */
-    public function offsetExists($name)
-    {
-        return array_key_exists($name, $this->values);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetGet($name)
+    public function __get($name)
     {
         return $this->get($name);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetSet($name, $value)
-    {
-        $this->bind($name, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetUnset($name)
-    {
-        if (!array_key_exists($name, $this->values)) {
-            return;
-        }
-
-        unset($this->values[$name]);
     }
 }
