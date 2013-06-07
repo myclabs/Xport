@@ -95,3 +95,19 @@ sheets:
           - label: Salesman
             path: sale.salesman.name
 ```
+
+### File format
+
+You can choose which file format to use through PHPExcel writers:
+
+```php
+// ...
+
+$export->export($spreadsheet, 'myFile.xslx', new PHPExcel_Writer_Excel2007());
+```
+
+Writers available:
+
+- Excel 2007 (.xlsx): `PHPExcel_Writer_Excel2007`
+- Excel classic (.xls): `PHPExcel_Writer_Excel5`
+- CSV (.csv): `PHPExcel_Writer_CSV`

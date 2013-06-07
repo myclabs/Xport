@@ -2,7 +2,9 @@
 
 namespace Xport;
 
+use PHPExcel;
 use PHPExcel_Writer_Excel2007;
+use PHPExcel_Writer_IWriter;
 use Xport\SpreadsheetModel\SpreadsheetModel;
 
 /**
@@ -15,21 +17,22 @@ class SpreadsheetExporter
     /**
      * Exports an Spreadsheet model to a file.
      *
-     * @param SpreadsheetModel $model
-     * @param string           $targetFile
+     * @param SpreadsheetModel             $model
+     * @param string                       $targetFile
+     * @param PHPExcel_Writer_IWriter|null $writer Writer allowing to choose which file format to use
      */
-    public function export(SpreadsheetModel $model, $targetFile)
+    public function export(SpreadsheetModel $model, $targetFile, PHPExcel_Writer_IWriter $writer = null)
     {
-        $excel = new \PHPExcel();
+        $phpExcelModel = new PHPExcel();
 
         foreach ($model->getSheets() as $sheetIndex => $sheet) {
-            if ($sheetIndex > $excel->getSheetCount() - 1) {
-                $excel->createSheet();
+            if ($sheetIndex > $phpExcelModel->getSheetCount() - 1) {
+                $phpExcelModel->createSheet();
             }
 
-            $excelSheet = $excel->getSheet($sheetIndex);
+            $phpExcelSheet = $phpExcelModel->getSheet($sheetIndex);
             if ($sheet->getLabel()) {
-                $excelSheet->setTitle($sheet->getLabel());
+                $phpExcelSheet->setTitle($sheet->getLabel());
             }
 
             $lineOffset = 1;
@@ -40,13 +43,13 @@ class SpreadsheetExporter
                 // Columns
                 foreach ($table->getColumns() as $columnIndex => $column) {
                     // Column header
-                    $excelSheet->setCellValueByColumnAndRow($columnIndex, $lineOffset, $column->getLabel());
+                    $phpExcelSheet->setCellValueByColumnAndRow($columnIndex, $lineOffset, $column->getLabel());
 
                     // Lines
                     foreach ($table->getLines() as $lineIndex => $line) {
                         // Cell
                         $cell = $table->getCell($line, $column);
-                        $excelSheet->setCellValueByColumnAndRow(
+                        $phpExcelSheet->setCellValueByColumnAndRow(
                             $columnIndex,
                             $lineOffset + 1 + $lineIndex,
                             $cell->getContent()
@@ -58,7 +61,16 @@ class SpreadsheetExporter
             }
         }
 
-        $objWriter = new PHPExcel_Writer_Excel2007($excel);
-        $objWriter->save($targetFile);
+        $this->writeToFile($phpExcelModel, $targetFile, $writer);
+    }
+
+    private function writeToFile(PHPExcel $phpExcelModel, $targetFile, PHPExcel_Writer_IWriter $writer = null)
+    {
+        if (!$writer) {
+            $writer = new PHPExcel_Writer_Excel2007();
+        }
+
+        $writer->setPHPExcel($phpExcelModel);
+        $writer->save($targetFile);
     }
 }
