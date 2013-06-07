@@ -47,7 +47,28 @@ The `path` configuration is a [PropertyAccess](http://symfony.com/doc/master/com
 
 ### Dynamic example
 
-You can use the `forEach` item to generate dynamic content:
+You can use the `forEach` item to generate dynamic content.
+
+Here is an example:
+
+```yaml
+# Create one sheet per company
+forEach(companies):
+  sheet:
+```
+
+```php
+$data = [
+    'companies' => ['Foo', 'Bar']
+];
+
+$export = new ExcelExporter($data);
+$export->render('myFile.xslx');
+```
+
+This will generate an Excel file containing 2 empty sheets.
+
+Here is a more complete example:
 
 ```yaml
 # Create one sheet per company
@@ -80,7 +101,7 @@ forEach(companies):
 Usage:
 
 ```php
-$export = new ExcelExporter($companies);
+$export = new ExcelExporter($data);
 
 $export->addHelper('fullProductName', function(SaleEntry $saleEntry) {
     return strtoupper($saleEntry->getProduct()->getName());
