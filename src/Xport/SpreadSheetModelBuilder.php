@@ -136,7 +136,9 @@ class SpreadsheetModelBuilder extends Scope
 
         // Columns
         foreach ($yamlTable['columns'] as $columnIndex => $yamlColumnItem) {
-            $column = new Column($columnIndex, $yamlColumnItem['label']);
+            $columnLabel = $this->twigParser->parse($yamlColumnItem['label'], $tableScope);
+
+            $column = new Column($columnIndex, $columnLabel);
             $column->setPath($yamlColumnItem['path']);
             $table->addColumn($column);
         }
