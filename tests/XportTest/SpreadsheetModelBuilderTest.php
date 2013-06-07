@@ -42,7 +42,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         }
 
         $sheet = $result->getSheets()[0];
-        $this->assertEquals('Foo', $sheet->getLabel());
+        $this->assertEquals('1 - Foo', $sheet->getLabel());
         $this->assertCount(1, $sheet->getTables());
 
         $table = $sheet->getTables()[0];

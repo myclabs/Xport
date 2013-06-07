@@ -23,17 +23,47 @@ class ForEachParser
      */
     public function parse($str)
     {
-        $items = explode(' as ', $str);
+        $result = $this->parseWithKey($str);
 
-        if (!$items || (count($items) !== 2)) {
-            throw new ParsingException("Error while parsing '$str', should be in the form 'var1 as var2'");
+        if (is_array($result)) {
+            return $result;
         }
 
-        $result = [
-            'array' => $items[0],
-            'value' => $items[1],
-        ];
+        $result = $this->parseWithoutKey($str);
 
-        return $result;
+        if (is_array($result)) {
+            return $result;
+        }
+
+        throw new ParsingException("Error while parsing '$str', should be in the form 'array as value' or 'array as key => value'");
+    }
+
+    public function parseWithKey($str)
+    {
+        $result = preg_match('/^\s*([[:alnum:]\.\[\]]+)\s*as\s*([[:alnum:]\.\[\]]+)\s*=>\s*([[:alnum:]\.\[\]]+)\s*$/', $str, $matches);
+
+        if ($result !== 1) {
+            return null;
+        }
+
+        return [
+            'array' => $matches[1],
+            'key'   => $matches[2],
+            'value' => $matches[3],
+        ];
+    }
+
+    public function parseWithoutKey($str)
+    {
+        $result = preg_match('/^\s*([[:alnum:]\.\[\]]+)\s*as\s*([[:alnum:]\.\[\]]+)\s*$/', $str, $matches);
+
+        if ($result !== 1) {
+            return null;
+        }
+
+        return [
+            'array' => $matches[1],
+            'value' => $matches[2],
+        ];
     }
 }
