@@ -98,6 +98,21 @@ sheets:
             cellContent: "{{ sale.salesman.name }}"
 ```
 
+### Functions
+
+Functions can be used in Twig expressions, and are defined as such:
+
+```php
+$modelBuilder = new SpreadsheetModelBuilder();
+$export = new SpreadsheetExporter();
+
+$modelBuilder->bindFunction('up', function($str) {
+    return strtoupper($str);
+});
+
+$export->export($modelBuilder->build('mapping.yml'), 'myFile.xslx');
+```
+
 ### File format
 
 You can choose which file format to use through PHPExcel writers:

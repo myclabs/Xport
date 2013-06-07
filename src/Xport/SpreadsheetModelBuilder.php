@@ -20,8 +20,12 @@ use Xport\SpreadsheetModel\Table;
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
-class SpreadsheetModelBuilder extends Scope
+class SpreadsheetModelBuilder
 {
+    /**
+     * @var Scope
+     */
+    private $scope;
     /**
      * @var PropertyAccessor
      */
@@ -37,11 +41,29 @@ class SpreadsheetModelBuilder extends Scope
 
     public function __construct()
     {
+        $this->scope = new Scope();
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
         $this->forEachParser = new ForEachParser();
         $this->twigParser = new TwigParser();
     }
 
+    /**
+     * Bind a value to a name.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function bind($name, $value)
+    {
+        $this->scope->bind($name, $value);
+    }
+
+    /**
+     * Build a model.
+     *
+     * @param $mappingFile
+     * @return SpreadsheetModel
+     */
     public function build($mappingFile)
     {
         $yaml = file_get_contents($mappingFile);
@@ -50,7 +72,7 @@ class SpreadsheetModelBuilder extends Scope
         $yamlStructure = $yamlReader->parse($yaml);
 
         $model = new SpreadsheetModel();
-        $this->parseRoot($model, $yamlStructure, $this);
+        $this->parseRoot($model, $yamlStructure, $this->scope);
 
         return $model;
     }

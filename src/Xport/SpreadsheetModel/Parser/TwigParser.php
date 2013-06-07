@@ -4,6 +4,7 @@ namespace Xport\SpreadsheetModel\Parser;
 
 use Twig_Environment;
 use Twig_Loader_String;
+use Twig_SimpleFunction;
 
 /**
  * Twig parser
@@ -33,6 +34,10 @@ class TwigParser
      */
     public function parse($str, Scope $scope)
     {
+        foreach ($scope->getFunctions() as $name => $function) {
+            $this->twig->addFunction(new Twig_SimpleFunction($name, $function));
+        }
+
         return $this->twig->render($str, $scope->toArray());
     }
 }

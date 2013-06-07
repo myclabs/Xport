@@ -15,6 +15,21 @@ class TwigParserTest extends \PHPUnit_Framework_TestCase
         $twigParser = new TwigParser();
 
         $this->assertEquals('foo', $twigParser->parse('foo', $scope));
-        $this->assertEquals('bar', $twigParser->parse('{{foo}}', $scope));
+        $this->assertEquals('bar', $twigParser->parse('{{ foo }}', $scope));
+    }
+
+    public function testWithFunctions()
+    {
+        $scope = new Scope();
+        $scope->bind('foo', 'bar');
+        $scope->bindFunction('test', function($str) {
+                return strtoupper($str);
+            });
+
+        $twigParser = new TwigParser();
+
+        $this->assertEquals('foo', $twigParser->parse('foo', $scope));
+        $this->assertEquals('bar', $twigParser->parse('{{ foo }}', $scope));
+        $this->assertEquals('BAR', $twigParser->parse('{{ test(foo) }}', $scope));
     }
 }

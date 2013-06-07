@@ -50,8 +50,6 @@ class ScopeTest extends \PHPUnit_Framework_TestCase
 
         unset($scope['foo']);
         $this->assertFalse(isset($scope['foo']));
-
-        return $scope;
     }
 
     public function testWithPropertyAccess()
@@ -74,5 +72,19 @@ class ScopeTest extends \PHPUnit_Framework_TestCase
         $array = $scope->toArray();
 
         $this->assertEquals(['foo' => 'bar'], $array);
+    }
+
+    public function testBindFunction()
+    {
+        $scope = new Scope();
+
+        $scope->bindFunction('foo', function() {
+                return 'hello';
+            });
+
+        $functions = $scope->getFunctions();
+
+        $this->assertCount(1, $functions);
+        $this->assertEquals('hello', $functions['foo']());
     }
 }

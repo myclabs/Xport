@@ -10,9 +10,13 @@ namespace Xport\SpreadsheetModel\Parser;
 class Scope implements \ArrayAccess
 {
     /**
-     * @var array
+     * @var mixed[]
      */
     private $values = [];
+    /**
+     * @var callable[]
+     */
+    private $functions = [];
 
     /**
      * Creates a new scope.
@@ -23,6 +27,7 @@ class Scope implements \ArrayAccess
     {
         if ($scope) {
             $this->values = $scope->values;
+            $this->functions = $scope->functions;
         }
     }
 
@@ -38,11 +43,22 @@ class Scope implements \ArrayAccess
     }
 
     /**
+     * Bind a function to a name.
+     *
+     * @param string   $name
+     * @param callable $function
+     */
+    public function bindFunction($name, callable $function)
+    {
+        $this->functions[$name] = $function;
+    }
+
+    /**
      * Returns a value by its name.
      *
      * @param string $name
-     * @return mixed
      * @throws \InvalidArgumentException
+     * @return mixed
      */
     public function get($name)
     {
@@ -55,13 +71,23 @@ class Scope implements \ArrayAccess
     }
 
     /**
-     * Returns all the values in an array
+     * Returns all the values in an array.
      *
      * @return array
      */
     public function toArray()
     {
         return $this->values;
+    }
+
+    /**
+     * Returns all the functions.
+     *
+     * @return callable[]
+     */
+    public function getFunctions()
+    {
+        return $this->functions;
     }
 
     /**
