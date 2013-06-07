@@ -7,7 +7,7 @@ namespace Xport\SpreadsheetModel\Parser;
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
-class Scope
+class Scope implements \ArrayAccess
 {
     /**
      * @var array
@@ -55,6 +55,16 @@ class Scope
     }
 
     /**
+     * Returns all the values in an array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->values;
+    }
+
+    /**
      * Magic get method.
      *
      * @param string $name
@@ -63,5 +73,41 @@ class Scope
     public function __get($name)
     {
         return $this->get($name);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetExists($name)
+    {
+        return array_key_exists($name, $this->values);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetGet($name)
+    {
+        return $this->get($name);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetSet($name, $value)
+    {
+        $this->bind($name, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetUnset($name)
+    {
+        if (!array_key_exists($name, $this->values)) {
+            return;
+        }
+
+        unset($this->values[$name]);
     }
 }

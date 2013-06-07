@@ -1,6 +1,6 @@
 <?php
 
-namespace XportTest;
+namespace XportTest\SpreadsheetModel\Parser;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Xport\SpreadsheetModel\Parser\Scope;
@@ -37,6 +37,23 @@ class ScopeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $scope->foo);
     }
 
+    public function testArrayAccess()
+    {
+        $scope = new Scope();
+
+        $scope['foo'] = 'bar';
+
+        $this->assertFalse(isset($scope['unknown']));
+        $this->assertTrue(isset($scope['foo']));
+
+        $this->assertEquals('bar', $scope['foo']);
+
+        unset($scope['foo']);
+        $this->assertFalse(isset($scope['foo']));
+
+        return $scope;
+    }
+
     public function testWithPropertyAccess()
     {
         $scope = new Scope();
@@ -47,5 +64,15 @@ class ScopeTest extends \PHPUnit_Framework_TestCase
 
         $value = $propertyAccessor->getValue($scope, 'foo');
         $this->assertEquals('bar', $value);
+    }
+
+    public function testToArray()
+    {
+        $scope = new Scope();
+        $scope->bind('foo', 'bar');
+
+        $array = $scope->toArray();
+
+        $this->assertEquals(['foo' => 'bar'], $array);
     }
 }
