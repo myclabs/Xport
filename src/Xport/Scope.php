@@ -7,7 +7,7 @@ namespace Xport;
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
-class Scope
+class Scope implements \ArrayAccess
 {
     /**
      * @var array
@@ -51,5 +51,41 @@ class Scope
         }
 
         return $this->values[$name];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetExists($name)
+    {
+        return array_key_exists($name, $this->values);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetGet($name)
+    {
+        return $this->get($name);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetSet($name, $value)
+    {
+        $this->bind($name, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetUnset($name)
+    {
+        if (!array_key_exists($name, $this->values)) {
+            return;
+        }
+
+        unset($this->values[$name]);
     }
 }
