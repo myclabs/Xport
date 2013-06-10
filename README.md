@@ -8,7 +8,7 @@ It is targeted to support the following formats:
 - PDF (to be implemented)
 - XML (to be implemented)
 
-It provides an object model for different formats (spreadsheet, document, XML…) and a language based on YAML to map your data (arrays, objects, …) onto the model.
+It provides an object model for different formats (spreadsheet, document, XML…) and a language based on YAML and Twig to map your data (arrays, objects, …) onto the model.
 
 ## Spreadsheet
 

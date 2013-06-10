@@ -10,5 +10,8 @@
         "symfony/property-access": "2.*",
         "phpoffice/phpexcel": "1.7.*",
         "twig/twig": "1.*"
-	}
+	},
+    "require-dev": {
+        "satooshi/php-coveralls": "dev-master"
+    }
 }
