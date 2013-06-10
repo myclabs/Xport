@@ -4,10 +4,11 @@ namespace Xport;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Symfony\Component\Yaml\Parser;
+use Xport\MappingReader\MappingReader;
 use Xport\SpreadsheetModel\Cell;
 use Xport\SpreadsheetModel\Column;
 use Xport\SpreadsheetModel\Parser\ForEachParser;
+use Xport\SpreadsheetModel\Parser\ParsingException;
 use Xport\SpreadsheetModel\Parser\Scope;
 use Xport\SpreadsheetModel\Parser\TwigParser;
 use Xport\SpreadsheetModel\SpreadsheetModel;
@@ -61,18 +62,14 @@ class SpreadsheetModelBuilder
     /**
      * Build a model.
      *
-     * @param $mappingFile
+     * @param MappingReader $mappingReader
+     * @throws ParsingException
      * @return SpreadsheetModel
      */
-    public function build($mappingFile)
+    public function build(MappingReader $mappingReader)
     {
-        $yaml = file_get_contents($mappingFile);
-
-        $yamlReader = new Parser();
-        $yamlStructure = $yamlReader->parse($yaml);
-
         $model = new SpreadsheetModel();
-        $this->parseRoot($model, $yamlStructure, $this->scope);
+        $this->parseRoot($model, $mappingReader->getMapping(), $this->scope);
 
         return $model;
     }
@@ -153,10 +150,10 @@ class SpreadsheetModelBuilder
     private function parseTable(Sheet $sheet, $yamlTable, Scope $tableScope)
     {
         if (!isset($yamlTable) || !array_key_exists('columns', $yamlTable)) {
-            throw new \Exception("'table' must contain 'columns'");
+            throw new ParsingException("'table' must contain 'columns'");
         }
         if (!isset($yamlTable) || !array_key_exists('lines', $yamlTable)) {
-            throw new \Exception("'table' must contain 'lines'");
+            throw new ParsingException("'table' must contain 'lines'");
         }
 
         $table = new Table();

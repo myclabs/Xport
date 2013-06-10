@@ -75,7 +75,7 @@ $export = new SpreadsheetExporter();
 
 $modelBuilder->bind('companies', $companies);
 
-$export->export($modelBuilder->build('mapping.yml'), 'myFile.xslx');
+$export->export($modelBuilder->build(new YamlMappingReader('mapping.yml')), 'myFile.xslx');
 ```
 
 Here is a more complete example:
@@ -112,7 +112,7 @@ $modelBuilder->bindFunction('up', function($str) {
     return strtoupper($str);
 });
 
-$export->export($modelBuilder->build('mapping.yml'), 'myFile.xslx');
+$export->export($modelBuilder->build(new YamlMappingReader('mapping.yml')), 'myFile.xslx');
 ```
 
 ### File format
