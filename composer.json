@@ -1,4 +1,10 @@
 {
+    "name": "myclabs/xport",
+    "type": "library",
+    "description": "Import/Export library for PHP",
+    "keywords": ["import", "export", "excel", "pdf", "xml"],
+    "homepage": "https://github.com/myclabs/Xport",
+    "license": "MIT",
 	"autoload": {
 		"psr-0": {
 			"Xport": "src/"
