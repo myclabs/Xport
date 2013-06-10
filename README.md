@@ -1,5 +1,7 @@
 # Xport
 
+[![Build Status](https://travis-ci.org/myclabs/Xport.png?branch=master)](https://travis-ci.org/myclabs/Xport) [![Coverage Status](https://coveralls.io/repos/myclabs/Xport/badge.png?branch=master)](https://coveralls.io/r/myclabs/Xport?branch=master)
+
 Xport is an import/export library for PHP.
 
 It is targeted to support the following formats:
