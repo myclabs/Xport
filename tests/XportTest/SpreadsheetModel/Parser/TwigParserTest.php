@@ -32,4 +32,20 @@ class TwigParserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $twigParser->parse('{{ foo }}', $scope));
         $this->assertEquals('BAR', $twigParser->parse('{{ test(foo) }}', $scope));
     }
+
+    /**
+     * Non-regression test
+     */
+    public function testSuccessiveParsingWithFunctions()
+    {
+        $scope = new Scope();
+        $scope->bindFunction('test', function($str) {
+                return strtoupper($str);
+            });
+
+        $twigParser = new TwigParser($scope->getFunctions());
+
+        $this->assertEquals('BAR', $twigParser->parse('{{ test("bar") }}', $scope));
+        $this->assertEquals('BAR', $twigParser->parse('{{ test("bar") }}', $scope));
+    }
 }
