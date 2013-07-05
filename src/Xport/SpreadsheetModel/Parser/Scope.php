@@ -81,6 +81,23 @@ class Scope implements \ArrayAccess
     }
 
     /**
+     * Returns a function by its name.
+     *
+     * @param string $name
+     * @throws \InvalidArgumentException
+     * @return callable
+     */
+    public function getFunction($name)
+    {
+        if (!array_key_exists($name, $this->functions)) {
+            var_dump($this->functions);
+            throw new \InvalidArgumentException("Unknown entry for name '$name'");
+        }
+
+        return $this->functions[$name];
+    }
+
+    /**
      * Returns all the functions.
      *
      * @return callable[]

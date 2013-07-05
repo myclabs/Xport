@@ -82,6 +82,9 @@ class ScopeTest extends \PHPUnit_Framework_TestCase
                 return 'hello';
             });
 
+        $function = $scope->getFunction('foo');
+        $this->assertEquals('hello', $function());
+
         $functions = $scope->getFunctions();
 
         $this->assertCount(1, $functions);

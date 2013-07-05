@@ -2,8 +2,6 @@
 
 namespace Xport;
 
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Xport\MappingReader\MappingReader;
 use Xport\SpreadsheetModel\Cell;
 use Xport\SpreadsheetModel\Column;
@@ -28,10 +26,6 @@ class SpreadsheetModelBuilder
      */
     private $scope;
     /**
-     * @var PropertyAccessor
-     */
-    private $propertyAccessor;
-    /**
      * @var ForEachParser
      */
     private $forEachParser;
@@ -43,7 +37,6 @@ class SpreadsheetModelBuilder
     public function __construct()
     {
         $this->scope = new Scope();
-        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
         $this->forEachParser = new ForEachParser();
         $this->twigParser = new TwigParser();
     }
@@ -84,18 +77,9 @@ class SpreadsheetModelBuilder
             // foreach
             if (array_key_exists('foreach', $yamlSheet)) {
                 // Parse the foreach expression
-                $result = $this->forEachParser->parse($yamlSheet['foreach']);
+                $sheetScopes = $this->forEachParser->parse($yamlSheet['foreach'], $scope);
 
-                $array = $this->propertyAccessor->getValue($scope, $result['array']);
-
-                foreach ($array as $key => $value) {
-                    // New sub-scope
-                    $sheetScope = new Scope($scope);
-                    $sheetScope->bind($result['value'], $value);
-                    if (isset($result['key'])) {
-                        $sheetScope->bind($result['key'], $key);
-                    }
-
+                foreach ($sheetScopes as $sheetScope) {
                     $this->parseSheet($model, $yamlSheet, $sheetScope);
                 }
             } else {
@@ -127,18 +111,9 @@ class SpreadsheetModelBuilder
             // foreach
             if (array_key_exists('foreach', $yamlTable)) {
                 // Parse the foreach expression
-                $result = $this->forEachParser->parse($yamlTable['foreach']);
+                $tableScopes = $this->forEachParser->parse($yamlTable['foreach'], $sheetScope);
 
-                $array = $this->propertyAccessor->getValue($sheetScope, $result['array']);
-
-                foreach ($array as $key => $value) {
-                    // New sub-scope
-                    $tableScope = new Scope($sheetScope);
-                    $tableScope->bind($result['value'], $value);
-                    if (isset($result['key'])) {
-                        $tableScope->bind($result['key'], $key);
-                    }
-
+                foreach ($tableScopes as $tableScope) {
                     $this->parseTable($sheet, $yamlTable, $tableScope);
                 }
             } else {
@@ -171,30 +146,27 @@ class SpreadsheetModelBuilder
         // Lines
         $forEachExpression = $yamlTable['lines']['foreach'];
 
-        $result = $this->forEachParser->parse($forEachExpression);
-        $lines = $this->propertyAccessor->getValue($tableScope, $result['array']);
+        $lineScopes = $this->forEachParser->parse($forEachExpression, $tableScope);
 
-        foreach ($lines as $lineIndex => $lineValue) {
-            // New sub-scope
-            $lineScope = new Scope($tableScope);
-            $lineScope->bind($result['value'], $lineValue);
-            if (isset($result['key'])) {
-                $lineScope->bind($result['key'], $lineIndex);
-            }
+        foreach ($lineScopes as $lineIndex => $lineScope) {
+            $this->createLine($lineIndex, $table, $lineScope);
+        }
+    }
 
-            // Add the line
-            $line = new Line($lineIndex);
-            $table->addLine($line);
+    private function createLine($lineIndex, Table $table, Scope $lineScope)
+    {
+        // Add the line
+        $line = new Line($lineIndex);
+        $table->addLine($line);
 
-            // Create cells
-            foreach ($table->getColumns() as $column) {
-                $cell = new Cell();
+        // Create cells
+        foreach ($table->getColumns() as $column) {
+            $cell = new Cell();
 
-                $cellContent = $this->twigParser->parse($column->getCellContent(), $lineScope);
-                $cell->setContent($cellContent);
+            $cellContent = $this->twigParser->parse($column->getCellContent(), $lineScope);
+            $cell->setContent($cellContent);
 
-                $table->setCell($line, $column, $cell);
-            }
+            $table->setCell($line, $column, $cell);
         }
     }
 }
