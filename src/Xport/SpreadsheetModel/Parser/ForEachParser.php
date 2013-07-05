@@ -7,16 +7,17 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Xport\SpreadsheetModel\Parser\ParsingException;
 
 /**
- * "foreach" parser
+ * "foreach" expression parser
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
 class ForEachParser
 {
     /**
-     * @var String
+     * @var string
      */
     private $partRegEx;
+
     /**
      * @var PropertyAccessor
      */
@@ -34,7 +35,7 @@ class ForEachParser
      * The expression has the form: 'foo as bar', where foo is an array and bar the value.
      *
      * @param string $str foreach expression
-     * @param scope $scope
+     * @param Scope $scope
      *
      * @throws ParsingException
      * @return Scope[]
@@ -60,7 +61,7 @@ class ForEachParser
      * @param string $str
      * @return array|null Keys are 'array' and 'value'
      */
-    public function parseWithKey($str)
+    private function parseWithKey($str)
     {
         $result = preg_match('/^\s*'.$this->partRegEx.'\s*as\s*'.$this->partRegEx.'\s*=>\s*'.$this->partRegEx.'\s*$/', $str, $matches);
 
@@ -79,7 +80,7 @@ class ForEachParser
      * @param string $str
      * @return array|null Keys are 'array' and 'value'
      */
-    public function parseWithoutKey($str)
+    private function parseWithoutKey($str)
     {
         $result = preg_match('/^\s*'.$this->partRegEx.'\s*as\s*'.$this->partRegEx.'\s*$/', $str, $matches);
 
@@ -97,7 +98,7 @@ class ForEachParser
      * @param string $str
      * @return array|null Keys are 'array' and 'value'
      */
-    public function parseFunction($str)
+    private function parseFunction($str)
     {
         $result = preg_match('/^\s*([[:alnum:]]+)\(([[:alnum:]\.\[\]]+)\)\s*$/', $str, $matches);
 
@@ -116,7 +117,7 @@ class ForEachParser
      * @param Scope $scope
      * @return Scope[]
      */
-    public function getSubScopes($result, Scope $scope)
+    private function getSubScopes($result, Scope $scope)
     {
         $subScopes = [];
 
