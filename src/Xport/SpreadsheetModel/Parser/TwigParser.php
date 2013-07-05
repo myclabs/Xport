@@ -18,10 +18,17 @@ class TwigParser
      */
     private $twig;
 
-    public function __construct()
+    /**
+     * @param callable[] $functions
+     */
+    public function __construct($functions = [])
     {
         $loader = new Twig_Loader_String();
         $this->twig = new Twig_Environment($loader);
+
+        foreach ($functions as $name => $function) {
+            $this->twig->addFunction(new Twig_SimpleFunction($name, $function));
+        }
     }
 
     /**
@@ -34,10 +41,6 @@ class TwigParser
      */
     public function parse($str, Scope $scope)
     {
-        foreach ($scope->getFunctions() as $name => $function) {
-            $this->twig->addFunction(new Twig_SimpleFunction($name, $function));
-        }
-
         return $this->twig->render($str, $scope->toArray());
     }
 }

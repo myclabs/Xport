@@ -38,7 +38,6 @@ class SpreadsheetModelBuilder
     {
         $this->scope = new Scope();
         $this->forEachParser = new ForEachParser();
-        $this->twigParser = new TwigParser();
     }
 
     /**
@@ -72,6 +71,9 @@ class SpreadsheetModelBuilder
      */
     public function build(MappingReader $mappingReader)
     {
+        // Init TwigParser with all user functions.
+        $this->twigParser = new TwigParser($this->scope->getFunctions());
+
         $model = new SpreadsheetModel();
         $this->parseRoot($model, $mappingReader->getMapping(), $this->scope);
 
