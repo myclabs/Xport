@@ -53,6 +53,17 @@ class SpreadsheetModelBuilder
     }
 
     /**
+     * Bind a function to a name.
+     *
+     * @param string   $name
+     * @param callable $callable
+     */
+    public function bindFunction($name, $callable)
+    {
+        $this->scope->bindFunction($name, $callable);
+    }
+
+    /**
      * Build a model.
      *
      * @param MappingReader $mappingReader
