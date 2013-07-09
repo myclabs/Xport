@@ -11,7 +11,7 @@ use Twig_SimpleFunction;
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
-class TwigParser
+class TwigExecutor
 {
     /**
      * @var Twig_Environment

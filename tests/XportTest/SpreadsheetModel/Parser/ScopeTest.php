@@ -90,4 +90,40 @@ class ScopeTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $functions);
         $this->assertEquals('hello', $functions['foo']());
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetNotBoundParameter()
+    {
+        $scope = new Scope();
+
+        try {
+            $scope->get('foo');
+        } catch (InvalidArgumentException $e) {
+            if ($e->getMessage() === "Unknown entry for name 'foo'") {
+                throw $e;
+            } else {
+                $this->fail();
+            }
+        }
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetNotBoundFunction()
+    {
+        $scope = new Scope();
+
+        try {
+            $scope->getFunction('foo');
+        } catch (InvalidArgumentException $e) {
+            if ($e->getMessage() === "Unknown function 'foo'") {
+                throw $e;
+            } else {
+                $this->fail();
+            }
+        }
+    }
 }

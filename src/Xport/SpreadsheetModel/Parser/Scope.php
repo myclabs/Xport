@@ -91,7 +91,7 @@ class Scope implements \ArrayAccess
     {
         if (!array_key_exists($name, $this->functions)) {
             var_dump($this->functions);
-            throw new \InvalidArgumentException("Unknown entry for name '$name'");
+            throw new \InvalidArgumentException("Unknown function '$name'");
         }
 
         return $this->functions[$name];
