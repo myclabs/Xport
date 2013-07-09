@@ -87,7 +87,7 @@ class ForEachExecutor
      * @param string $str
      * @return array|null Keys are 'array' and 'value'
      */
-    public function parseFunction($str)
+    private function parseFunction($str)
     {
         $result = preg_match('/^\s*([[:alnum:]]+)\(([[:alnum:]\.\[\]]+)\)\s*$/', $str, $matches);
 

@@ -33,4 +33,21 @@ class TwigExecutorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('BAR', $twigExecutor->parse('{{ test(foo) }}', $scope));
         $this->assertEquals('BAR / bar', $twigExecutor->parse('{{ test(foo) }} / {{ foo }}', $scope));
     }
+
+    /**
+     * Non-regression test
+     */
+    public function testSuccessiveParsingWithFunctions()
+    {
+        $scope = new Scope();
+        $scope->bindFunction('test', function($str) {
+                return strtoupper($str);
+            });
+
+        $twigParser = new TwigExecutor($scope->getFunctions());
+
+        $this->assertEquals('BAR', $twigParser->parse('{{ test("bar") }}', $scope));
+        $this->assertEquals('BAR', $twigParser->parse('{{ test("bar") }}', $scope));
+    }
+
 }
