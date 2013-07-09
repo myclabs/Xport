@@ -7,7 +7,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Xport\SpreadsheetModel\Parser\ParsingException;
 
 /**
- * "foreach" parser
+ * "foreach" expression parser
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
@@ -50,7 +50,7 @@ class ForEachParser
      * @param string $str
      * @return array|null Keys are 'array' and 'value'
      */
-    public function parseWithKey($str)
+    private function parseWithKey($str)
     {
         $result = preg_match('/^\s*'.self::elementRegEx.'\s*as\s*'.self::elementRegEx.'\s*=>\s*'.self::elementRegEx.'\s*$/', $str, $matches);
 
@@ -69,7 +69,7 @@ class ForEachParser
      * @param string $str
      * @return array|null Keys are 'array' and 'value'
      */
-    public function parseWithoutKey($str)
+    private function parseWithoutKey($str)
     {
         $result = preg_match('/^\s*'.self::elementRegEx.'\s*as\s*'.self::elementRegEx.'\s*$/', $str, $matches);
 
