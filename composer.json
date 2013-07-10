@@ -14,7 +14,7 @@
 		"php": ">=5.4.0",
 		"symfony/yaml": "2.*",
         "symfony/property-access": "2.*",
-        "myclabs/phpexcel": "WriterExcel5OptionalConstructor",
+        "phpoffice/phpexcel": "1.7.*",
         "twig/twig": "1.*"
 	},
     "require-dev": {
