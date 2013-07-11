@@ -2,7 +2,7 @@
 
 namespace XportTest;
 
-use Xport\SpreadsheetExporter;
+use Xport\SpreadsheetExporter\PHPExcelExporter;
 use Xport\SpreadsheetModel\Cell;
 use Xport\SpreadsheetModel\Column;
 use Xport\SpreadsheetModel\SpreadsheetModel;
@@ -10,11 +10,11 @@ use Xport\SpreadsheetModel\Line;
 use Xport\SpreadsheetModel\Sheet;
 use Xport\SpreadsheetModel\Table;
 
-class ExcelExportTest extends \PHPUnit_Framework_TestCase
+class PHPExcelExporterTest extends \PHPUnit_Framework_TestCase
 {
     public function testExcelExport2()
     {
-        $exporter = new SpreadsheetExporter();
+        $exporter = new PHPExcelExporter();
 
         $spreadsheet = new SpreadsheetModel();
         $sheet = new Sheet('First sheet');
@@ -39,6 +39,6 @@ class ExcelExportTest extends \PHPUnit_Framework_TestCase
         $table->setCell($line2, $col1, new Cell(20));
         $table->setCell($line2, $col2, new Cell(0.35));
 
-        $exporter->export($spreadsheet, __DIR__ . '/test.xslx');
+        $exporter->export($spreadsheet, __DIR__ . '/../test.xslx');
     }
 }

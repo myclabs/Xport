@@ -5,10 +5,10 @@ namespace Xport;
 use Xport\MappingReader\MappingReader;
 use Xport\SpreadsheetModel\Cell;
 use Xport\SpreadsheetModel\Column;
-use Xport\SpreadsheetModel\Parser\ForEachParser;
+use Xport\SpreadsheetModel\Parser\ForEachExecutor;
 use Xport\SpreadsheetModel\Parser\ParsingException;
 use Xport\SpreadsheetModel\Parser\Scope;
-use Xport\SpreadsheetModel\Parser\TwigParser;
+use Xport\SpreadsheetModel\Parser\TwigExecutor;
 use Xport\SpreadsheetModel\SpreadsheetModel;
 use Xport\SpreadsheetModel\Line;
 use Xport\SpreadsheetModel\Sheet;
@@ -26,18 +26,18 @@ class SpreadsheetModelBuilder
      */
     private $scope;
     /**
-     * @var ForEachParser
+     * @var ForEachExecutor
      */
-    private $forEachParser;
+    private $forEachExecutor;
     /**
-     * @var TwigParser
+     * @var TwigExecutor
      */
-    private $twigParser;
+    private $twigExecutor;
 
     public function __construct()
     {
         $this->scope = new Scope();
-        $this->forEachParser = new ForEachParser();
+        $this->forEachExecutor = new ForEachExecutor();
     }
 
     /**
@@ -71,8 +71,8 @@ class SpreadsheetModelBuilder
      */
     public function build(MappingReader $mappingReader)
     {
-        // Init TwigParser with all user functions.
-        $this->twigParser = new TwigParser($this->scope->getFunctions());
+        // Init TwigExecutor with all user functions.
+        $this->twigExecutor = new TwigExecutor($this->scope->getFunctions());
 
         $model = new SpreadsheetModel();
         $this->parseRoot($model, $mappingReader->getMapping(), $this->scope);
@@ -90,7 +90,7 @@ class SpreadsheetModelBuilder
             // foreach
             if (array_key_exists('foreach', $yamlSheet)) {
                 // Parse the foreach expression
-                $sheetScopes = $this->forEachParser->parse($yamlSheet['foreach'], $scope);
+                $sheetScopes = $this->forEachExecutor->parse($yamlSheet['foreach'], $scope);
 
                 foreach ($sheetScopes as $sheetScope) {
                     $this->parseSheet($model, $yamlSheet, $sheetScope);
@@ -107,7 +107,7 @@ class SpreadsheetModelBuilder
         $model->addSheet($sheet);
 
         if (array_key_exists('label', $yamlSheet)) {
-            $label = $this->twigParser->parse($yamlSheet['label'], $scope);
+            $label = $this->twigExecutor->parse($yamlSheet['label'], $scope);
             $sheet->setLabel($label);
         }
 
@@ -124,7 +124,7 @@ class SpreadsheetModelBuilder
             // foreach
             if (array_key_exists('foreach', $yamlTable)) {
                 // Parse the foreach expression
-                $tableScopes = $this->forEachParser->parse($yamlTable['foreach'], $sheetScope);
+                $tableScopes = $this->forEachExecutor->parse($yamlTable['foreach'], $sheetScope);
 
                 foreach ($tableScopes as $tableScope) {
                     $this->parseTable($sheet, $yamlTable, $tableScope);
@@ -149,7 +149,7 @@ class SpreadsheetModelBuilder
 
         // Columns
         foreach ($yamlTable['columns'] as $columnIndex => $yamlColumnItem) {
-            $columnLabel = $this->twigParser->parse($yamlColumnItem['label'], $tableScope);
+            $columnLabel = $this->twigExecutor->parse($yamlColumnItem['label'], $tableScope);
 
             $column = new Column($columnIndex, $columnLabel);
             $column->setCellContent($yamlColumnItem['cellContent']);
@@ -159,7 +159,7 @@ class SpreadsheetModelBuilder
         // Lines
         $forEachExpression = $yamlTable['lines']['foreach'];
 
-        $lineScopes = $this->forEachParser->parse($forEachExpression, $tableScope);
+        $lineScopes = $this->forEachExecutor->parse($forEachExpression, $tableScope);
 
         foreach ($lineScopes as $lineIndex => $lineScope) {
             $this->createLine($lineIndex, $table, $lineScope);
@@ -176,7 +176,7 @@ class SpreadsheetModelBuilder
         foreach ($table->getColumns() as $column) {
             $cell = new Cell();
 
-            $cellContent = $this->twigParser->parse($column->getCellContent(), $lineScope);
+            $cellContent = $this->twigExecutor->parse($column->getCellContent(), $lineScope);
             $cell->setContent($cellContent);
 
             $table->setCell($line, $column, $cell);

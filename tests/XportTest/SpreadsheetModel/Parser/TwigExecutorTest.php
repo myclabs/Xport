@@ -3,19 +3,19 @@
 namespace XportTest\SpreadsheetModel\Parser;
 
 use Xport\SpreadsheetModel\Parser\Scope;
-use Xport\SpreadsheetModel\Parser\TwigParser;
+use Xport\SpreadsheetModel\Parser\TwigExecutor;
 
-class TwigParserTest extends \PHPUnit_Framework_TestCase
+class TwigExecutorTest extends \PHPUnit_Framework_TestCase
 {
     public function testSimple()
     {
         $scope = new Scope();
         $scope->bind('foo', 'bar');
 
-        $twigParser = new TwigParser();
+        $twigExecutor = new TwigExecutor($scope->getFunctions());
 
-        $this->assertEquals('foo', $twigParser->parse('foo', $scope));
-        $this->assertEquals('bar', $twigParser->parse('{{ foo }}', $scope));
+        $this->assertEquals('foo', $twigExecutor->parse('foo', $scope));
+        $this->assertEquals('bar', $twigExecutor->parse('{{ foo }}', $scope));
     }
 
     public function testWithFunctions()
@@ -26,11 +26,12 @@ class TwigParserTest extends \PHPUnit_Framework_TestCase
                 return strtoupper($str);
             });
 
-        $twigParser = new TwigParser($scope->getFunctions());
+        $twigExecutor = new TwigExecutor($scope->getFunctions());
 
-        $this->assertEquals('foo', $twigParser->parse('foo', $scope));
-        $this->assertEquals('bar', $twigParser->parse('{{ foo }}', $scope));
-        $this->assertEquals('BAR', $twigParser->parse('{{ test(foo) }}', $scope));
+        $this->assertEquals('foo', $twigExecutor->parse('foo', $scope));
+        $this->assertEquals('bar', $twigExecutor->parse('{{ foo }}', $scope));
+        $this->assertEquals('BAR', $twigExecutor->parse('{{ test(foo) }}', $scope));
+        $this->assertEquals('BAR / bar', $twigExecutor->parse('{{ test(foo) }} / {{ foo }}', $scope));
     }
 
     /**
@@ -43,9 +44,10 @@ class TwigParserTest extends \PHPUnit_Framework_TestCase
                 return strtoupper($str);
             });
 
-        $twigParser = new TwigParser($scope->getFunctions());
+        $twigParser = new TwigExecutor($scope->getFunctions());
 
         $this->assertEquals('BAR', $twigParser->parse('{{ test("bar") }}', $scope));
         $this->assertEquals('BAR', $twigParser->parse('{{ test("bar") }}', $scope));
     }
+
 }

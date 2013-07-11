@@ -1,6 +1,6 @@
 <?php
 
-namespace Xport;
+namespace Xport\SpreadsheetExporter;
 
 use PHPExcel;
 use PHPExcel_Writer_Excel2007;
@@ -12,7 +12,7 @@ use Xport\SpreadsheetModel\SpreadsheetModel;
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
-class SpreadsheetExporter
+class PHPExcelExporter
 {
     /**
      * Exports an Spreadsheet model to a file.
