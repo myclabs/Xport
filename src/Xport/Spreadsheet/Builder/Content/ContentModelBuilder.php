@@ -13,10 +13,9 @@ use Xport\Spreadsheet\Model\Sheet;
 interface ContentModelBuilder
 {
     /**
-     * @param Sheet $sheet
-     * @param $yamlContent
-     * @param \Xport\Parser\Scope $scope
+     * @param Sheet  $sheet
+     * @param string $yamlContent
+     * @param Scope  $scope
      */
     public function build(Sheet $sheet, $yamlContent, Scope $scope);
-
 }
