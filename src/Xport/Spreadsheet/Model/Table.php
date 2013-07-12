@@ -96,29 +96,9 @@ class Table implements SpreadsheetModel
      */
     public function setCell(Line $line, Column $column, Cell $cell)
     {
-        $columnKey = false;
-        foreach ($this->getColumns() as $key => $tableColumn) {
-            if (spl_object_hash($column) === spl_object_hash($tableColumn)) {
-                $columnKey = $key;
-                break;
-            }
-        }
-        if ($columnKey === false) {
-            throw new \InvalidArgumentException("The given 'Column' was not found in the 'Table'.");
-        }
+        $key = $this->getCellHashKey($line, $column);
 
-        $lineKey = false;
-        foreach ($this->getLines() as $key => $tableLine) {
-            if (spl_object_hash($line) === spl_object_hash($tableLine)) {
-                $lineKey = $key;
-                break;
-            }
-        }
-        if ($lineKey === false) {
-            throw new \InvalidArgumentException("The given 'Line' was not found in the 'Table'.");
-        }
-
-        $this->cells[$columnKey . '&' . $lineKey] = $cell;
+        $this->cells[$key] = $cell;
     }
 
     /**
@@ -129,9 +109,22 @@ class Table implements SpreadsheetModel
      */
     public function getCell(Line $line, Column $column)
     {
+        $key = $this->getCellHashKey($line, $column);
+
+        return $this->cells[$key];
+    }
+
+    /**
+     * @param Line   $line
+     * @param Column $column
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    private function getCellHashKey(Line $line, Column $column)
+    {
         $columnKey = false;
         foreach ($this->getColumns() as $key => $tableColumn) {
-            if (spl_object_hash($column) === spl_object_hash($tableColumn)) {
+            if ($column === $tableColumn) {
                 $columnKey = $key;
                 break;
             }
@@ -142,7 +135,7 @@ class Table implements SpreadsheetModel
 
         $lineKey = false;
         foreach ($this->getLines() as $key => $tableLine) {
-            if (spl_object_hash($line) === spl_object_hash($tableLine)) {
+            if ($line === $tableLine) {
                 $lineKey = $key;
                 break;
             }
@@ -151,6 +144,6 @@ class Table implements SpreadsheetModel
             throw new \InvalidArgumentException("The given 'Line' was not found in the 'Table'.");
         }
 
-        return $this->cells[$columnKey . '&' . $lineKey];
+        return $columnKey . '&' . $lineKey;
     }
 }
