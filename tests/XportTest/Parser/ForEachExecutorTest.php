@@ -137,5 +137,4 @@ class ForEachExecutorTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('BarValue'.$i, $subScope->get('bar'));
         }
     }
-
 }

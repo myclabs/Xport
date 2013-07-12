@@ -99,5 +99,4 @@ class ForEachExecutor
             'parameter'    => $matches[2],
         ];
     }
-
 }

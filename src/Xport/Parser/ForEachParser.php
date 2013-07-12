@@ -79,5 +79,4 @@ class ForEachParser
             'value' => $matches[2],
         ];
     }
-
 }
