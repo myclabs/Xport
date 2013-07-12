@@ -40,7 +40,7 @@ abstract class ModelBuilder
     protected function parseForeach($yamlForeach, Scope $scope, callable $callback, array $parameters)
     {
         // Parse the foreach expression.
-        $subScopes = $this->forEachExecutor->parse($yamlForeach['foreach'], $scope);
+        $subScopes = $this->forEachExecutor->execute($yamlForeach['foreach'], $scope);
 
         return $this->doLoop($yamlForeach, $subScopes, $callback, $parameters);
     }

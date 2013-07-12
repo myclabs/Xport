@@ -14,7 +14,7 @@ class ForEachExecutorTest extends \PHPUnit_Framework_TestCase
 
         $parser = new ForEachExecutor();
 
-        $subScopes = $parser->parse('foo as bar', $scope);
+        $subScopes = $parser->execute('foo as bar', $scope);
 
         $this->assertCount(2, $subScopes);
 
@@ -31,7 +31,7 @@ class ForEachExecutorTest extends \PHPUnit_Framework_TestCase
 
         $parser = new ForEachExecutor();
 
-        $subScopes = $parser->parse('foo as bim => bar', $scope);
+        $subScopes = $parser->execute('foo as bim => bar', $scope);
 
         $this->assertCount(2, $subScopes);
 
@@ -49,7 +49,7 @@ class ForEachExecutorTest extends \PHPUnit_Framework_TestCase
 
         $parser = new ForEachExecutor();
 
-        $subScopes = $parser->parse('foo as bim=>bar', $scope);
+        $subScopes = $parser->execute('foo as bim=>bar', $scope);
 
         $this->assertCount(2, $subScopes);
 
@@ -69,7 +69,7 @@ class ForEachExecutorTest extends \PHPUnit_Framework_TestCase
 
         $parser = new ForEachExecutor();
 
-        $subScopes = $parser->parse('  foo.blah[bleh]  as      bim  =>    bar ', $scope);
+        $subScopes = $parser->execute('  foo.blah[bleh]  as      bim  =>    bar ', $scope);
 
         $this->assertCount(2, $subScopes);
 
@@ -88,7 +88,7 @@ class ForEachExecutorTest extends \PHPUnit_Framework_TestCase
 
         $parser = new ForEachExecutor();
 
-        $subScopes = $parser->parse('foo as bim => foo(bar)', $scope);
+        $subScopes = $parser->execute('foo as bim => foo(bar)', $scope);
 
         $this->assertCount(2, $subScopes);
 
@@ -107,7 +107,7 @@ class ForEachExecutorTest extends \PHPUnit_Framework_TestCase
 
         $parser = new ForEachExecutor();
 
-        $subScopes = $parser->parse('foo as foo(bim) => foo(bar)', $scope);
+        $subScopes = $parser->execute('foo as foo(bim) => foo(bar)', $scope);
 
         $this->assertCount(2, $subScopes);
 
@@ -127,7 +127,7 @@ class ForEachExecutorTest extends \PHPUnit_Framework_TestCase
 
         $parser = new ForEachExecutor();
 
-        $subScopes = $parser->parse('blah(foo) as bleh(bim) => bleh(bar)', $scope);
+        $subScopes = $parser->execute('blah(foo) as bleh(bim) => bleh(bar)', $scope);
 
         $this->assertCount(2, $subScopes);
 

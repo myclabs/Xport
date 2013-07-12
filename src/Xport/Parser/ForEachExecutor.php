@@ -31,21 +31,21 @@ class ForEachExecutor
 
 
     /**
-     * Parse a foreach expression.
+     * Executes a foreach expression.
      *
      * The expression has the form: 'foo as bar', where foo is an array and bar the value.
      *
-     * @param string $str foreach expression
+     * @param string $expression foreach expression
      * @param scope $scope
      *
      * @throws ParsingException
      * @return Scope[]
      */
-    public function parse($str, Scope $scope)
+    public function execute($expression, Scope $scope)
     {
         $subScopes = [];
 
-        $parseResult = $this->forEachParser->parse($str);
+        $parseResult = $this->forEachParser->parse($expression);
 
         $resultArray = $this->parseFunction($parseResult['array']);
         if (is_array($resultArray)) {
