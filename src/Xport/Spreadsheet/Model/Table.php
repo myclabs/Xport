@@ -118,12 +118,6 @@ class Table implements SpreadsheetModel
             throw new \InvalidArgumentException("The given 'Line' was not found in the 'Table'.");
         }
 
-        if (isset($this->cells[$columnKey . '&' . $lineKey])) {
-            echo PHP_EOL;
-            var_dump('Old Cell');
-            var_dump($this->cells[$columnKey . '&' . $lineKey]);
-            echo PHP_EOL;
-        }
         $this->cells[$columnKey . '&' . $lineKey] = $cell;
     }
 

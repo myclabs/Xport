@@ -63,7 +63,6 @@ class Scope implements \ArrayAccess
     public function get($name)
     {
         if (!array_key_exists($name, $this->values)) {
-            var_dump($this->values);
             throw new \InvalidArgumentException("Unknown entry for name '$name'");
         }
 
@@ -90,7 +89,6 @@ class Scope implements \ArrayAccess
     public function getFunction($name)
     {
         if (!array_key_exists($name, $this->functions)) {
-            var_dump($this->functions);
             throw new \InvalidArgumentException("Unknown function '$name'");
         }
 
