@@ -1,11 +1,11 @@
 <?php
 
-namespace Xport\SpreadsheetExporter;
+namespace Xport\Spreadsheet\Exporter;
 
 use PHPExcel;
 use PHPExcel_Writer_Excel2007;
 use PHPExcel_Writer_IWriter;
-use Xport\SpreadsheetModel\SpreadsheetModel;
+use Xport\Spreadsheet\Model\Document;
 
 /**
  * Exports an Spreadsheet model to an Excel file.
@@ -17,11 +17,11 @@ class PHPExcelExporter
     /**
      * Exports an Spreadsheet model to a file.
      *
-     * @param SpreadsheetModel             $model
+     * @param Document                     $model
      * @param string                       $targetFile
      * @param PHPExcel_Writer_IWriter|null $writer Writer allowing to choose which file format to use
      */
-    public function export(SpreadsheetModel $model, $targetFile, PHPExcel_Writer_IWriter $writer = null)
+    public function export(Document $model, $targetFile, PHPExcel_Writer_IWriter $writer = null)
     {
         $phpExcelModel = new PHPExcel();
 
@@ -43,7 +43,9 @@ class PHPExcelExporter
                 // Columns
                 foreach ($table->getColumns() as $columnIndex => $column) {
                     // Column header
-                    $phpExcelSheet->setCellValueByColumnAndRow($columnIndex, $lineOffset, $column->getLabel());
+                    if ($table->displayColumnsLabel()) {
+                        $phpExcelSheet->setCellValueByColumnAndRow($columnIndex, $lineOffset, $column->getLabel());
+                    }
 
                     // Lines
                     foreach ($table->getLines() as $lineIndex => $line) {
