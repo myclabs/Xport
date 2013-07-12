@@ -7,7 +7,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Xport\Parser\ParsingException;
 
 /**
- * "foreach" parser
+ * "foreach" expression executor
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
@@ -17,18 +17,17 @@ class ForEachExecutor
      * @var ForEachParser
      */
     private $forEachParser;
+
     /**
      * @var PropertyAccessor
      */
     private $propertyAccessor;
-
 
     public function __construct()
     {
         $this->forEachParser = new ForEachParser();
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
-
 
     /**
      * Executes a foreach expression.
@@ -97,7 +96,7 @@ class ForEachExecutor
 
         return [
             'functionName' => $matches[1],
-            'parameter' => $matches[2],
+            'parameter'    => $matches[2],
         ];
     }
 
