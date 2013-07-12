@@ -14,7 +14,6 @@ class Column implements SpreadsheetModel
      */
     private $label;
 
-
     /**
      * @param string $label
      */
@@ -30,5 +29,4 @@ class Column implements SpreadsheetModel
     {
         return $this->label;
     }
-
 }

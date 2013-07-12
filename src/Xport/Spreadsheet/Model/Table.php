@@ -26,7 +26,7 @@ class Table implements SpreadsheetModel
     private $lines =[];
 
     /**
-     * Cells indexed by their coordinate
+     * Cells indexed by their coordinates
      * @var Cell[]
      */
     private $cells = [];
@@ -153,5 +153,4 @@ class Table implements SpreadsheetModel
 
         return $this->cells[$columnKey . '&' . $lineKey];
     }
-
 }
