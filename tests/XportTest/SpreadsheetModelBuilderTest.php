@@ -16,7 +16,6 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         $mappingReader->expects($this->once())->method('getMapping')->will($this->returnValue($mapping));
 
         $modelBuilder = new SpreadsheetModelBuilder();
-        /** @var Document $result */
         $result = $modelBuilder->build($mappingReader);
 
         $this->assertTrue($result instanceof Document);
@@ -37,7 +36,6 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         $mappingReader->expects($this->once())->method('getMapping')->will($this->returnValue($mapping));
 
         $modelBuilder = new SpreadsheetModelBuilder();
-        /** @var Document $result */
         $result = $modelBuilder->build($mappingReader);
 
         $this->assertTrue($result instanceof Document);
@@ -68,7 +66,6 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
 
         $modelBuilder = new SpreadsheetModelBuilder();
         $modelBuilder->bind('foo', ['test', 'test']);
-        /** @var Document $result */
         $result = $modelBuilder->build($mappingReader);
 
         $this->assertTrue($result instanceof Document);
@@ -108,7 +105,6 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
 
         $modelBuilder = new SpreadsheetModelBuilder();
         $modelBuilder->bind('foo', ['test', 'test']);
-        /** @var Document $result */
         $result = $modelBuilder->build($mappingReader);
 
         $this->assertTrue($result instanceof Document);
@@ -167,7 +163,6 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
 
         $modelBuilder = new SpreadsheetModelBuilder();
         $modelBuilder->bind('foo', ['test1', 'test2']);
-        /** @var Document $result */
         $result = $modelBuilder->build($mappingReader);
 
         $this->assertTrue($result instanceof Document);
@@ -234,7 +229,6 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         $modelBuilder = new SpreadsheetModelBuilder();
         $modelBuilder->bind('list', ['test1', 'test2']);
         $modelBuilder->bind('foo', ['test1', 'test2']);
-        /** @var Document $result */
         $result = $modelBuilder->build($mappingReader);
 
         $this->assertTrue($result instanceof Document);
@@ -325,7 +319,6 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         $modelBuilder = new SpreadsheetModelBuilder();
         $modelBuilder->bind('list', ['test1', 'test2']);
         $modelBuilder->bind('foo', ['test1', 'test2']);
-        /** @var Document $result */
         $result = $modelBuilder->build($mappingReader);
 
         $this->assertTrue($result instanceof Document);
@@ -417,7 +410,6 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
                 return (($item->values[$indexCategory] / array_sum($item->values)) * 100);
             });
 
-        /** @var Document $result */
         $result = $modelBuilder->build($mappingReader);
 
         $this->assertTrue($result instanceof Document);
@@ -614,6 +606,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Xport\Parser\ParsingException
+     * @expectedExceptionMessage 'table' must contain 'type'
      */
     public function testTableWithoutType()
     {
@@ -654,6 +647,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Xport\Parser\ParsingException
+     * @expectedExceptionMessage 'content' of type 'VerticalTable' must contains 'columns'
      */
     public function testTableWithoutColumns()
     {
@@ -691,6 +685,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Xport\Parser\ParsingException
+     * @expectedExceptionMessage 'content' of type 'VerticalTable' must contains 'lines'
      */
     public function testTableWithoutLines()
     {
