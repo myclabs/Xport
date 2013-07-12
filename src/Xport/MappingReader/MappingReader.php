@@ -2,7 +2,7 @@
 
 namespace Xport\MappingReader;
 
-use Xport\SpreadsheetModel\Parser\ParsingException;
+use Xport\Parser\ParsingException;
 
 /**
  * File reader
