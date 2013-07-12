@@ -22,12 +22,12 @@ class SpreadsheetModelBuilder extends ModelBuilder
     /**
      * @var Scope
      */
-    protected $scope;
+    private $scope;
+
     /**
      * @var ContentModelBuilder[]
      */
-    protected $contentModelBuilders;
-
+    private $contentModelBuilders;
 
     public function __construct()
     {
@@ -39,9 +39,8 @@ class SpreadsheetModelBuilder extends ModelBuilder
         $this->addContentModelBuilder('VerticalTable', new VerticalTableModelBuilder());
     }
 
-
     /**
-     * @param string $refContentType
+     * @param string              $refContentType
      * @param ContentModelBuilder $contentModelBuilder
      */
     public function addContentModelBuilder($refContentType, ContentModelBuilder $contentModelBuilder)
