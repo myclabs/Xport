@@ -85,6 +85,7 @@ class ForEachExecutor
     /**
      * @param string $str
      * @return array|null Keys are 'array' and 'value'
+     * @todo Move into ForEachParser
      */
     private function parseFunction($str)
     {
