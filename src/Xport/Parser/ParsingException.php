@@ -1,6 +1,6 @@
 <?php
 
-namespace Xport\SpreadsheetModel\Parser;
+namespace Xport\Parser;
 
 /**
  * Parsing exception

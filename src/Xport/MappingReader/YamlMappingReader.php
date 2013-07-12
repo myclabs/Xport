@@ -3,7 +3,7 @@
 namespace Xport\MappingReader;
 
 use Symfony\Component\Yaml\Yaml;
-use Xport\SpreadsheetModel\Parser\ParsingException;
+use Xport\Parser\ParsingException;
 
 /**
  * YAML file reader

@@ -1,6 +1,6 @@
 <?php
 
-namespace Xport\SpreadsheetModel\Parser;
+namespace Xport\Parser;
 
 use Twig_Environment;
 use Twig_Loader_String;

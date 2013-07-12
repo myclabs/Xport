@@ -1,10 +1,10 @@
 <?php
 
-namespace Xport\SpreadsheetModel\Parser;
+namespace Xport\Parser;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Xport\SpreadsheetModel\Parser\ParsingException;
+use Xport\Parser\ParsingException;
 
 /**
  * "foreach" parser

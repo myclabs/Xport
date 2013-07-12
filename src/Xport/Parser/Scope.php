@@ -1,6 +1,6 @@
 <?php
 
-namespace Xport\SpreadsheetModel\Parser;
+namespace Xport\Parser;
 
 /**
  * Scope.
@@ -21,7 +21,7 @@ class Scope implements \ArrayAccess
     /**
      * Creates a new scope.
      *
-     * @param \Xport\SpreadsheetModel\Parser\Scope|null $scope If not null, extends the given scope
+     * @param \Xport\Parser\Scope|null $scope If not null, extends the given scope
      */
     public function __construct(Scope $scope = null)
     {
