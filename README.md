@@ -6,7 +6,8 @@ Xport is an import/export library for PHP.
 
 It is targeted to support the following formats:
 
-- Excel/OpenOffice
+- Excel (xlsx and xls)
+- OpenOffice (ods - to be implemented)
 - PDF (to be implemented)
 - XML (to be implemented)
 
@@ -21,29 +22,30 @@ Simple mapping file (YAML file):
 ```yaml
 sheets:
     # An empty sheet named "Home"
-  - label: Home
+  - label: "Home"
 
     # Another sheet named "Contacts"
-  - label: Contacts
+  - label: "Contacts"
 
-    tables:
-        # Containing one table with 2 columns
-      - lines:
-          foreach: contacts as contact
+    content:
+    # Containing one table with 2 columns
+      - type: VerticalTable
         columns:
-          name:
-            label: Name
-            cellContent: "{{ contact.name }}"
-          phoneNumber:
-            label: Phone number
-            cellContent: "{{ contact.phoneNumber }}"
+          - "Name"
+          - "Phone Number"
+        lines:
+          - foreach: "contacts as contact"
+            do :
+              - cells:
+                - "{{ contact.name }}"
+                - "{{ contact.phoneNumber }}"
 ```
 
 Usage:
 
 ```php
 $modelBuilder = new SpreadsheetModelBuilder();
-$export = new SpreadsheetExporter();
+$export = new PHPExcelExporter();
 
 $modelBuilder->bind('contacts', $contacts);
 
@@ -66,12 +68,13 @@ Here is an example:
 # Create one sheet per company
 sheets:
   - foreach: companies as i => company
-    label: "{{ i + 1 }} - {{ company.name }}" # Twig expression, will result in (for example): "1 - My Company"
+    do:
+      - label: "{{ i + 1 }} - {{ company.name }}" # Twig expression, will result in (for example): "1 - My Company"
 ```
 
 ```php
 $modelBuilder = new SpreadsheetModelBuilder();
-$export = new SpreadsheetExporter();
+$export = new PHPExcelExporter();
 
 $modelBuilder->bind('companies', $companies);
 
@@ -82,22 +85,34 @@ Here is a more complete example:
 
 ```yaml
 sheets:
+
     # Create one sheet per company
   - foreach: companies as company
-    label: "{{ company.name }}"
-    tables:
+    do:
 
-        # One table per product
-      - foreach: company.products as product
-        lines:
-          foreach: product.sales as sale
-        columns:
-          - label: Product
-            cellContent: "{{ product.name }}"
-          - label: Price
-            cellContent: "{{ sale.price }}"
-          - label: Salesman
-            cellContent: "{{ sale.salesman.name }}"
+      - label: "{{ company.name }}"
+        content:
+            # One content(VerticalTable) per product, each, followed by an empty line
+
+          - foreach: company.products as product
+            do:
+
+              - type: VerticalTable
+                columns:
+                  - "Product"
+                  - "Price"
+                  - "Salesman"
+                # One line per sale, each, preceded by an empty line
+                lines:
+                  - foreach: product.sales as sale
+                    do:
+                      -
+                      - cells:
+                          - "{{ product.name }}"
+                          - "{{ sale.price }}"
+                          - "{{ sale.salesman.name }}"
+
+              - type: EmptyLine
 ```
 
 ### Functions
@@ -106,7 +121,7 @@ Functions can be used in Twig expressions, and are defined as such:
 
 ```php
 $modelBuilder = new SpreadsheetModelBuilder();
-$export = new SpreadsheetExporter();
+$export = new PHPExcelExporter();
 
 $modelBuilder->bindFunction('up', function($str) {
     return strtoupper($str);
