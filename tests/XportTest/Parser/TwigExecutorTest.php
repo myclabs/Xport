@@ -1,9 +1,9 @@
 <?php
 
-namespace XportTest\SpreadsheetModel\Parser;
+namespace XportTest\Parser;
 
-use Xport\SpreadsheetModel\Parser\Scope;
-use Xport\SpreadsheetModel\Parser\TwigExecutor;
+use Xport\Parser\Scope;
+use Xport\Parser\TwigExecutor;
 
 class TwigExecutorTest extends \PHPUnit_Framework_TestCase
 {

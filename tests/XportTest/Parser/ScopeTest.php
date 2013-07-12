@@ -1,9 +1,9 @@
 <?php
 
-namespace XportTest\SpreadsheetModel\Parser;
+namespace XportTest\Parser;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Xport\SpreadsheetModel\Parser\Scope;
+use Xport\Parser\Scope;
 
 class ScopeTest extends \PHPUnit_Framework_TestCase
 {

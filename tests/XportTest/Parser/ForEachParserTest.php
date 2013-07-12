@@ -1,8 +1,8 @@
 <?php
 
-namespace XportTest\SpreadsheetModel\Parser;
+namespace XportTest\Parser;
 
-use Xport\SpreadsheetModel\Parser\ForEachParser;
+use Xport\Parser\ForEachParser;
 
 class ForEachParserTest extends \PHPUnit_Framework_TestCase
 {
@@ -130,7 +130,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Xport\SpreadsheetModel\Parser\ParsingException
+     * @expectedException \Xport\Parser\ParsingException
      */
     public function testInvalidString1()
     {
@@ -139,7 +139,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Xport\SpreadsheetModel\Parser\ParsingException
+     * @expectedException \Xport\Parser\ParsingException
      */
     public function testInvalidString2()
     {
@@ -148,7 +148,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Xport\SpreadsheetModel\Parser\ParsingException
+     * @expectedException \Xport\Parser\ParsingException
      */
     public function testInvalidString3()
     {
@@ -157,7 +157,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Xport\SpreadsheetModel\Parser\ParsingException
+     * @expectedException \Xport\Parser\ParsingException
      */
     public function testInvalidString4()
     {
@@ -166,7 +166,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Xport\SpreadsheetModel\Parser\ParsingException
+     * @expectedException \Xport\Parser\ParsingException
      */
     public function testInvalidString5()
     {
@@ -175,7 +175,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Xport\SpreadsheetModel\Parser\ParsingException
+     * @expectedException \Xport\Parser\ParsingException
      */
     public function testInvalidString6()
     {
@@ -184,7 +184,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Xport\SpreadsheetModel\Parser\ParsingException
+     * @expectedException \Xport\Parser\ParsingException
      */
     public function testInvalidString7()
     {
@@ -193,7 +193,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Xport\SpreadsheetModel\Parser\ParsingException
+     * @expectedException \Xport\Parser\ParsingException
      */
     public function testInvalidString8()
     {
@@ -202,7 +202,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Xport\SpreadsheetModel\Parser\ParsingException
+     * @expectedException \Xport\Parser\ParsingException
      */
     public function testInvalidString9()
     {
@@ -211,7 +211,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Xport\SpreadsheetModel\Parser\ParsingException
+     * @expectedException \Xport\Parser\ParsingException
      */
     public function testInvalidString10()
     {
@@ -220,7 +220,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Xport\SpreadsheetModel\Parser\ParsingException
+     * @expectedException \Xport\Parser\ParsingException
      */
     public function testInvalidString11()
     {
@@ -229,7 +229,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Xport\SpreadsheetModel\Parser\ParsingException
+     * @expectedException \Xport\Parser\ParsingException
      */
     public function testInvalidString12()
     {
@@ -238,7 +238,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Xport\SpreadsheetModel\Parser\ParsingException
+     * @expectedException \Xport\Parser\ParsingException
      */
     public function testInvalidString13()
     {
@@ -247,7 +247,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Xport\SpreadsheetModel\Parser\ParsingException
+     * @expectedException \Xport\Parser\ParsingException
      */
     public function testInvalidString14()
     {

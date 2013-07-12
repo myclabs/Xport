@@ -3,9 +3,9 @@
 namespace XportTest;
 
 use Xport\MappingReader\YamlMappingReader;
-use Xport\SpreadsheetModel\SpreadsheetModel;
-use Xport\SpreadsheetModel\Sheet;
-use Xport\SpreadsheetModelBuilder;
+use Xport\Spreadsheet\Model\Document;
+use Xport\Spreadsheet\Model\Sheet;
+use Xport\Spreadsheet\Builder\SpreadsheetModelBuilder;
 
 class FunctionalTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,10 +32,10 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
 
         $modelBuilder->bind('cells', $cells);
 
-        /** @var SpreadsheetModel $result */
+        /** @var Document $result */
         $result = $modelBuilder->build(new YamlMappingReader(__DIR__ . '/Fixtures/mapping.yml'));
 
-        $this->assertTrue($result instanceof SpreadsheetModel);
+        $this->assertTrue($result instanceof Document);
         $this->assertCount(2, $result->getSheets());
 
         foreach ($result->getSheets() as $sheet) {

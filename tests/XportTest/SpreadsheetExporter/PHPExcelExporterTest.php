@@ -2,13 +2,13 @@
 
 namespace XportTest;
 
-use Xport\SpreadsheetExporter\PHPExcelExporter;
-use Xport\SpreadsheetModel\Cell;
-use Xport\SpreadsheetModel\Column;
-use Xport\SpreadsheetModel\SpreadsheetModel;
-use Xport\SpreadsheetModel\Line;
-use Xport\SpreadsheetModel\Sheet;
-use Xport\SpreadsheetModel\Table;
+use Xport\Spreadsheet\Exporter\PHPExcelExporter;
+use Xport\Spreadsheet\Model\Cell;
+use Xport\Spreadsheet\Model\Column;
+use Xport\Spreadsheet\Model\Document;
+use Xport\Spreadsheet\Model\Line;
+use Xport\Spreadsheet\Model\Sheet;
+use Xport\Spreadsheet\Model\Table;
 
 class PHPExcelExporterTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,10 +16,10 @@ class PHPExcelExporterTest extends \PHPUnit_Framework_TestCase
     {
         $exporter = new PHPExcelExporter();
 
-        $spreadsheet = new SpreadsheetModel();
+        $document = new Document();
         $sheet = new Sheet('First sheet');
-        $spreadsheet->addSheet($sheet);
-        $spreadsheet->addSheet(new Sheet('Empty sheet'));
+        $document->addSheet($sheet);
+        $document->addSheet(new Sheet('Empty sheet'));
 
         $table = new Table();
         $sheet->addTable($table);
@@ -39,6 +39,6 @@ class PHPExcelExporterTest extends \PHPUnit_Framework_TestCase
         $table->setCell($line2, $col1, new Cell(20));
         $table->setCell($line2, $col2, new Cell(0.35));
 
-        $exporter->export($spreadsheet, __DIR__ . '/../test.xslx');
+        $exporter->export($document, __DIR__ . '/../test.xslx');
     }
 }

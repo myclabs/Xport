@@ -1,13 +1,17 @@
 sheets:
   - foreach: cells as i => cell
-    label: "{{i + 1}} - {{ cell.name }}"
-    tables:
-
-      - foreach: cell.inputSets as inputSet
-        lines:
-          foreach: inputSet.inputs as input
-        columns:
-          - label: Valeur
-            cellContent: "{{ input.value }}"
-          - label: Incertitude
-            cellContent: "{{ input.uncertainty }}"
+    do:
+      - label: "{{i + 1}} - {{ cell.name }}"
+        content:
+          - foreach: cell.inputSets as inputSet
+            do:
+              - type: VerticalTable
+                columns:
+                  - "Valeur"
+                  - "Incertitude"
+                lines:
+                  - foreach: inputSet.inputs as input
+                    do:
+                      - cells:
+                          - "{{ input.value }}"
+                          - "{{ input.uncertainty }}"

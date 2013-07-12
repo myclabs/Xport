@@ -1,0 +1,52 @@
+sheets:
+
+  - label: "First"
+    content:
+      - type: VerticalTable
+        columns:
+          - "F 1"
+          - "F 2"
+        lines:
+          - foreach: "listItemsSheet1 as item"
+            do:
+              - cells:
+                  - "{{ item.label }}"
+                  - "{{ item.value }}"
+          - cells:
+
+  - foreach: "listSheets2 as i => sheet"
+    do:
+      - label: "{{ sheet }} ({{ i }})"
+        content:
+          - type: VerticalTable
+            columns:
+              - "S2-{{ i }} 1"
+              - "S2-{{ i }} 2"
+            lines:
+              - foreach: "listItemsSheet2 as item"
+                do:
+                  - cells:
+                      - "{{ item.label }}"
+                      - "{{ item.value }}"
+          - type: EmptyLine
+
+  - label: "Inter"
+    content:
+      - type: VerticalTable
+        columns:
+          - "I 1"
+          - foreach: "listItemsSheet3.categories as i => category"
+            do:
+              - ""
+              - "{{ category.label }}"
+              - "ratio"
+        lines:
+          - foreach: "listItemsSheet3.values as item"
+            do:
+              - cells:
+                  - "{{ item.label }}"
+                  - foreach: "listItemsSheet3.categories as i => category"
+                    do:
+                      - ""
+                      - "{{ item.values[i] }}"
+                      - "{{ categoryPercent(item, i) }}"

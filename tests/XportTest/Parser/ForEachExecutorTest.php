@@ -1,9 +1,9 @@
 <?php
 
-namespace XportTest\SpreadsheetModel\Parser;
+namespace XportTest\Parser;
 
-use Xport\SpreadsheetModel\Parser\ForEachExecutor;
-use Xport\SpreadsheetModel\Parser\Scope;
+use Xport\Parser\ForEachExecutor;
+use Xport\Parser\Scope;
 
 class ForEachExecutorTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,7 +19,7 @@ class ForEachExecutorTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $subScopes);
 
         foreach ($subScopes as $i => $subScope) {
-            $this->assertInstanceOf('Xport\SpreadsheetModel\Parser\Scope', $subScope);
+            $this->assertInstanceOf('Xport\Parser\Scope', $subScope);
             $this->assertEquals('barValue'.$i, $subScope->get('bar'));
         }
     }
@@ -36,7 +36,7 @@ class ForEachExecutorTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $subScopes);
 
         foreach ($subScopes as $i => $subScope) {
-            $this->assertInstanceOf('Xport\SpreadsheetModel\Parser\Scope', $subScope);
+            $this->assertInstanceOf('Xport\Parser\Scope', $subScope);
             $this->assertEquals('bimIndex'.$i, $subScope->get('bim'));
             $this->assertEquals('barValue'.$i, $subScope->get('bar'));
         }
@@ -54,7 +54,7 @@ class ForEachExecutorTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $subScopes);
 
         foreach ($subScopes as $i => $subScope) {
-            $this->assertInstanceOf('Xport\SpreadsheetModel\Parser\Scope', $subScope);
+            $this->assertInstanceOf('Xport\Parser\Scope', $subScope);
             $this->assertEquals('bimIndex'.$i, $subScope->get('bim'));
             $this->assertEquals('barValue'.$i, $subScope->get('bar'));
         }
@@ -74,7 +74,7 @@ class ForEachExecutorTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $subScopes);
 
         foreach ($subScopes as $i => $subScope) {
-            $this->assertInstanceOf('Xport\SpreadsheetModel\Parser\Scope', $subScope);
+            $this->assertInstanceOf('Xport\Parser\Scope', $subScope);
             $this->assertEquals('bimIndex'.$i, $subScope->get('bim'));
             $this->assertEquals('barValue'.$i, $subScope->get('bar'));
         }
@@ -93,7 +93,7 @@ class ForEachExecutorTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $subScopes);
 
         foreach ($subScopes as $i => $subScope) {
-            $this->assertInstanceOf('Xport\SpreadsheetModel\Parser\Scope', $subScope);
+            $this->assertInstanceOf('Xport\Parser\Scope', $subScope);
             $this->assertEquals('bimIndex'.$i, $subScope->get('bim'));
             $this->assertEquals('BarValue'.$i, $subScope->get('bar'));
         }
@@ -112,7 +112,7 @@ class ForEachExecutorTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $subScopes);
 
         foreach ($subScopes as $i => $subScope) {
-            $this->assertInstanceOf('Xport\SpreadsheetModel\Parser\Scope', $subScope);
+            $this->assertInstanceOf('Xport\Parser\Scope', $subScope);
             $this->assertEquals('BimIndex'.$i, $subScope->get('bim'));
             $this->assertEquals('BarValue'.$i, $subScope->get('bar'));
         }
@@ -132,7 +132,7 @@ class ForEachExecutorTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $subScopes);
 
         foreach ($subScopes as $i => $subScope) {
-            $this->assertInstanceOf('Xport\SpreadsheetModel\Parser\Scope', $subScope);
+            $this->assertInstanceOf('Xport\Parser\Scope', $subScope);
             $this->assertEquals('BimIndex'.$i, $subScope->get('bim'));
             $this->assertEquals('BarValue'.$i, $subScope->get('bar'));
         }
