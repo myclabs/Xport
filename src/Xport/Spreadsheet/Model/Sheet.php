@@ -1,13 +1,13 @@
 <?php
 
-namespace Xport\SpreadsheetModel;
+namespace Xport\Spreadsheet\Model;
 
 /**
  * Sheet
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
-class Sheet
+class Sheet implements SpreadsheetModel
 {
     /**
      * @var string|null
