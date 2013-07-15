@@ -15,7 +15,7 @@ use Xport\Spreadsheet\Model\Cell;
 /**
  * Builds a content model
  *
- * @author valentin-mcs <valentin.claras@myc-sense.fr>
+ * @author valentin-mcs <valentin.claras@myc-sense.com>
  */
 class VerticalTableModelBuilder extends ModelBuilder implements ContentModelBuilder
 {

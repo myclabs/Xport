@@ -9,7 +9,7 @@ use Xport\Parser\ForEachExecutor;
 /**
  * Content model builder
  *
- * @author valentin-mcs <valentin.claras@myc-sense.fr>
+ * @author valentin-mcs <valentin.claras@myc-sense.com>
  */
 abstract class ModelBuilder
 {

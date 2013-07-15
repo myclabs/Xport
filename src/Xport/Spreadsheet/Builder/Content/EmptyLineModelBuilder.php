@@ -12,7 +12,7 @@ use Xport\Spreadsheet\Model\Line;
 /**
  * Builds a empty content model
  *
- * @author valentin-mcs <valentin.claras@myc-sense.fr>
+ * @author valentin-mcs <valentin.claras@myc-sense.com>
  */
 class EmptyLineModelBuilder extends ModelBuilder implements ContentModelBuilder
 {
