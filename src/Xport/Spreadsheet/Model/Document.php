@@ -9,7 +9,6 @@ namespace Xport\Spreadsheet\Model;
  */
 class Document implements SpreadsheetModel
 {
-
     /**
      * @var Sheet[]
      */
@@ -30,5 +29,4 @@ class Document implements SpreadsheetModel
     {
         return $this->sheets;
     }
-
 }

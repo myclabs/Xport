@@ -7,5 +7,4 @@ namespace Xport\Parser;
  */
 class ParsingException extends \Exception
 {
-
 }

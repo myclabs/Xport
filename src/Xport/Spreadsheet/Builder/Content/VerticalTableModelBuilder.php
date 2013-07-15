@@ -20,9 +20,7 @@ use Xport\Spreadsheet\Model\Cell;
 class VerticalTableModelBuilder extends ModelBuilder implements ContentModelBuilder
 {
     /**
-     * @param Sheet $sheet
-     * @param $yamlContent
-     * @param \Xport\Parser\Scope $scope
+     * {@inheritdoc}
      * @throws ParsingException
      */
     public function build(Sheet $sheet, $yamlContent, Scope $scope)
@@ -36,7 +34,7 @@ class VerticalTableModelBuilder extends ModelBuilder implements ContentModelBuil
 
         // Columns.
         if (!isset($yamlContent) || !array_key_exists('columns', $yamlContent)) {
-            throw new ParsingException("'content' of type 'VerticalTable' must contains 'columns'.");
+            throw new ParsingException("'content' of type 'VerticalTable' must contains 'columns'");
         }
         foreach ($yamlContent['columns'] as $yamlColumn) {
             $this->parseColumn($table, $yamlColumn, $scope);
@@ -44,7 +42,7 @@ class VerticalTableModelBuilder extends ModelBuilder implements ContentModelBuil
 
         // Lines.
         if (!isset($yamlContent) || !array_key_exists('lines', $yamlContent)) {
-            throw new ParsingException("'content' of type 'VerticalTable' must contains 'lines'.");
+            throw new ParsingException("'content' of type 'VerticalTable' must contains 'lines'");
         }
         foreach ($yamlContent['lines'] as $yamlLine) {
             $this->parseLine($table, $yamlLine, $scope);
@@ -66,7 +64,7 @@ class VerticalTableModelBuilder extends ModelBuilder implements ContentModelBuil
             $columnLabel = $yamlColumn;
         } else {
             if (!array_key_exists('label', $yamlColumn)) {
-                throw new ParsingException("Each 'columns' from 'VerticalTable' must contains a 'label'.");
+                throw new ParsingException("Each 'columns' from 'VerticalTable' must contains a 'label'");
             }
             $columnLabel = $yamlColumn['label'];
         }
@@ -119,7 +117,7 @@ class VerticalTableModelBuilder extends ModelBuilder implements ContentModelBuil
             $content = $yamlCell;
         } else {
             if (!array_key_exists('cellContent', $yamlCell)) {
-                throw new ParsingException("Each 'cells' from 'VerticalTable' must contains a 'cellContent'.");
+                throw new ParsingException("Each 'cells' from 'VerticalTable' must contains a 'cellContent'");
             }
             $content = $yamlCell['cellContent'];
         }

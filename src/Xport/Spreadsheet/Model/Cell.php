@@ -9,7 +9,6 @@ namespace Xport\Spreadsheet\Model;
  */
 class Cell implements SpreadsheetModel
 {
-
     /**
      * @var mixed
      */
@@ -38,5 +37,4 @@ class Cell implements SpreadsheetModel
     {
         $this->content = $content;
     }
-
 }

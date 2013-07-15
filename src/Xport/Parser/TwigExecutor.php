@@ -34,13 +34,13 @@ class TwigExecutor
     /**
      * Parse a Twig expression.
      *
-     * @param string $str Twig expression
+     * @param string $expression Twig expression
      * @param Scope  $scope
      *
      * @return string
      */
-    public function parse($str, Scope $scope)
+    public function parse($expression, Scope $scope)
     {
-        return $this->twig->render($str, $scope->toArray());
+        return $this->twig->render($expression, $scope->toArray());
     }
 }

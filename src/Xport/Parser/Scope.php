@@ -2,6 +2,8 @@
 
 namespace Xport\Parser;
 
+use InvalidArgumentException;
+
 /**
  * Scope.
  *
@@ -13,6 +15,7 @@ class Scope implements \ArrayAccess
      * @var mixed[]
      */
     private $values = [];
+
     /**
      * @var callable[]
      */
@@ -21,7 +24,7 @@ class Scope implements \ArrayAccess
     /**
      * Creates a new scope.
      *
-     * @param \Xport\Parser\Scope|null $scope If not null, extends the given scope
+     * @param Scope|null $scope If not null, extends the given scope
      */
     public function __construct(Scope $scope = null)
     {
@@ -63,7 +66,6 @@ class Scope implements \ArrayAccess
     public function get($name)
     {
         if (!array_key_exists($name, $this->values)) {
-            var_dump($this->values);
             throw new \InvalidArgumentException("Unknown entry for name '$name'");
         }
 
@@ -84,14 +86,13 @@ class Scope implements \ArrayAccess
      * Returns a function by its name.
      *
      * @param string $name
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      * @return callable
      */
     public function getFunction($name)
     {
         if (!array_key_exists($name, $this->functions)) {
-            var_dump($this->functions);
-            throw new \InvalidArgumentException("Unknown function '$name'");
+            throw new InvalidArgumentException("Unknown function '$name'");
         }
 
         return $this->functions[$name];

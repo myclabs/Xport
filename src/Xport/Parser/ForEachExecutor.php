@@ -7,7 +7,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Xport\Parser\ParsingException;
 
 /**
- * "foreach" parser
+ * "foreach" expression executor
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
@@ -17,11 +17,11 @@ class ForEachExecutor
      * @var ForEachParser
      */
     private $forEachParser;
+
     /**
      * @var PropertyAccessor
      */
     private $propertyAccessor;
-
 
     public function __construct()
     {
@@ -29,23 +29,22 @@ class ForEachExecutor
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
-
     /**
-     * Parse a foreach expression.
+     * Executes a foreach expression.
      *
      * The expression has the form: 'foo as bar', where foo is an array and bar the value.
      *
-     * @param string $str foreach expression
+     * @param string $expression foreach expression
      * @param scope $scope
      *
      * @throws ParsingException
      * @return Scope[]
      */
-    public function parse($str, Scope $scope)
+    public function execute($expression, Scope $scope)
     {
         $subScopes = [];
 
-        $parseResult = $this->forEachParser->parse($str);
+        $parseResult = $this->forEachParser->parse($expression);
 
         $resultArray = $this->parseFunction($parseResult['array']);
         if (is_array($resultArray)) {
@@ -86,6 +85,7 @@ class ForEachExecutor
     /**
      * @param string $str
      * @return array|null Keys are 'array' and 'value'
+     * @todo Move into ForEachParser
      */
     private function parseFunction($str)
     {
@@ -97,8 +97,7 @@ class ForEachExecutor
 
         return [
             'functionName' => $matches[1],
-            'parameter' => $matches[2],
+            'parameter'    => $matches[2],
         ];
     }
-
 }
