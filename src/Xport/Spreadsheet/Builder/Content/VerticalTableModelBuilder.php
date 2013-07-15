@@ -92,7 +92,7 @@ class VerticalTableModelBuilder extends ModelBuilder implements ContentModelBuil
         if (is_array($yamlLine) && array_key_exists('cells', $yamlLine) && is_array($yamlLine['cells'])) {
             $columnIndex = 0;
             foreach ($yamlLine['cells'] as $yamlCell) {
-                $columnIndex = $this->parseCell($table, $line, $columnIndex, $yamlCell, $scope);
+                $columnIndex += $this->parseCell($table, $line, $columnIndex, $yamlCell, $scope);
             }
         }
     }
