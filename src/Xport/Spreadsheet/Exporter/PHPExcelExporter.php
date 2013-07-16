@@ -51,11 +51,13 @@ class PHPExcelExporter
                     foreach ($table->getLines() as $lineIndex => $line) {
                         // Cell
                         $cell = $table->getCell($line, $column);
-                        $phpExcelSheet->setCellValueByColumnAndRow(
-                            $columnIndex,
-                            $lineOffset + 1 + $lineIndex,
-                            $cell->getContent()
-                        );
+                        if ($cell !== null) {
+                            $phpExcelSheet->setCellValueByColumnAndRow(
+                                $columnIndex,
+                                $lineOffset + 1 + $lineIndex,
+                                $cell->getContent()
+                            );
+                        }
                     }
                 }
 

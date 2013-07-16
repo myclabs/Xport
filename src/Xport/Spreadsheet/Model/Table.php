@@ -111,7 +111,7 @@ class Table implements SpreadsheetModel
     {
         $key = $this->getCellHashKey($line, $column);
 
-        return $this->cells[$key];
+        return (isset($this->cells[$key]) ? $this->cells[$key] : null);
     }
 
     /**
