@@ -47,9 +47,6 @@ class VerticalTableModelBuilder extends ModelBuilder implements ContentModelBuil
         foreach ($yamlContent['lines'] as $yamlLine) {
             $this->parseLine($table, $yamlLine, $scope);
         }
-
-        // Ajout d'une ligne vide à la fin.
-        $table->addLine(new Line());
     }
 
     protected function parseColumn(Table $table, $yamlColumn, Scope $scope)

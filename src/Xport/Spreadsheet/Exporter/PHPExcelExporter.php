@@ -62,6 +62,9 @@ class PHPExcelExporter
                 }
 
                 $lineOffset += 1 + count($table->getLines());
+                // Add an empty line after each content.
+                //@todo move to a StyleBuilder when style will be added.
+                $lineOffset ++;
             }
         }
 
