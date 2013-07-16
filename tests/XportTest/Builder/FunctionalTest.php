@@ -33,7 +33,7 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
         $modelBuilder->bind('cells', $cells);
 
         /** @var Document $result */
-        $result = $modelBuilder->build(new YamlMappingReader(__DIR__ . '/Fixtures/mapping.yml'));
+        $result = $modelBuilder->build(new YamlMappingReader(__DIR__ . '/../Fixtures/mapping.yml'));
 
         $this->assertTrue($result instanceof Document);
         $this->assertCount(2, $result->getSheets());
@@ -47,7 +47,7 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $sheet->getTables());
 
         $table = $sheet->getTables()[0];
-        $this->assertCount(2, $table->getLines());
+        $this->assertCount(1, $table->getLines());
         $this->assertCount(2, $table->getColumns());
         $this->assertCount(2, $table->getCells());
     }
