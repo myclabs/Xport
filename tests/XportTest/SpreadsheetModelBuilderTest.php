@@ -172,7 +172,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $sheet->getTables());
 
         $table = $sheet->getTables()[0];
-        $this->assertCount(2, $table->getLines());
+        $this->assertCount(3, $table->getLines());
 
         // Columns
         $this->assertCount(2, $table->getColumns());
@@ -239,7 +239,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
 
         // Table 0
         $table = $sheet->getTables()[0];
-        $this->assertCount(2, $table->getLines());
+        $this->assertCount(3, $table->getLines());
 
         // Columns
         $this->assertCount(2, $table->getColumns());
@@ -329,7 +329,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
 
         // Table 0
         $table = $sheet->getTables()[0];
-        $this->assertCount(2, $table->getLines());
+        $this->assertCount(3, $table->getLines());
 
         // Columns
         $this->assertCount(2, $table->getColumns());
@@ -422,7 +422,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
 
         // Table
         $table = $sheet0->getTables()[0];
-        $this->assertCount(3, $table->getLines());
+        $this->assertCount(4, $table->getLines());
 
         // Columns
         $this->assertCount(2, $table->getColumns());
@@ -442,7 +442,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
 
         // Table 0
         $table0 = $sheet1->getTables()[0];
-        $this->assertCount(4, $table0->getLines());
+        $this->assertCount(5, $table0->getLines());
 
         // Columns
         $this->assertCount(2, $table0->getColumns());
@@ -473,7 +473,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
 
         // Table 0
         $table0 = $sheet2->getTables()[0];
-        $this->assertCount(4, $table0->getLines());
+        $this->assertCount(5, $table0->getLines());
 
         // Columns
         $this->assertCount(2, $table0->getColumns());
@@ -504,7 +504,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
 
         // Table 0
         $table0 = $sheet3->getTables()[0];
-        $this->assertCount(4, $table0->getLines());
+        $this->assertCount(5, $table0->getLines());
 
         // Columns
         $this->assertCount(2, $table0->getColumns());
@@ -535,7 +535,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
 
         // Table
         $table = $sheet4->getTables()[0];
-        $this->assertCount(5, $table->getLines());
+        $this->assertCount(6, $table->getLines());
 
         // Columns
         $this->assertCount(10, $table->getColumns());

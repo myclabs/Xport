@@ -47,7 +47,7 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $sheet->getTables());
 
         $table = $sheet->getTables()[0];
-        $this->assertCount(1, $table->getLines());
+        $this->assertCount(2, $table->getLines());
         $this->assertCount(2, $table->getColumns());
         $this->assertCount(2, $table->getCells());
     }
