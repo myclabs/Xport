@@ -7,6 +7,6 @@ namespace Xport\Spreadsheet\Model;
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
-class Line implements SpreadsheetModel
+class Line extends Index implements SpreadsheetModel
 {
 }

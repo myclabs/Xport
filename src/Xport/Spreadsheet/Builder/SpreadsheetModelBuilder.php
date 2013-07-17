@@ -9,6 +9,7 @@ use Xport\Parser\ParsingException;
 use Xport\Spreadsheet\Builder\Content\ContentModelBuilder;
 use Xport\Spreadsheet\Builder\Content\EmptyLineModelBuilder;
 use Xport\Spreadsheet\Builder\Content\VerticalTableModelBuilder;
+use Xport\Spreadsheet\Builder\Content\HorizontalTableModelBuilder;
 use Xport\Spreadsheet\Model\Document;
 use Xport\Spreadsheet\Model\Sheet;
 
@@ -37,6 +38,7 @@ class SpreadsheetModelBuilder extends ModelBuilder
 
         $this->addContentModelBuilder('EmptyLine', new EmptyLineModelBuilder());
         $this->addContentModelBuilder('VerticalTable', new VerticalTableModelBuilder());
+        $this->addContentModelBuilder('HorizontalTable', new HorizontalTableModelBuilder());
     }
 
     /**
