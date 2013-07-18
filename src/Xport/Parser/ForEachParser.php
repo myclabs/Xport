@@ -14,7 +14,8 @@ class ForEachParser
     /**
      * Describes the accepted components for the regular expression.
      */
-    const ELEMENT_PATTERN = '([[:alnum:]]+\([[:alnum:]\.\[\]]+\)|[[:alnum:]\.\[\]]+)';
+    const ELEMENT_ARRAY_PATTERN = '([[:alnum:]]+[[:alnum:]\\.\\(\\)\\[\\]]*)';
+    const ELEMENT_PATTERN = '([[:alnum:]]+)';
 
     /**
      * Parse a foreach expression.
@@ -49,7 +50,7 @@ class ForEachParser
      */
     private function parseWithKey($str)
     {
-        $result = preg_match('/^\s*'.self::ELEMENT_PATTERN.'\s*as\s*'.self::ELEMENT_PATTERN.'\s*=>\s*'.self::ELEMENT_PATTERN.'\s*$/', $str, $matches);
+        $result = preg_match('/^\s*'.self::ELEMENT_ARRAY_PATTERN.'\s*as\s*'.self::ELEMENT_PATTERN.'\s*=>\s*'.self::ELEMENT_PATTERN.'\s*$/', $str, $matches);
 
         if ($result !== 1) {
             return null;
@@ -68,7 +69,7 @@ class ForEachParser
      */
     private function parseWithoutKey($str)
     {
-        $result = preg_match('/^\s*'.self::ELEMENT_PATTERN.'\s*as\s*'.self::ELEMENT_PATTERN.'\s*$/', $str, $matches);
+        $result = preg_match('/^\s*'.self::ELEMENT_ARRAY_PATTERN.'\s*as\s*'.self::ELEMENT_PATTERN.'\s*$/', $str, $matches);
 
         if ($result !== 1) {
             return null;

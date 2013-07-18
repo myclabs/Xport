@@ -80,61 +80,48 @@ class ForEachExecutorTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testWithFunction1()
+    public function testWithFunction()
     {
         $scope = new Scope();
-        $scope->bind('foo', ['bimIndex0' => 'barValue0', 'bimIndex1' => 'barValue1']);
-        $scope->bindFunction('foo', function ($parameter) { return ucfirst($parameter); });
+        $scope->bind('foo', ['0', '1']);
+        $scope->bindFunction('blah', function ($parameters) { $a=[]; foreach($parameters as $i) {$a['bimIndex'.$i] = 'barValue'.$i;} return $a; });
 
         $parser = new ForEachExecutor();
 
-        $subScopes = $parser->execute('foo as bim => foo(bar)', $scope);
+        $subScopes = $parser->execute('blah(foo) as bim => bar', $scope);
 
         $this->assertCount(2, $subScopes);
 
         foreach ($subScopes as $i => $subScope) {
             $this->assertInstanceOf('Xport\Parser\Scope', $subScope);
             $this->assertEquals('bimIndex'.$i, $subScope->get('bim'));
-            $this->assertEquals('BarValue'.$i, $subScope->get('bar'));
+            $this->assertEquals('barValue'.$i, $subScope->get('bar'));
         }
     }
 
-    public function testWithFunction2()
+    public function testWithMethodCall()
     {
+
         $scope = new Scope();
-        $scope->bind('foo', ['bimIndex0' => 'barValue0', 'bimIndex1' => 'barValue1']);
-        $scope->bindFunction('foo', function ($parameter) { return ucfirst($parameter); });
+        $scope->bind('foo', new FixtureClass());
 
         $parser = new ForEachExecutor();
 
-        $subScopes = $parser->execute('foo as foo(bim) => foo(bar)', $scope);
+        $subScopes = $parser->execute('foo.getStuff() as bar', $scope);
 
         $this->assertCount(2, $subScopes);
 
         foreach ($subScopes as $i => $subScope) {
             $this->assertInstanceOf('Xport\Parser\Scope', $subScope);
-            $this->assertEquals('BimIndex'.$i, $subScope->get('bim'));
-            $this->assertEquals('BarValue'.$i, $subScope->get('bar'));
+            $this->assertEquals('barValue'.$i, $subScope->get('bar'));
         }
     }
+}
 
-    public function testWithFunction3()
+class FixtureClass
+{
+    public function getStuff()
     {
-        $scope = new Scope();
-        $scope->bind('foo', ['0', '1']);
-        $scope->bindFunction('blah', function ($parameters) { $a=[]; foreach($parameters as $i) {$a['bimIndex'.$i] = 'barValue'.$i;} return $a; });
-        $scope->bindFunction('bleh', function ($parameter) { return ucfirst($parameter); });
-
-        $parser = new ForEachExecutor();
-
-        $subScopes = $parser->execute('blah(foo) as bleh(bim) => bleh(bar)', $scope);
-
-        $this->assertCount(2, $subScopes);
-
-        foreach ($subScopes as $i => $subScope) {
-            $this->assertInstanceOf('Xport\Parser\Scope', $subScope);
-            $this->assertEquals('BimIndex'.$i, $subScope->get('bim'));
-            $this->assertEquals('BarValue'.$i, $subScope->get('bar'));
-        }
+        return ['barValue0', 'barValue1'];
     }
 }

@@ -104,7 +104,7 @@ sheets:
                   - "Salesman"
                 # One line per sale, each, preceded by an empty line
                 lines:
-                  - foreach: product.sales as sale
+                  - foreach: product.getSalesList() as sale
                     do:
                       -
                       - cells:

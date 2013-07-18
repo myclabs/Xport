@@ -2,8 +2,7 @@
 
 namespace Xport\Parser;
 
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use MetaModel\MetaModel;
 use Xport\Parser\ParsingException;
 
 /**
@@ -18,15 +17,9 @@ class ForEachExecutor
      */
     private $forEachParser;
 
-    /**
-     * @var PropertyAccessor
-     */
-    private $propertyAccessor;
-
     public function __construct()
     {
         $this->forEachParser = new ForEachParser();
-        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
     /**
@@ -42,6 +35,9 @@ class ForEachExecutor
      */
     public function execute($expression, Scope $scope)
     {
+        $metaModel = new MetaModel();
+        $metaModel->addContainer($scope);
+
         $subScopes = [];
 
         $parseResult = $this->forEachParser->parse($expression);
@@ -49,9 +45,9 @@ class ForEachExecutor
         $resultArray = $this->parseFunction($parseResult['array']);
         if (is_array($resultArray)) {
             $function = $scope->getFunction($resultArray['functionName']);
-            $array = $function($this->propertyAccessor->getValue($scope, $resultArray['parameter']));
+            $array = $function($metaModel->run($resultArray['parameter']));
         } else {
-            $array = $this->propertyAccessor->getValue($scope, $parseResult['array']);
+            $array = $metaModel->run($parseResult['array']);
         }
 
         foreach ($array as $key => $value) {
