@@ -3,13 +3,14 @@
 namespace Xport\Parser;
 
 use InvalidArgumentException;
+use MetaModel\DataSource\Container;
 
 /**
  * Scope.
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
-class Scope implements \ArrayAccess
+class Scope implements \ArrayAccess, Container
 {
     /**
      * @var mixed[]

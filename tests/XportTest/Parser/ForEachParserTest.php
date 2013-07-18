@@ -75,47 +75,11 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $result['value']);
     }
 
-    public function testWithFunction1()
+    public function testWithFunction()
     {
         $parser = new ForEachParser();
 
-        $result = $parser->parse('foo as bim => foo(bar)');
-
-        $this->assertCount(3, $result);
-
-        $this->assertArrayHasKey('array', $result);
-        $this->assertEquals('foo', $result['array']);
-
-        $this->assertArrayHasKey('key', $result);
-        $this->assertEquals('bim', $result['key']);
-
-        $this->assertArrayHasKey('value', $result);
-        $this->assertEquals('foo(bar)', $result['value']);
-    }
-
-    public function testWithFunction2()
-    {
-        $parser = new ForEachParser();
-
-        $result = $parser->parse('foo as foo(bim) => foo(bar)');
-
-        $this->assertCount(3, $result);
-
-        $this->assertArrayHasKey('array', $result);
-        $this->assertEquals('foo', $result['array']);
-
-        $this->assertArrayHasKey('key', $result);
-        $this->assertEquals('foo(bim)', $result['key']);
-
-        $this->assertArrayHasKey('value', $result);
-        $this->assertEquals('foo(bar)', $result['value']);
-    }
-
-    public function testWithFunction3()
-    {
-        $parser = new ForEachParser();
-
-        $result = $parser->parse('blah(foo) as bleh(bim) => bleh(bar)');
+        $result = $parser->parse('blah(foo) as bim => bar');
 
         $this->assertCount(3, $result);
 
@@ -123,10 +87,28 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('blah(foo)', $result['array']);
 
         $this->assertArrayHasKey('key', $result);
-        $this->assertEquals('bleh(bim)', $result['key']);
+        $this->assertEquals('bim', $result['key']);
 
         $this->assertArrayHasKey('value', $result);
-        $this->assertEquals('bleh(bar)', $result['value']);
+        $this->assertEquals('bar', $result['value']);
+    }
+
+    public function testWithMethod()
+    {
+        $parser = new ForEachParser();
+
+        $result = $parser->parse('foo.blah() as bim => bar');
+
+        $this->assertCount(3, $result);
+
+        $this->assertArrayHasKey('array', $result);
+        $this->assertEquals('foo.blah()', $result['array']);
+
+        $this->assertArrayHasKey('key', $result);
+        $this->assertEquals('bim', $result['key']);
+
+        $this->assertArrayHasKey('value', $result);
+        $this->assertEquals('bar', $result['value']);
     }
 
     /**
@@ -190,15 +172,6 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     {
         $parser = new ForEachParser();
         $parser->parse('foo bar');
-    }
-
-    /**
-     * @expectedException \Xport\Parser\ParsingException
-     */
-    public function testInvalidString8()
-    {
-        $parser = new ForEachParser();
-        $parser->parse('func() as bar');
     }
 
     /**
