@@ -135,6 +135,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
                     'content' => [
                         [
                             'type' => 'VerticalTable',
+                            'label' => 'Test',
                             'columns' => [
                                 'Col1',
                                 'Col2'
@@ -173,6 +174,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
 
         $table = $sheet->getTables()[0];
         $this->assertCount(2, $table->getLines());
+        $this->assertEquals('Test', $table->getLabel());
 
         // Columns
         $this->assertCount(2, $table->getColumns());
@@ -240,6 +242,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         // Table 0
         $table = $sheet->getTables()[0];
         $this->assertCount(2, $table->getLines());
+        $this->assertNull($table->getLabel());
 
         // Columns
         $this->assertCount(2, $table->getColumns());
@@ -330,6 +333,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         // Table 0
         $table = $sheet->getTables()[0];
         $this->assertCount(2, $table->getLines());
+        $this->assertNull($table->getLabel());
 
         // Columns
         $this->assertCount(2, $table->getColumns());
@@ -423,6 +427,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         // Table
         $table = $sheet0->getTables()[0];
         $this->assertCount(3, $table->getLines());
+        $this->assertEquals('Test', $table->getLabel());
 
         // Columns
         $this->assertCount(2, $table->getColumns());
@@ -443,6 +448,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         // Table 0
         $table0 = $sheet1->getTables()[0];
         $this->assertCount(4, $table0->getLines());
+        $this->assertNull($table0->getLabel());
 
         // Columns
         $this->assertCount(2, $table0->getColumns());
@@ -463,6 +469,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         // Table 1
         $table1 = $sheet1->getTables()[1];
         $this->assertCount(1, $table1->getLines());
+        $this->assertNull($table1->getLabel());
         $this->assertCount(0, $table1->getColumns());
         $this->assertCount(0, $table1->getCells());
 
@@ -474,6 +481,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         // Table 0
         $table0 = $sheet2->getTables()[0];
         $this->assertCount(4, $table0->getLines());
+        $this->assertNull($table0->getLabel());
 
         // Columns
         $this->assertCount(2, $table0->getColumns());
@@ -494,6 +502,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         // Table 1
         $table1 = $sheet2->getTables()[1];
         $this->assertCount(1, $table1->getLines());
+        $this->assertNull($table1->getLabel());
         $this->assertCount(0, $table1->getColumns());
         $this->assertCount(0, $table1->getCells());
 
@@ -505,6 +514,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         // Table 0
         $table0 = $sheet3->getTables()[0];
         $this->assertCount(4, $table0->getLines());
+        $this->assertNull($table0->getLabel());
 
         // Columns
         $this->assertCount(2, $table0->getColumns());
@@ -525,6 +535,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         // Table 1
         $table1 = $sheet3->getTables()[1];
         $this->assertCount(1, $table1->getLines());
+        $this->assertNull($table1->getLabel());
         $this->assertCount(0, $table1->getColumns());
         $this->assertCount(0, $table1->getCells());
 
@@ -536,6 +547,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         // Table
         $table = $sheet4->getTables()[0];
         $this->assertCount(5, $table->getLines());
+        $this->assertNull($table->getLabel());
 
         // Columns
         $this->assertCount(10, $table->getColumns());

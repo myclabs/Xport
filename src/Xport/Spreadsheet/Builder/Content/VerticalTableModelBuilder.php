@@ -31,6 +31,9 @@ class VerticalTableModelBuilder extends ModelBuilder implements ContentModelBuil
         // Table.
         $table = new Table();
         $sheet->addTable($table);
+        if (isset($yamlContent) && (isset($yamlContent['label']))) {
+            $table->setLabel($yamlContent['label']);
+        }
 
         // Columns.
         if (!isset($yamlContent) || !array_key_exists('columns', $yamlContent)) {

@@ -32,13 +32,21 @@ class PHPExcelExporter
 
             $phpExcelSheet = $phpExcelModel->getSheet($sheetIndex);
             if ($sheet->getLabel()) {
-                $phpExcelSheet->setTitle($sheet->getLabel());
+                $phpExcelSheet->setTitle(substr($sheet->getLabel(), 0, 32));
             }
 
             $lineOffset = 1;
 
             // Tables
             foreach ($sheet->getTables() as $table) {
+                if ($table->getLabel() !== null) {
+                    $phpExcelSheet->setCellValueByColumnAndRow(
+                        0,
+                        $lineOffset,
+                        $table->getLabel()
+                    );
+                    $lineOffset ++;
+                }
 
                 // Columns
                 foreach ($table->getColumns() as $columnIndex => $column) {

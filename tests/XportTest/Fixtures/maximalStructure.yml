@@ -3,6 +3,7 @@ sheets:
   - label: "First"
     content:
       - type: VerticalTable
+        label: "Test"
         columns:
           - "F 1"
           - "F 2"

@@ -31,6 +31,9 @@ class HorizontalTableModelBuilder extends ModelBuilder implements ContentModelBu
         // Table.
         $table = new Table();
         $sheet->addTable($table);
+        if (isset($yamlContent) && (isset($yamlContent['label']))) {
+            $table->setLabel($yamlContent['label']);
+        }
 
         // Lines.
         if (!isset($yamlContent) || !array_key_exists('lines', $yamlContent)) {

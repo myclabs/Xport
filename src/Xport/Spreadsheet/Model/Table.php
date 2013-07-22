@@ -18,6 +18,11 @@ class Table implements SpreadsheetModel
     /**
      * @var Column[]
      */
+    private $label =null;
+
+    /**
+     * @var Column[]
+     */
     private $columns =[];
 
     /**
@@ -31,6 +36,22 @@ class Table implements SpreadsheetModel
      */
     private $cells = [];
 
+
+    /**
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * @param string $label
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+    }
 
     /**
      * @return bool
