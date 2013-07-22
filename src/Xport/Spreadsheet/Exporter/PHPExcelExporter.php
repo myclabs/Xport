@@ -45,6 +45,13 @@ class PHPExcelExporter
                         $lineOffset,
                         $table->getLabel()
                     );
+                    if (count($table->getColumns()) > 1) {
+                        $phpExcelSheet->mergeCells(
+                            \PHPExcel_Cell::stringFromColumnIndex(0).$lineOffset.
+                            ':'.
+                            \PHPExcel_Cell::stringFromColumnIndex(count($table->getColumns()) - 1).$lineOffset
+                        );
+                    }
                     $lineOffset ++;
                 }
 

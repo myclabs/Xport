@@ -98,6 +98,7 @@ sheets:
             do:
 
               - type: VerticalTable
+                label: product.label
                 columns:
                   - "Product"
                   - "Price"
