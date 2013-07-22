@@ -32,7 +32,7 @@ class VerticalTableModelBuilder extends ModelBuilder implements ContentModelBuil
         $table = new Table();
         $sheet->addTable($table);
         if (isset($yamlContent) && (isset($yamlContent['label']))) {
-            $table->setLabel($yamlContent['label']);
+            $table->setLabel($this->twigExecutor->parse($yamlContent['label'], $scope));
         }
 
         // Columns.
