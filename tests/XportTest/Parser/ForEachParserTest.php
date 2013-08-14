@@ -84,13 +84,28 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $result);
 
         $this->assertArrayHasKey('array', $result);
-        $this->assertEquals('blah(foo)', $result['array']);
+        $this->assertEquals(['functionName' => 'blah', 'parameters' => ['foo']], $result['array']);
 
         $this->assertArrayHasKey('key', $result);
         $this->assertEquals('bim', $result['key']);
 
         $this->assertArrayHasKey('value', $result);
         $this->assertEquals('bar', $result['value']);
+    }
+
+    public function testWithFunctionMultipleParameters()
+    {
+        $parser = new ForEachParser();
+
+        $result = $parser->parse('blah(bim, bar) as foo');
+
+        $this->assertCount(2, $result);
+
+        $this->assertArrayHasKey('array', $result);
+        $this->assertEquals(['functionName' => 'blah', 'parameters' => ['bim', 'bar']], $result['array']);
+
+        $this->assertArrayHasKey('value', $result);
+        $this->assertEquals('foo', $result['value']);
     }
 
     public function testWithMethod()
@@ -135,7 +150,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     public function testInvalidString3()
     {
         $parser = new ForEachParser();
-        $parser->parse('foo as bar as test');
+        $parser->parse('foo => bar as test');
     }
 
     /**
@@ -144,7 +159,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     public function testInvalidString4()
     {
         $parser = new ForEachParser();
-        $parser->parse('foo => bar as test');
+        $parser->parse('foo as');
     }
 
     /**
@@ -153,7 +168,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     public function testInvalidString5()
     {
         $parser = new ForEachParser();
-        $parser->parse('foo as');
+        $parser->parse('foo as bar =>');
     }
 
     /**
@@ -162,7 +177,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     public function testInvalidString6()
     {
         $parser = new ForEachParser();
-        $parser->parse('foo as bar =>');
+        $parser->parse('foo bar');
     }
 
     /**
@@ -171,22 +186,13 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     public function testInvalidString7()
     {
         $parser = new ForEachParser();
-        $parser->parse('foo bar');
-    }
-
-    /**
-     * @expectedException \Xport\Parser\ParsingException
-     */
-    public function testInvalidString9()
-    {
-        $parser = new ForEachParser();
         $parser->parse('(foo) as bar');
     }
 
     /**
      * @expectedException \Xport\Parser\ParsingException
      */
-    public function testInvalidString10()
+    public function testInvalidString8()
     {
         $parser = new ForEachParser();
         $parser->parse('foo as bar()');
@@ -195,7 +201,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Xport\Parser\ParsingException
      */
-    public function testInvalidString11()
+    public function testInvalidString9()
     {
         $parser = new ForEachParser();
         $parser->parse('foo as (bar)');
@@ -204,7 +210,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Xport\Parser\ParsingException
      */
-    public function testInvalidString12()
+    public function testInvalidString10()
     {
         $parser = new ForEachParser();
         $parser->parse('foo as bar => bam()');
@@ -213,7 +219,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Xport\Parser\ParsingException
      */
-    public function testInvalidString13()
+    public function testInvalidString11()
     {
         $parser = new ForEachParser();
         $parser->parse('foo(bar as bam) => bim');
@@ -222,7 +228,7 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Xport\Parser\ParsingException
      */
-    public function testInvalidString14()
+    public function testInvalidString12()
     {
         $parser = new ForEachParser();
         $parser->parse('foo as bar(bam => bim)');

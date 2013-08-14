@@ -99,6 +99,28 @@ class ForEachExecutorTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testWithFunctionMultipleParameters()
+    {
+        $global = new \stdClass();
+        $global->value = 5;
+        $scope = new Scope();
+        $scope->bind('foo', ['0', '1']);
+        $scope->bind('global', $global);
+        $scope->bindFunction('blah', function ($parameters, $global) { $a=[]; foreach($parameters as $i) {$a['bimIndex'.$global.$i] = 'barValue'.$global.$i;} return $a; });
+
+        $parser = new ForEachExecutor();
+
+        $subScopes = $parser->execute('blah(foo, global.value) as bim => bar', $scope);
+
+        $this->assertCount(2, $subScopes);
+
+        foreach ($subScopes as $i => $subScope) {
+            $this->assertInstanceOf('Xport\Parser\Scope', $subScope);
+            $this->assertEquals('bimIndex'.$global->value.$i, $subScope->get('bim'));
+            $this->assertEquals('barValue'.$global->value.$i, $subScope->get('bar'));
+        }
+    }
+
     public function testWithMethodCall()
     {
 

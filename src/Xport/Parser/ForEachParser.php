@@ -14,7 +14,7 @@ class ForEachParser
     /**
      * Describes the accepted components for the regular expression.
      */
-    const ELEMENT_ARRAY_PATTERN = '([[:alnum:]]+[[:alnum:]\\.\\(\\)\\[\\]]*)';
+    const ELEMENT_ARRAY_PATTERN = '([[:alnum:]]+[[:alnum:]\\.\\, \\(\\)\\[\\]]*)';
     const ELEMENT_PATTERN = '([[:alnum:]]+)';
 
     /**
@@ -57,7 +57,7 @@ class ForEachParser
         }
 
         return [
-            'array' => $matches[1],
+            'array' => $this->parseArray($matches[1]),
             'key'   => $matches[2],
             'value' => $matches[3],
         ];
@@ -76,8 +76,26 @@ class ForEachParser
         }
 
         return [
-            'array' => $matches[1],
+            'array' => $this->parseArray($matches[1]),
             'value' => $matches[2],
+        ];
+    }
+
+    /**
+     * @param string $str
+     * @return array|string Keys are 'array' and 'value'
+     */
+    private function parseArray($str)
+    {
+        $result = preg_match('/^\s*([[:alnum:]]+)\('.self::ELEMENT_ARRAY_PATTERN.'\)\s*$/', $str, $matches);
+
+        if ($result !== 1) {
+            return trim($str);
+        }
+
+        return [
+            'functionName' => $matches[1],
+            'parameters'    => array_map('trim', explode(',', $matches[2])),
         ];
     }
 }

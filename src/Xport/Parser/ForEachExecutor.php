@@ -42,10 +42,15 @@ class ForEachExecutor
 
         $parseResult = $this->forEachParser->parse($expression);
 
-        $resultArray = $this->parseFunction($parseResult['array']);
-        if (is_array($resultArray)) {
-            $function = $scope->getFunction($resultArray['functionName']);
-            $array = $function($metaModel->run($resultArray['parameter']));
+        if (is_array($parseResult['array'])) {
+            $functionName = $scope->getFunction($parseResult['array']['functionName']);
+            $array = call_user_func_array(
+                $functionName,
+                array_map(
+                    function ($parameter) use ($metaModel) { return $metaModel->run($parameter); },
+                    $parseResult['array']['parameters']
+                )
+            );
         } else {
             $array = $metaModel->run($parseResult['array']);
         }
@@ -54,46 +59,15 @@ class ForEachExecutor
             // New sub-scope
             $subScope = new Scope($scope);
 
-            $resultValue = $this->parseFunction($parseResult['value']);
-            if (is_array($resultValue)) {
-                $function = $scope->getFunction($resultValue['functionName']);
-                $subScope->bind($resultValue['parameter'], $function($value));
-            } else {
-                $subScope->bind($parseResult['value'], $value);
-            }
+            $subScope->bind($parseResult['value'], $value);
 
             if (isset($parseResult['key'])) {
-                $resultKey = $this->parseFunction($parseResult['key']);
-                if (is_array($resultKey)) {
-                    $function = $scope->getFunction($resultKey['functionName']);
-                    $subScope->bind($resultKey['parameter'], $function($key));
-                } else {
-                    $subScope->bind($parseResult['key'], $key);
-                }
+                $subScope->bind($parseResult['key'], $key);
             }
 
             $subScopes[] = $subScope;
         }
 
         return $subScopes;
-    }
-
-    /**
-     * @param string $str
-     * @return array|null Keys are 'array' and 'value'
-     * @todo Move into ForEachParser
-     */
-    private function parseFunction($str)
-    {
-        $result = preg_match('/^\s*([[:alnum:]]+)\(([[:alnum:]\.\[\]]+)\)\s*$/', $str, $matches);
-
-        if ($result !== 1) {
-            return null;
-        }
-
-        return [
-            'functionName' => $matches[1],
-            'parameter'    => $matches[2],
-        ];
     }
 }
