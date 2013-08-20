@@ -84,6 +84,8 @@ class PHPExcelExporter
                     }
                 }
 
+                $lineOffset += 1 + count($table->getLines());
+
                 // Style.
                 //@todo move to a StyleBuilder.
                 $lineNumber = count($table->getLines()) + ((int) $table->getLabel() !== null) + ((int) $table->displayColumnsLabel());
