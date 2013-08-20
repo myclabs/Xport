@@ -41,7 +41,8 @@ class PHPExcelExporter
             // Tables
             foreach ($sheet->getTables() as $table) {
                 $tableStartingLineIndex = $lineOffset;
-                $tableEndingColumnIndex = count($table->getColumns()) - 1;
+                $tableStartingColumnIndex = \PHPExcel_Cell::stringFromColumnIndex(0);
+                $tableEndingColumnIndex = \PHPExcel_Cell::stringFromColumnIndex(count($table->getColumns()) - 1);
 
                 if ($table->getLabel() !== null) {
                     $phpExcelSheet->setCellValueByColumnAndRow(
@@ -51,12 +52,17 @@ class PHPExcelExporter
                     );
                     if (count($table->getColumns()) > 1) {
                         $phpExcelSheet->mergeCells(
-                            \PHPExcel_Cell::stringFromColumnIndex(0).$lineOffset.
+                            $tableStartingColumnIndex.$lineOffset.
                             ':'.
-                            \PHPExcel_Cell::stringFromColumnIndex($tableEndingColumnIndex).$lineOffset
+                            $tableEndingColumnIndex.$lineOffset
                         );
                     }
                     $lineOffset ++;
+                }
+
+                // Header.
+                if ($table->displayColumnsLabel()) {
+                    $lineOffset++;
                 }
 
                 // Columns
@@ -67,7 +73,7 @@ class PHPExcelExporter
 
                     // Column header
                     if ($table->displayColumnsLabel()) {
-                        $phpExcelSheet->setCellValueByColumnAndRow($columnIndex, $lineOffset, $column->getLabel());
+                        $phpExcelSheet->setCellValueByColumnAndRow($columnIndex, ($lineOffset - 1), $column->getLabel());
                     }
 
                     // Lines
@@ -77,32 +83,29 @@ class PHPExcelExporter
                         if ($cell !== null) {
                             $phpExcelSheet->setCellValueByColumnAndRow(
                                 $columnIndex,
-                                $lineOffset + 1 + $lineIndex,
+                                $lineOffset + $lineIndex,
                                 $cell->getContent()
                             );
                         }
 
                     }
                 }
-
-                $lineOffset += 1 + count($table->getLines());
+                $lineOffset += count($table->getLines());
 
                 // Style.
                 //@todo move to a StyleBuilder.
+
+                // Add an empty line after each content.
+                $lineOffset ++;
+
                 // Border and italic for Table label.
                 if ($table->getLabel() !== null) {
+                    $cellCoordinates = $tableStartingColumnIndex . $tableStartingLineIndex;
                     if (count($table->getColumns()) > 1) {
-                        $cellStyle = $phpExcelSheet->getStyle(
-                            \PHPExcel_Cell::stringFromColumnIndex(0) . $tableStartingLineIndex
-                            . ':' .
-                            \PHPExcel_Cell::stringFromColumnIndex($tableEndingColumnIndex) . $lineOffset
-                        );
-                    } else {
-                        $cellStyle = $phpExcelSheet->getStyle(
-                            \PHPExcel_Cell::stringFromColumnIndex(0) . $tableStartingLineIndex
-                        );
+                        $cellCoordinates .= ':' . $tableEndingColumnIndex . $tableStartingLineIndex;
                     }
-                    $cellStyle->applyFromArray(
+
+                    $phpExcelSheet->getStyle($cellCoordinates)->applyFromArray(
                         [
                             'borders' => [
                                 'allborders' => [
@@ -117,16 +120,16 @@ class PHPExcelExporter
                             ]
                         ]
                     );
+
                     $tableStartingLineIndex++;
                 }
+
                 // Border and bold for column header.
                 if ($table->displayColumnsLabel()) {
-                    $cellStyle = $phpExcelSheet->getStyle(
-                        \PHPExcel_Cell::stringFromColumnIndex(0) . $tableStartingLineIndex
-                        . ':' .
-                        \PHPExcel_Cell::stringFromColumnIndex($tableEndingColumnIndex) . $tableStartingLineIndex
+                    $cellCoordinates = $phpExcelSheet->getStyle(
+                        $tableStartingColumnIndex . $tableStartingLineIndex . ':' . $tableEndingColumnIndex . $tableStartingLineIndex
                     );
-                    $cellStyle->applyFromArray(
+                    $phpExcelSheet->getStyle($cellCoordinates)->applyFromArray(
                         [
                             'borders' => [
                                 'allborders' => [
@@ -143,14 +146,14 @@ class PHPExcelExporter
                     );
                     $tableStartingLineIndex++;
                 }
+
                 // Border around each lines.
                 foreach ($table->getLines() as $lineIndex => $line) {
-                    $cellStyle = $phpExcelSheet->getStyle(
-                        \PHPExcel_Cell::stringFromColumnIndex(0) . ($tableStartingLineIndex + $lineIndex)
-                        . ':' .
-                        \PHPExcel_Cell::stringFromColumnIndex($tableEndingColumnIndex) . ($tableStartingLineIndex + $lineIndex)
+                    $lineNumber = $tableStartingLineIndex + $lineIndex;
+                    $cellCoordinates = $phpExcelSheet->getStyle(
+                        $tableStartingColumnIndex . $lineNumber . ':' . $tableEndingColumnIndex . $lineNumber
                     );
-                    $cellStyle->applyFromArray(
+                    $phpExcelSheet->getStyle($cellCoordinates)->applyFromArray(
                         [
                             'borders' => [
                                 'allborders' => [
@@ -160,8 +163,6 @@ class PHPExcelExporter
                         ]
                     );
                 }
-                // Add an empty line after each content.
-                $lineOffset ++;
             }
 
             // Set automatic calculation for col's width.
