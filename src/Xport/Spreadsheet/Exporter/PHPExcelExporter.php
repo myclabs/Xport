@@ -36,6 +36,7 @@ class PHPExcelExporter
             }
 
             $lineOffset = 1;
+            $lastCol = 0;
 
             // Tables
             foreach ($sheet->getTables() as $table) {
@@ -57,6 +58,10 @@ class PHPExcelExporter
 
                 // Columns
                 foreach ($table->getColumns() as $columnIndex => $column) {
+                    if ($lastCol < $columnIndex) {
+                        $lastCol = $columnIndex;
+                    }
+
                     // Column header
                     if ($table->displayColumnsLabel()) {
                         $phpExcelSheet->setCellValueByColumnAndRow($columnIndex, $lineOffset, $column->getLabel());
@@ -80,6 +85,11 @@ class PHPExcelExporter
                 // Add an empty line after each content.
                 //@todo move to a StyleBuilder when style will be added.
                 $lineOffset ++;
+            }
+
+            // Set automatic calculation for col's width.
+            for ($columnIndex = 0; $columnIndex <= $lastCol; $columnIndex++) {
+                $phpExcelSheet->getColumnDimension(\PHPExcel_Cell::stringFromColumnIndex($columnIndex))->setAutoSize(true);
             }
         }
 
