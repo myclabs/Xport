@@ -40,6 +40,8 @@ class PHPExcelExporter
 
             // Tables
             foreach ($sheet->getTables() as $table) {
+                $startingLineOffset = $lineOffset;
+
                 if ($table->getLabel() !== null) {
                     $phpExcelSheet->setCellValueByColumnAndRow(
                         0,
@@ -78,12 +80,77 @@ class PHPExcelExporter
                                 $cell->getContent()
                             );
                         }
+
                     }
                 }
 
-                $lineOffset += 1 + count($table->getLines());
+                // Style.
+                //@todo move to a StyleBuilder.
+                $lineNumber = count($table->getLines()) + ((int) $table->getLabel() !== null) + ((int) $table->displayColumnsLabel());
+                // Border and italic for Table label.
+                if ($table->getLabel() !== null) {
+                    $cellStyle = $phpExcelSheet->getStyle(
+                        \PHPExcel_Cell::stringFromColumnIndex(0) . $startingLineOffset
+                    );
+                    $cellStyle->applyFromArray(
+                        [
+                            'borders' => [
+                                'allborders' => [
+                                    'style' => \PHPExcel_Style_Border::BORDER_THIN
+                                ]
+                            ],
+                            'alignment' => [
+                                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                            ],
+                            'font' => [
+                                'italic' => true
+                            ]
+                        ]
+                    );
+                    $startingLineOffset++;
+                }
+                // Border and bold for column header.
+                if ($table->displayColumnsLabel()) {
+                    $cellStyle = $phpExcelSheet->getStyle(
+                        \PHPExcel_Cell::stringFromColumnIndex(0) . $startingLineOffset
+                        . ':' .
+                        \PHPExcel_Cell::stringFromColumnIndex($columnIndex) . $startingLineOffset
+                    );
+                    $cellStyle->applyFromArray(
+                        [
+                            'borders' => [
+                                'allborders' => [
+                                    'style' => \PHPExcel_Style_Border::BORDER_HAIR
+                                ]
+                            ],
+                            'alignment' => [
+                                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                            ],
+                            'font' => [
+                                'bold' => true
+                            ]
+                        ]
+                    );
+                    $startingLineOffset++;
+                }
+                // Border around each lines.
+                foreach ($table->getLines() as $lineIndex => $line) {
+                    $cellStyle = $phpExcelSheet->getStyle(
+                        \PHPExcel_Cell::stringFromColumnIndex(0) . ($startingLineOffset + $lineIndex)
+                        . ':' .
+                        \PHPExcel_Cell::stringFromColumnIndex($columnIndex) . ($startingLineOffset + $lineIndex)
+                    );
+                    $cellStyle->applyFromArray(
+                        [
+                            'borders' => [
+                                'allborders' => [
+                                    'style' => \PHPExcel_Style_Border::BORDER_HAIR
+                                ]
+                            ],
+                        ]
+                    );
+                }
                 // Add an empty line after each content.
-                //@todo move to a StyleBuilder when style will be added.
                 $lineOffset ++;
             }
 
