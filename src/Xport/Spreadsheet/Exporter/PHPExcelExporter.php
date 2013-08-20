@@ -88,7 +88,6 @@ class PHPExcelExporter
 
                 // Style.
                 //@todo move to a StyleBuilder.
-                $lineNumber = count($table->getLines()) + ((int) $table->getLabel() !== null) + ((int) $table->displayColumnsLabel());
                 // Border and italic for Table label.
                 if ($table->getLabel() !== null) {
                     $cellStyle = $phpExcelSheet->getStyle(
@@ -116,7 +115,7 @@ class PHPExcelExporter
                     $cellStyle = $phpExcelSheet->getStyle(
                         \PHPExcel_Cell::stringFromColumnIndex(0) . $startingLineOffset
                         . ':' .
-                        \PHPExcel_Cell::stringFromColumnIndex($columnIndex) . $startingLineOffset
+                        \PHPExcel_Cell::stringFromColumnIndex(count($table->getColumns())) . $startingLineOffset
                     );
                     $cellStyle->applyFromArray(
                         [
@@ -140,7 +139,7 @@ class PHPExcelExporter
                     $cellStyle = $phpExcelSheet->getStyle(
                         \PHPExcel_Cell::stringFromColumnIndex(0) . ($startingLineOffset + $lineIndex)
                         . ':' .
-                        \PHPExcel_Cell::stringFromColumnIndex($columnIndex) . ($startingLineOffset + $lineIndex)
+                        \PHPExcel_Cell::stringFromColumnIndex(count($table->getColumns())) . ($startingLineOffset + $lineIndex)
                     );
                     $cellStyle->applyFromArray(
                         [
