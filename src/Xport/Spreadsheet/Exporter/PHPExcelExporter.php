@@ -98,7 +98,7 @@ class PHPExcelExporter
                         [
                             'borders' => [
                                 'allborders' => [
-                                    'style' => \PHPExcel_Style_Border::BORDER_THIN
+                                    'style' => \PHPExcel_Style_Border::BORDER_HAIR
                                 ]
                             ],
                             'alignment' => [
