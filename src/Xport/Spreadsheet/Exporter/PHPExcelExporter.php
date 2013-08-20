@@ -40,7 +40,8 @@ class PHPExcelExporter
 
             // Tables
             foreach ($sheet->getTables() as $table) {
-                $startingLineOffset = $lineOffset;
+                $tableStartingLineIndex = $lineOffset;
+                $tableEndingColumnIndex = count($table->getColumns()) - 1;
 
                 if ($table->getLabel() !== null) {
                     $phpExcelSheet->setCellValueByColumnAndRow(
@@ -52,7 +53,7 @@ class PHPExcelExporter
                         $phpExcelSheet->mergeCells(
                             \PHPExcel_Cell::stringFromColumnIndex(0).$lineOffset.
                             ':'.
-                            \PHPExcel_Cell::stringFromColumnIndex(count($table->getColumns()) - 1).$lineOffset
+                            \PHPExcel_Cell::stringFromColumnIndex($tableEndingColumnIndex).$lineOffset
                         );
                     }
                     $lineOffset ++;
@@ -88,12 +89,19 @@ class PHPExcelExporter
 
                 // Style.
                 //@todo move to a StyleBuilder.
-                $columnOffset = count($table->getColumns()) - 1;
                 // Border and italic for Table label.
                 if ($table->getLabel() !== null) {
-                    $cellStyle = $phpExcelSheet->getStyle(
-                        \PHPExcel_Cell::stringFromColumnIndex(0) . $startingLineOffset
-                    );
+                    if (count($table->getColumns()) > 1) {
+                        $cellStyle = $phpExcelSheet->getStyle(
+                            \PHPExcel_Cell::stringFromColumnIndex(0) . $tableStartingLineIndex
+                            . ':' .
+                            \PHPExcel_Cell::stringFromColumnIndex($tableEndingColumnIndex) . $lineOffset
+                        );
+                    } else {
+                        $cellStyle = $phpExcelSheet->getStyle(
+                            \PHPExcel_Cell::stringFromColumnIndex(0) . $tableStartingLineIndex
+                        );
+                    }
                     $cellStyle->applyFromArray(
                         [
                             'borders' => [
@@ -109,14 +117,14 @@ class PHPExcelExporter
                             ]
                         ]
                     );
-                    $startingLineOffset++;
+                    $tableStartingLineIndex++;
                 }
                 // Border and bold for column header.
                 if ($table->displayColumnsLabel()) {
                     $cellStyle = $phpExcelSheet->getStyle(
-                        \PHPExcel_Cell::stringFromColumnIndex(0) . $startingLineOffset
+                        \PHPExcel_Cell::stringFromColumnIndex(0) . $tableStartingLineIndex
                         . ':' .
-                        \PHPExcel_Cell::stringFromColumnIndex($columnOffset) . $startingLineOffset
+                        \PHPExcel_Cell::stringFromColumnIndex($tableEndingColumnIndex) . $tableStartingLineIndex
                     );
                     $cellStyle->applyFromArray(
                         [
@@ -133,14 +141,14 @@ class PHPExcelExporter
                             ]
                         ]
                     );
-                    $startingLineOffset++;
+                    $tableStartingLineIndex++;
                 }
                 // Border around each lines.
                 foreach ($table->getLines() as $lineIndex => $line) {
                     $cellStyle = $phpExcelSheet->getStyle(
-                        \PHPExcel_Cell::stringFromColumnIndex(0) . ($startingLineOffset + $lineIndex)
+                        \PHPExcel_Cell::stringFromColumnIndex(0) . ($tableStartingLineIndex + $lineIndex)
                         . ':' .
-                        \PHPExcel_Cell::stringFromColumnIndex($columnOffset) . ($startingLineOffset + $lineIndex)
+                        \PHPExcel_Cell::stringFromColumnIndex($tableEndingColumnIndex) . ($tableStartingLineIndex + $lineIndex)
                     );
                     $cellStyle->applyFromArray(
                         [
