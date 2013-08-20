@@ -126,9 +126,8 @@ class PHPExcelExporter
 
                 // Border and bold for column header.
                 if ($table->displayColumnsLabel()) {
-                    $cellCoordinates = $phpExcelSheet->getStyle(
-                        $tableStartingColumnIndex . $tableStartingLineIndex . ':' . $tableEndingColumnIndex . $tableStartingLineIndex
-                    );
+                    $cellCoordinates = $tableStartingColumnIndex . $tableStartingLineIndex .
+                        ':' . $tableEndingColumnIndex . $tableStartingLineIndex;
                     $phpExcelSheet->getStyle($cellCoordinates)->applyFromArray(
                         [
                             'borders' => [
@@ -150,9 +149,7 @@ class PHPExcelExporter
                 // Border around each lines.
                 foreach ($table->getLines() as $lineIndex => $line) {
                     $lineNumber = $tableStartingLineIndex + $lineIndex;
-                    $cellCoordinates = $phpExcelSheet->getStyle(
-                        $tableStartingColumnIndex . $lineNumber . ':' . $tableEndingColumnIndex . $lineNumber
-                    );
+                    $cellCoordinates = $tableStartingColumnIndex . $lineNumber . ':' . $tableEndingColumnIndex . $lineNumber;
                     $phpExcelSheet->getStyle($cellCoordinates)->applyFromArray(
                         [
                             'borders' => [
