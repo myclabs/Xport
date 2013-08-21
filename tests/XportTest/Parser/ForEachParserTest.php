@@ -21,6 +21,21 @@ class ForEachParserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $result['value']);
     }
 
+    public function testSimpleAS()
+    {
+        $parser = new ForEachParser();
+
+        $result = $parser->parse('foo as asbar');
+
+        $this->assertCount(2, $result);
+
+        $this->assertArrayHasKey('array', $result);
+        $this->assertEquals('foo', $result['array']);
+
+        $this->assertArrayHasKey('value', $result);
+        $this->assertEquals('asbar', $result['value']);
+    }
+
     public function testWithKey1()
     {
         $parser = new ForEachParser();
