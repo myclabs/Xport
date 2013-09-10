@@ -168,6 +168,10 @@ class PHPExcelExporter
             }
         }
 
+        if (count($model->getSheets()) > 0) {
+            $phpExcelModel->setActiveSheetIndex(0);
+        }
+
         $this->writeToFile($phpExcelModel, $targetFile, $writer);
     }
 
