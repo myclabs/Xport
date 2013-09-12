@@ -50,4 +50,14 @@ class TwigExecutorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('BAR', $twigParser->parse('{{ test("bar") }}', $scope));
     }
 
+    public function testEscape()
+    {
+        $scope = new Scope();
+        $scope->bind('foo', 'l\'baré');
+
+        $twigExecutor = new TwigExecutor($scope->getFunctions());
+
+        $this->assertEquals('l\'baré', $twigExecutor->parse('{{ foo }}', $scope));
+    }
+
 }

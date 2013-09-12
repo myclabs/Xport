@@ -24,7 +24,7 @@ class TwigExecutor
     public function __construct($functions = [])
     {
         $loader = new Twig_Loader_String();
-        $this->twig = new Twig_Environment($loader);
+        $this->twig = new Twig_Environment($loader, ['autoescape' => false]);
 
         foreach ($functions as $name => $function) {
             $this->twig->addFunction(new Twig_SimpleFunction($name, $function));
