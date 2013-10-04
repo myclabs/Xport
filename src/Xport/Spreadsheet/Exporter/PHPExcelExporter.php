@@ -7,6 +7,7 @@ use PHPExcel_Cell;
 use PHPExcel_Worksheet;
 use PHPExcel_Writer_Excel2007;
 use PHPExcel_Writer_IWriter;
+use Xport\Spreadsheet\Model\Column;
 use Xport\Spreadsheet\Model\Document;
 use Xport\Spreadsheet\Model\Sheet;
 use Xport\Spreadsheet\Model\Table;
@@ -132,24 +133,7 @@ class PHPExcelExporter
 
         // Columns
         foreach ($table->getColumns() as $columnIndex => $column) {
-            // Column header
-            if ($table->displayColumnsLabel()) {
-                $phpExcelSheet->setCellValueByColumnAndRow($columnIndex, ($lineOffset - 1), $column->getLabel());
-            }
-
-            // Lines
-            foreach ($table->getLines() as $lineIndex => $line) {
-                // Cell
-                $cell = $table->getCell($line, $column);
-                if ($cell !== null) {
-                    $phpExcelSheet->setCellValueByColumnAndRow(
-                        $columnIndex,
-                        $lineOffset + $lineIndex,
-                        $cell->getContent()
-                    );
-                }
-
-            }
+            $this->processColumn($table, $columnIndex, $column, $phpExcelSheet, $lineOffset);
         }
 
         // Style.
@@ -180,6 +164,32 @@ class PHPExcelExporter
             $lineNumber = $tableStartingLineIndex + $lineIndex;
             $cellCoordinates = $tableStartingColumnIndex . $lineNumber . ':' . $tableEndingColumnIndex . $lineNumber;
             $phpExcelSheet->getStyle($cellCoordinates)->applyFromArray($this->cellBorderStyle);
+        }
+    }
+
+    private function processColumn(
+        Table $table,
+        $columnIndex,
+        Column $column,
+        PHPExcel_Worksheet $phpExcelSheet,
+        &$lineOffset
+    ) {
+        // Column header
+        if ($table->displayColumnsLabel()) {
+            $phpExcelSheet->setCellValueByColumnAndRow($columnIndex, ($lineOffset - 1), $column->getLabel());
+        }
+
+        // Lines
+        foreach ($table->getLines() as $lineIndex => $line) {
+            // Cell
+            $cell = $table->getCell($line, $column);
+            if ($cell !== null) {
+                $phpExcelSheet->setCellValueByColumnAndRow(
+                    $columnIndex,
+                    $lineOffset + $lineIndex,
+                    $cell->getContent()
+                );
+            }
         }
     }
 
