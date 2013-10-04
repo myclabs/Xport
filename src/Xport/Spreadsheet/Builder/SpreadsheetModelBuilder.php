@@ -51,18 +51,17 @@ class SpreadsheetModelBuilder extends ModelBuilder
     }
 
     /**
-     * @param string $refContentType
+     * @param string $contentType
      * @return ContentModelBuilder
      * @throws \InvalidArgumentException
      */
-    public function getContentModelBuilder($refContentType)
+    public function getContentModelBuilder($contentType)
     {
-        if (!isset($this->contentModelBuilders[$refContentType]))
-        {
-            throw new \InvalidArgumentException("No 'ContentModelBuilder' found for ref '$refContentType'.");
+        if (! isset($this->contentModelBuilders[$contentType])) {
+            throw new \InvalidArgumentException("No 'ContentModelBuilder' found for '$contentType'.");
         }
 
-        return $this->contentModelBuilders[$refContentType];
+        return $this->contentModelBuilders[$contentType];
     }
 
     /**
@@ -159,5 +158,4 @@ class SpreadsheetModelBuilder extends ModelBuilder
 
         $this->getContentModelBuilder($yamlContent['type'])->build($sheet, $yamlContent, $scope);
     }
-
 }
