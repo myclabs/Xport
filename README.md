@@ -112,8 +112,6 @@ sheets:
                           - "{{ product.name }}"
                           - "{{ sale.price }}"
                           - "{{ sale.salesman.name }}"
-
-              - type: EmptyLine
 ```
 
 ### Functions
