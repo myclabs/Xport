@@ -13,12 +13,12 @@ use Xport\Spreadsheet\Model\Sheet;
 use Xport\Spreadsheet\Model\Table;
 
 /**
- * Exports an Spreadsheet model to an Excel file.
+ * Exports a Spreadsheet model to an Excel file.
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  * @author valentin-mcs <valentin.claras@myc-sense.com>
  */
-class PHPExcelExporter
+class PHPExcelExporter implements Exporter
 {
     private $tableLabelStyle = [
         'borders'   => [
@@ -57,10 +57,7 @@ class PHPExcelExporter
     ];
 
     /**
-     * Exports an Spreadsheet model to a file.
-     *
-     * @param Document                     $model
-     * @param string                       $targetFile
+     * {@inheritdoc}
      * @param PHPExcel_Writer_IWriter|null $writer Writer allowing to choose which file format to use
      */
     public function export(Document $model, $targetFile, PHPExcel_Writer_IWriter $writer = null)
