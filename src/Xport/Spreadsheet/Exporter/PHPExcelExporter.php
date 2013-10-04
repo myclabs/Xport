@@ -193,9 +193,7 @@ class PHPExcelExporter implements Exporter
     private function writeToFile(PHPExcel $phpExcelModel, $targetFile, PHPExcel_Writer_IWriter $writer = null)
     {
         // Default format is xlsx
-        if (!$writer) {
-            $writer = new PHPExcel_Writer_Excel2007();
-        }
+        $writer = $writer ?: new PHPExcel_Writer_Excel2007();
 
         $writer->setPHPExcel($phpExcelModel);
         $writer->save($targetFile);

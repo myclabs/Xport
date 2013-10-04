@@ -29,7 +29,6 @@ sheets:
                   - cells:
                       - "{{ item.label }}"
                       - "{{ item.value }}"
-          - type: EmptyLine
 
   - label: "Inter"
     content:

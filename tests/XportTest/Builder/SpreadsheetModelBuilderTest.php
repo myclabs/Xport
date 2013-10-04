@@ -443,7 +443,7 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         // Sheet 1 ----------------------------------------------------|
         $sheet1 = $result->getSheets()[1];
         $this->assertEquals('Sheet 2 (0)', $sheet1->getLabel());
-        $this->assertCount(2, $sheet1->getTables());
+        $this->assertCount(1, $sheet1->getTables());
 
         // Table 0
         $table0 = $sheet1->getTables()[0];
@@ -466,17 +466,10 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('34', $table0->getCell($table0->getLines()[2], $table0->getColumns()[1])->getContent());
         $this->assertEquals('7', $table0->getCell($table0->getLines()[3], $table0->getColumns()[1])->getContent());
 
-        // Table 1
-        $table1 = $sheet1->getTables()[1];
-        $this->assertCount(1, $table1->getLines());
-        $this->assertNull($table1->getLabel());
-        $this->assertCount(0, $table1->getColumns());
-        $this->assertCount(0, $table1->getCells());
-
         // Sheet 2 ----------------------------------------------------|
         $sheet2 = $result->getSheets()[2];
         $this->assertEquals('Sheet 3 (1)', $sheet2->getLabel());
-        $this->assertCount(2, $sheet2->getTables());
+        $this->assertCount(1, $sheet2->getTables());
 
         // Table 0
         $table0 = $sheet2->getTables()[0];
@@ -499,17 +492,10 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('34', $table0->getCell($table0->getLines()[2], $table0->getColumns()[1])->getContent());
         $this->assertEquals('7', $table0->getCell($table0->getLines()[3], $table0->getColumns()[1])->getContent());
 
-        // Table 1
-        $table1 = $sheet2->getTables()[1];
-        $this->assertCount(1, $table1->getLines());
-        $this->assertNull($table1->getLabel());
-        $this->assertCount(0, $table1->getColumns());
-        $this->assertCount(0, $table1->getCells());
-
         // Sheet 3 ----------------------------------------------------|
         $sheet3 = $result->getSheets()[3];
         $this->assertEquals('Sheet 4 (2)', $sheet3->getLabel());
-        $this->assertCount(2, $sheet3->getTables());
+        $this->assertCount(1, $sheet3->getTables());
 
         // Table 0
         $table0 = $sheet3->getTables()[0];
@@ -531,13 +517,6 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('28', $table0->getCell($table0->getLines()[1], $table0->getColumns()[1])->getContent());
         $this->assertEquals('34', $table0->getCell($table0->getLines()[2], $table0->getColumns()[1])->getContent());
         $this->assertEquals('7', $table0->getCell($table0->getLines()[3], $table0->getColumns()[1])->getContent());
-
-        // Table 1
-        $table1 = $sheet3->getTables()[1];
-        $this->assertCount(1, $table1->getLines());
-        $this->assertNull($table1->getLabel());
-        $this->assertCount(0, $table1->getColumns());
-        $this->assertCount(0, $table1->getCells());
 
         // Sheet 4 ----------------------------------------------------|
         $sheet4 = $result->getSheets()[4];
