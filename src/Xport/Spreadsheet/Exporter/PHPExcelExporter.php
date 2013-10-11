@@ -87,7 +87,7 @@ class PHPExcelExporter
     private function processSheet(Sheet $sheet, PHPExcel_Worksheet $phpExcelSheet)
     {
         if ($sheet->getLabel()) {
-            $phpExcelSheet->setTitle(substr($sheet->getLabel(), 0, 31));
+            $phpExcelSheet->setTitle(mb_substr($sheet->getLabel(), 0, 31));
         }
 
         // Process tables
