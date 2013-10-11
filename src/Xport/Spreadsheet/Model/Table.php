@@ -143,24 +143,12 @@ class Table implements SpreadsheetModel
      */
     private function getCellHashKey(Line $line, Column $column)
     {
-        $columnKey = false;
-        foreach ($this->getColumns() as $key => $tableColumn) {
-            if ($column === $tableColumn) {
-                $columnKey = $key;
-                break;
-            }
-        }
+        $columnKey = array_search($column, $this->getColumns(), true);
         if ($columnKey === false) {
             throw new \InvalidArgumentException("The given 'Column' was not found in the 'Table'.");
         }
 
-        $lineKey = false;
-        foreach ($this->getLines() as $key => $tableLine) {
-            if ($line === $tableLine) {
-                $lineKey = $key;
-                break;
-            }
-        }
+        $lineKey = array_search($line, $this->getLines(), true);
         if ($lineKey === false) {
             throw new \InvalidArgumentException("The given 'Line' was not found in the 'Table'.");
         }
