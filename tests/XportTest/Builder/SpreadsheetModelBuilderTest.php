@@ -352,6 +352,107 @@ class SpreadsheetModelBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($sheet->getTables()[0], $sheet->getTables()[2]);
     }
 
+    public function testCellsForEachForEach()
+    {
+        $mapping = [
+            'sheets' => [
+                [
+                    'content' => [
+                        [
+                            'type' => 'VerticalTable',
+                            'columns' => [
+                                [
+                                    'foreach' => 'headerList as header',
+                                    'do' => [
+                                        [
+                                            'foreach' => 'header as letter',
+                                            'do' => [
+                                                '{{ letter }}'
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                'Col1',
+                                'Col2',
+                            ],
+                            'lines'   => [
+                                [
+                                    'foreach' => 'foo as i => bar',
+                                    'do' => [
+                                        [
+                                            'cells' => [
+                                                [
+                                                    'foreach' => 'indexList as index',
+                                                    'do' => [
+                                                        [
+                                                            'foreach' => 'index as letter',
+                                                            'do' => [
+                                                                '{{ letter }}'
+                                                            ]
+                                                        ]
+                                                    ],
+                                                ],
+                                                '{{ i }}',
+                                                '{{ bar }}',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $mappingReader = $this->getMockForAbstractClass('Xport\MappingReader\MappingReader');
+        $mappingReader->expects($this->once())->method('getMapping')->will($this->returnValue($mapping));
+
+        $modelBuilder = new SpreadsheetModelBuilder();
+        $modelBuilder->bind('headerList', [['A', 'B'], ['C', 'D', 'E']]);
+        $modelBuilder->bind('indexList', [['1', '2'], ['3', '4', '5']]);
+        $modelBuilder->bind('foo', ['test1', 'test2']);
+        $result = $modelBuilder->build($mappingReader);
+
+        $this->assertTrue($result instanceof Document);
+        $this->assertCount(1, $result->getSheets());
+
+        $sheet = $result->getSheets()[0];
+        $this->assertCount(1, $sheet->getTables());
+
+        // Table
+        $table = $sheet->getTables()[0];
+        $this->assertCount(2, $table->getLines());
+        $this->assertNull($table->getLabel());
+
+        // Columns
+        $this->assertCount(7, $table->getColumns());
+        $this->assertEquals('A', $table->getColumns()[0]->getLabel());
+        $this->assertEquals('B', $table->getColumns()[1]->getLabel());
+        $this->assertEquals('C', $table->getColumns()[2]->getLabel());
+        $this->assertEquals('D', $table->getColumns()[3]->getLabel());
+        $this->assertEquals('E', $table->getColumns()[4]->getLabel());
+        $this->assertEquals('Col1', $table->getColumns()[5]->getLabel());
+        $this->assertEquals('Col2', $table->getColumns()[6]->getLabel());
+
+        // Cells
+        $this->assertCount(14, $table->getCells());
+        $this->assertEquals('1', $table->getCell($table->getLines()[0], $table->getColumns()[0])->getContent());
+        $this->assertEquals('2', $table->getCell($table->getLines()[0], $table->getColumns()[1])->getContent());
+        $this->assertEquals('3', $table->getCell($table->getLines()[0], $table->getColumns()[2])->getContent());
+        $this->assertEquals('4', $table->getCell($table->getLines()[0], $table->getColumns()[3])->getContent());
+        $this->assertEquals('5', $table->getCell($table->getLines()[0], $table->getColumns()[4])->getContent());
+        $this->assertEquals('0', $table->getCell($table->getLines()[0], $table->getColumns()[5])->getContent());
+        $this->assertEquals('test1', $table->getCell($table->getLines()[0], $table->getColumns()[6])->getContent());
+        $this->assertEquals('1', $table->getCell($table->getLines()[1], $table->getColumns()[0])->getContent());
+        $this->assertEquals('2', $table->getCell($table->getLines()[1], $table->getColumns()[1])->getContent());
+        $this->assertEquals('3', $table->getCell($table->getLines()[1], $table->getColumns()[2])->getContent());
+        $this->assertEquals('4', $table->getCell($table->getLines()[1], $table->getColumns()[3])->getContent());
+        $this->assertEquals('5', $table->getCell($table->getLines()[1], $table->getColumns()[4])->getContent());
+        $this->assertEquals('1', $table->getCell($table->getLines()[1], $table->getColumns()[5])->getContent());
+        $this->assertEquals('test2', $table->getCell($table->getLines()[1], $table->getColumns()[6])->getContent());
+    }
+
     public function testComplexForeachStructure()
     {
         /** @var Document $result */

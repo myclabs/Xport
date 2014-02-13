@@ -61,8 +61,10 @@ abstract class ModelBuilder
         foreach ($scopes as $scope) {
             // Traverse all sub-elements.
             foreach ($yamlLoop['do'] as $yamlElement) {
-                call_user_func_array($callback, array_merge($parameters, [$yamlElement, $scope, $iterationCallback]));
-                $iterationCallback ++;
+                $iterationCallback += call_user_func_array(
+                    $callback,
+                    array_merge($parameters, [$yamlElement, $scope, $iterationCallback])
+                );
             }
         }
 

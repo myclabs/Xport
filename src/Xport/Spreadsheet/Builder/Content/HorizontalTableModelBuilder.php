@@ -55,9 +55,10 @@ class HorizontalTableModelBuilder extends ModelBuilder implements ContentModelBu
     protected function parseLine(Table $table, $yamlLine, Scope $scope)
     {
         if (is_array($yamlLine) && array_key_exists('foreach', $yamlLine)) {
-            $this->parseForeach($yamlLine, $scope, [$this, 'parseLine'], [$table]);
+            return $this->parseForeach($yamlLine, $scope, [$this, 'parseLine'], [$table]);
         } else {
             $this->createLine($table, $yamlLine, $scope);
+            return 1;
         }
     }
 
@@ -79,9 +80,10 @@ class HorizontalTableModelBuilder extends ModelBuilder implements ContentModelBu
     protected function parseColumn(Table $table, $yamlColumn, Scope $scope)
     {
         if (is_array($yamlColumn) && array_key_exists('foreach', $yamlColumn)) {
-            $this->parseForeach($yamlColumn, $scope, [$this, 'parseColumn'], [$table]);
+            return $this->parseForeach($yamlColumn, $scope, [$this, 'parseColumn'], [$table]);
         } else {
             $this->createColumn($table, $yamlColumn, $scope);
+            return 1;
         }
     }
 
@@ -105,7 +107,7 @@ class HorizontalTableModelBuilder extends ModelBuilder implements ContentModelBu
         $lines = $table->getLines();
 
         if (is_array($yamlCell) && array_key_exists('foreach', $yamlCell)) {
-            return $this->parseForeach($yamlCell, $scope, [$this, 'parseCell'], [$table, $column, $lineIndex]);
+            return $this->parseForeach($yamlCell, $scope, [$this, 'parseCell'], [$table, $column, ($lineIndex + $lineIteration)]);
         } else {
             $this->createCell($table, $column, $lines[$lineIndex + $lineIteration], $yamlCell, $scope);
             return 1;

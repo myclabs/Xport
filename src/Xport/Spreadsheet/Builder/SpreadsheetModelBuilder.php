@@ -119,9 +119,10 @@ class SpreadsheetModelBuilder extends ModelBuilder
     protected function parseSheet(Document $document, $yamlSheet, Scope $scope)
     {
         if (array_key_exists('foreach', $yamlSheet)) {
-            $this->parseForeach($yamlSheet, $scope, [$this, 'parseSheet'], [$document]);
+            return $this->parseForeach($yamlSheet, $scope, [$this, 'parseSheet'], [$document]);
         } else {
             $this->createSheet($document, $yamlSheet, $scope);
+            return 1;
         }
     }
 
@@ -145,9 +146,10 @@ class SpreadsheetModelBuilder extends ModelBuilder
     protected function parseContent(Sheet $sheet, $yamlContent, Scope $scope)
     {
         if (array_key_exists('foreach', $yamlContent)) {
-            $this->parseForeach($yamlContent, $scope, [$this, 'parseContent'], [$sheet]);
+            return $this->parseForeach($yamlContent, $scope, [$this, 'parseContent'], [$sheet]);
         } else {
             $this->createContent($sheet, $yamlContent, $scope);
+            return 1;
         }
     }
 
