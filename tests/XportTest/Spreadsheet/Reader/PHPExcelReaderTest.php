@@ -9,8 +9,7 @@ class PHPExcelReaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testImport()
     {
-        $reader = new PHPExcelReader();
-        $reader->open(__DIR__ . '/Fixtures/test1.xls', new \PHPExcel_Reader_Excel5());
+        $reader = new PHPExcelReader(__DIR__ . '/Fixtures/test1.xls', new \PHPExcel_Reader_Excel5());
         $reader->openNextSheet();
         $reader->readNextTable(false, true);
         $reader->readNextTable(false, true);

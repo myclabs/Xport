@@ -47,9 +47,10 @@ class PHPExcelReader implements Reader
     private $currentPHPExcelSheet;
 
     /**
-     * {@inheritdoc}
+     * @param string                  $file
+     * @param PHPExcel_Reader_IReader $reader
      */
-    public function open($file, PHPExcel_Reader_IReader $reader = null)
+    public function __construct($file, PHPExcel_Reader_IReader $reader = null)
     {
         $reader = $reader ?: new PHPExcel_Reader_Excel2007();
         $reader->setReadDataOnly(true);

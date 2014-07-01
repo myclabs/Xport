@@ -12,12 +12,6 @@ use Xport\Spreadsheet\Model\Document;
 interface Reader
 {
     /**
-     * Open a file.
-     * @param string $file
-     */
-    public function open($file);
-
-    /**
      * Read the next sheet.
      * @throws ReadingException
      */

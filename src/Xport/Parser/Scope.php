@@ -41,9 +41,9 @@ class Scope implements \ArrayAccess, Container
      * @param string $name
      * @param mixed  $value
      */
-    public function bind($name, $value)
+    public function bind($name, &$value)
     {
-        $this->values[$name] = $value;
+        $this->values[$name] = &$value;
     }
 
     /**
@@ -71,6 +71,23 @@ class Scope implements \ArrayAccess, Container
         }
 
         return $this->values[$name];
+    }
+
+    /**
+     * Returns a value by its name.
+     *
+     * @param string $name
+     * @param mixed  $value
+     * @throws \InvalidArgumentException
+     * @return mixed
+     */
+    public function set($name, $value)
+    {
+        if (!array_key_exists($name, $this->values)) {
+            throw new \InvalidArgumentException("Unknown entry for name '$name'");
+        }
+
+        $this->values[$name] = $value;
     }
 
     /**

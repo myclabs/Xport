@@ -41,7 +41,7 @@ sheets:
                 - "{{ contact.phoneNumber }}"
 ```
 
-Usage:
+#### Export usage
 
 ```php
 $modelBuilder = new SpreadsheetModelBuilder();
@@ -49,12 +49,24 @@ $export = new PHPExcelExporter();
 
 $modelBuilder->bind('contacts', $contacts);
 
-$export->export($modelBuilder->build('mapping.yml'), 'myFile.xslx');
+$export->export($modelBuilder->build(new YamlMappingReader('mapping.yml')), 'myFile.xslx');
 ```
 
 The table will be filled with each item in the array `$contacts`.
 
 The `path` configuration is a [PropertyAccess](http://symfony.com/doc/master/components/property_access/index.html) path, e.g. the `contact.phoneNumber` path can resolve to `$contact->getPhoneNumber()` or `$contact->phoneNumber`.
+
+#### Import usage
+
+```php
+$hydrator = new HydratorFromSpreadsheet();
+
+$hydrator->bind('contacts', $contacts);
+
+$hydrator->hydrate(new PHPExcelReader('myFile.xslx'), new YamlMappingReader('mapping.yml'));
+```
+
+The $contacts variable will be filled with each line of the table.
 
 ### Dynamic example
 
